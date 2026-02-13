@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "github.copilot-chat",
+        "pkief.material-icon-theme",
+        "streetsidesoftware.code-spell-checker-russian",
+        "ms-ceintl.vscode-language-pack-ru",
+        "wayou.vscode-todo-highlight"
+    ]
+}

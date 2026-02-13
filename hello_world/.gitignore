@@ -1,0 +1,17 @@
+**/node_modules/**
+**/dist/**
+**/build/**
+_node_modules
+.DS_Store
+
+package-lock.json
+yarn.lock
+bun.lock
+
+.idea/
+*.log
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
