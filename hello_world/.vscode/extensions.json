@@ -7,6 +7,8 @@
         "pkief.material-icon-theme",
         "streetsidesoftware.code-spell-checker-russian",
         "ms-ceintl.vscode-language-pack-ru",
-        "wayou.vscode-todo-highlight"
+        "wayou.vscode-todo-highlight",
+        "mongodb.mongodb-vscode",
+        "esbenp.prettier-vscode"
     ]
 }

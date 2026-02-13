@@ -35,3 +35,30 @@ pnpm build
 ```sh
 pnpm preview
 ```
+
+## Используемые технологии для дальнейшего проекта:
+- Node.js 24
+- Typescript
+- Docker
+- ESLint
+- Prettier
+- pnpm
+
+Frontend:
+- Vue.js
+- Vue Router
+- Pinia
+- Vite
+- VueUse
+- Naive UI
+- Vue-chartjs
+
+Backend:
+- NestJS
+- Mongoose
+- MongoDB
+
+
+## Видение проекта:
+
+TODO: добавить описание видения проекта
