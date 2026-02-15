@@ -1,26 +1,26 @@
 {
   "compilerOptions": {
-    // File Layout
+    // Папка исходного кода и папка для скомпилированного кода
     "rootDir": "./src",
     "outDir": "./dist",
 
-    // Environment Settings
+    // Настройки для Node.js и современных стандартов JavaScript
     "module": "nodenext",
     "target": "esnext",
-    // For nodejs:
+    // Для node, чтобы использовать встроенные типы и модули
     "types": ["node"],
     "lib": ["esnext"],
 
-    // Other Outputs
+    // Остальной вывод
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
 
-    // Stricter Typechecking Options
+    // Более жёсткие проверки типов
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    // Style Options
+    // Опции стиля кода
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,
     // "noUnusedLocals": true,
@@ -28,7 +28,7 @@
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
 
-    // Recommended Options
+    // Рекомендуемые опции
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
@@ -36,11 +36,14 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+    // Настройка базового пути для разрешения модулей
     "baseUrl": ".",
+    // Настройка путей для удобного импорта модулей
     "paths": {
       "@/*": ["src/*"]
     }
   },
+  // Указываем папки, которые должны быть включены и исключены из компиляции
   "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "build"]
 }

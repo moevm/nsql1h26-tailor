@@ -2,6 +2,7 @@
  * @file index.ts
  * @description Файл содержит демонстрационный код для подключения к MongoDB серверу,
  * выполнения базовых операций с базой данных и коллекцией.
+ * @module index
  * @author KorzikAlex
  * @license ISC
  */

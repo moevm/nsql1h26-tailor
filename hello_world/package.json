@@ -10,6 +10,7 @@
     "build": "tsc",
     "preview": "node dist/index.js",
     "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --log-level warn --cache --write '{src/**/*,*}.{ts,tsx,js,jsx,json,css,scss,md}' --ignore-path .prettierignore --config .prettierrc.yaml"
   },
   "keywords": [],
@@ -24,7 +25,8 @@
     "@eslint/json": "^1.0.1",
     "@eslint/markdown": "^7.5.1",
     "@types/node": "^25.2.3",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
     "globals": "^17.3.0",
     "jiti": "^2.6.1",
     "prettier": "3.8.1",
