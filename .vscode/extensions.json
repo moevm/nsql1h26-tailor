@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "ms-azuretools.vscode-docker",
+    "dotenv.dotenv-vscode",
+    "dotenv.dotenvx-vscode",
+    "dbaeumer.vscode-eslint",
+    "github.vscode-github-actions",
+    "github.copilot-chat",
+    "github.vscode-pull-request-github",
+    "ecmel.vscode-html-css",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker-russian",
+    "vue.volar",
+    "redhat.vscode-yaml"
+  ]
+}
