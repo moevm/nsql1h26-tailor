@@ -1,0 +1,44 @@
+{
+  "name": "nsql1h26-tailor",
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "private": true,
+  "description": "This is a monorepo for the tailor app project.",
+  "engines": {
+    "node": "^20.20.1 || >=22.0.0"
+  },
+  "scripts": {
+    "lint": "pnpm --filter \"...[HEAD^]\" -r --if-present lint",
+    "format": "pnpm --filter \"...[HEAD^]\" -r --if-present format",
+    "typecheck": "pnpm --filter \"...[HEAD^]\" -r --if-present typecheck",
+    "format:check": "pnpm --filter \"...[HEAD^]\" -r --if-present format:check",
+    "build": "concurrently -n backend,frontend -c blue,magenta \"pnpm --filter @mse/backend build\" \"pnpm --filter @mse/frontend build\"",
+    "dev": "concurrently -k -n backend,frontend -c blue,magenta \"pnpm --filter @mse/backend start:dev\" \"pnpm --filter @mse/frontend dev\"",
+    "preview": "concurrently -n backend,frontend -c blue,magenta \"pnpm --filter @mse/backend start:prod\" \"pnpm --filter @mse/frontend preview\""
+  },
+  "contributors": [
+    "Korshkov Aleksandr",
+    "Pivoev Nikita",
+    "Otmakhov Danil"
+  ],
+  "license": "ISC",
+  "packageManager": "pnpm@10.30.0",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.3.5",
+    "concurrently": "^9.2.1",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.8.0",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "vue-eslint-parser": "^10.4.0"
+  }
+}
