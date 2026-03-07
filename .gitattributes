@@ -1,8 +1,19 @@
+# Автоматически нормализовать окончания строк
+* text=auto eol=lf
+
 *.ts text eol=lf
 *.tsx text eol=lf
 *.js text eol=lf
 *.jsx text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+*.vue text eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
+
+# Бинарные файлы
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.mp4 binary
