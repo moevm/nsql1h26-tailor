@@ -10,6 +10,7 @@ coverage/
 
 .git/
 .gitignore
+.gitkeep
 
 .vscode/
 .idea/
