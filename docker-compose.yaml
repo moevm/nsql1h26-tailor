@@ -1,0 +1,38 @@
+name: nsql1h26-tailor
+
+services:
+  db:
+    image: mongodb:8.2
+    env_file: .env
+    ports: ['27017:27017']
+    volumes: ['./data:/data/db']
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: backend
+    depends_on: [db]
+    build: ./backend
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    container_name: frontend
+    depends_on: [backend]
+    build: ./frontend
+    env_file: .env
+    ports: ['80:80']
+
+volumes:
+  mongo_data:
+
+networks:
+  default:
+    driver: bridge
