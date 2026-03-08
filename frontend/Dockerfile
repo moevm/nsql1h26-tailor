@@ -9,17 +9,17 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/frontend
+RUN pnpm install --frozen-lockfile
+RUN pnpm deploy --filter=@nosql/frontend /app/deployed
 
-RUN pnpm install --filter @nosql/frontend --frozen-lockfile
-
-RUN pnpm build
+WORKDIR /app/deployed
+RUN pnpm run build
 
 
 FROM nginx:stable-alpine AS production
 
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/frontend/dist /usr/share/nginx/html
+COPY --from=build /app/deployed/dist /usr/share/nginx/html
 
 EXPOSE 80
 
