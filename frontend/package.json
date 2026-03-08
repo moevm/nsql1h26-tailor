@@ -9,8 +9,10 @@
     "Otmakhov Danil"
   ],
   "scripts": {
-    "lint": "eslint src --config ../eslint.config.ts --cache",
+    "lint": "eslint src --cache",
     "format": "prettier --write src --cache",
+    "typecheck": "vue-tsc --noEmit",
+    "format:check": "prettier --check src --cache",
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
