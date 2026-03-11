@@ -7,9 +7,9 @@
  */
 import { Controller, Get } from '@nestjs/common';
 import {
+  HealthCheck,
   HealthCheckService,
   HttpHealthIndicator,
-  HealthCheck,
   MongooseHealthIndicator,
 } from '@nestjs/terminus';
 

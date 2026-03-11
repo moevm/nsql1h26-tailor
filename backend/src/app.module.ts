@@ -4,6 +4,7 @@
  * @author @KorzikAlex
  */
 import { Module } from '@nestjs/common';
+
 import { HealthModule } from './health/health.module';
 
 /**
