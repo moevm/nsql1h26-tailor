@@ -3,10 +3,10 @@
  * @description Точка входа для приложения на Vue.js.
  * @author @KorzikAlex
  */
-import { createApp } from 'vue';
-import App from './App.vue';
+import App from '@/App.vue';
+import { router } from '@/router';
 import { createPinia } from 'pinia';
-import { router } from './router';
+import { createApp } from 'vue';
 
 // Инициализация Pinia для управления состоянием приложения
 const pinia = createPinia();

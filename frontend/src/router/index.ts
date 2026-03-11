@@ -3,7 +3,7 @@
  * @description Конфигурация маршрутизатора для приложения на Vue.js.
  * @author @KorzikAlex
  */
-import { createWebHistory, createRouter, type RouterOptions } from 'vue-router';
+import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 
 const routes: RouterOptions['routes'] = [
   {
