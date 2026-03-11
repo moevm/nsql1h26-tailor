@@ -25,6 +25,7 @@
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.54.1",
     "@eslint/js": "^10.0.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.3.5",
     "concurrently": "^9.2.1",
     "eslint": "^10.0.3",
