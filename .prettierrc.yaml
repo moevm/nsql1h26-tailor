@@ -1,0 +1,16 @@
+singleQuote: true
+trailingComma: all
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
+importOrder:
+  [
+    '<BUILTIN_MODULES>',
+    '<THIRD_PARTY_MODULES>',
+    '^@core/(.*)$',
+    '^@server/(.*)$',
+    '^@ui/(.*)$',
+    '^[./]',
+  ]
+importOrderParserPlugins: ['typescript', 'decorators-legacy']
+importOrderSeparation: true
+importOrderSortSpecifiers: true

@@ -1,0 +1,15 @@
+packages:
+  - backend
+  - frontend
+
+injectWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@parcel/watcher'
+  - '@prisma/engines'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - bcrypt
+  - esbuild
+  - unrs-resolver
