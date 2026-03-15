@@ -1,4 +1,4 @@
-node_modules/
+**/node_modules
 pnpm-debug.log*
 .env
 dist/
@@ -10,6 +10,7 @@ coverage/
 
 .git/
 .gitignore
+.gitkeep
 
 .vscode/
 .idea/
@@ -28,3 +29,6 @@ Dockerfile
 .flaskenv*
 !.env.project
 !.env.vault
+
+docs/
+hello_world/

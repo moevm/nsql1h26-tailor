@@ -16,16 +16,29 @@ export default defineConfig([
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
   globalIgnores(['node_modules/**', 'dist/**', 'build/**', 'coverage/**']),
+  // настройки для файлов .vue
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.vue'],
+        sourceType: 'module',
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
   // frontend
   {
-    files: ['frontend/**/*.{ts,tsx,vue,mts}'],
+    basePath: 'frontend',
+    files: ['**/*.{ts,tsx,mts}'],
     languageOptions: {
-      // используем парсер для Vue.js, который поддерживает TypeScript
-      parser: vueParser,
-      // указываем опции парсера для Vue.js и TypeScript
+      parser: tseslint.parser,
       parserOptions: {
-        parser: tseslint.parser,
-        extraFileExtensions: ['.vue'],
+        parser: '@typescript-eslint/parser',
         sourceType: 'module',
       },
       globals: {
@@ -35,7 +48,8 @@ export default defineConfig([
   },
   // backend
   {
-    files: ['backend/**/*.{ts,tsx,mts}'],
+    basePath: 'backend',
+    files: ['**/*.{ts,tsx,mts}'],
     languageOptions: {
       // используем парсер TypeScript ESLint для бэкенда
       parser: tseslint.parser,
