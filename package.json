@@ -1,20 +1,16 @@
 {
   "name": "nsql1h26-tailor",
   "version": "1.0.0",
-  "workspaces": [
-    "backend",
-    "frontend"
-  ],
   "private": true,
   "description": "This is a monorepo for the tailor app project.",
   "engines": {
     "node": "^20.20.1 || >=22.0.0"
   },
   "scripts": {
-    "lint": "pnpm --filter \"...[HEAD^]\" -r --if-present lint",
-    "format": "pnpm --filter \"...[HEAD^]\" -r --if-present format",
-    "typecheck": "pnpm --filter \"...[HEAD^]\" -r --if-present typecheck",
-    "format:check": "pnpm --filter \"...[HEAD^]\" -r --if-present format:check",
+    "lint": "pnpm -r --if-present lint",
+    "format": "pnpm -r --if-present format",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "format:check": "pnpm -r --if-present format:check",
     "build": "concurrently -n backend,frontend -c blue,magenta \"pnpm --filter @nosql/backend build\" \"pnpm --filter @nosql/frontend build\"",
     "dev": "concurrently -k -n backend,frontend -c blue,magenta \"pnpm --filter @nosql/backend start:dev\" \"pnpm --filter @nosql/frontend dev\"",
     "preview": "concurrently -n backend,frontend -c blue,magenta \"pnpm --filter @nosql/backend start:prod\" \"pnpm --filter @nosql/frontend preview\""
@@ -27,7 +23,9 @@
   "license": "ISC",
   "packageManager": "pnpm@10.30.0",
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.54.1",
     "@eslint/js": "^10.0.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.3.5",
     "concurrently": "^9.2.1",
     "eslint": "^10.0.3",
