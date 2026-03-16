@@ -8,8 +8,12 @@ import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 const routes: RouterOptions['routes'] = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/pages/HelloWorld.vue'),
+    redirect: '/login',
+  },
+  {
+    path: '/login',
+    name: 'Вход в систему',
+    component: () => import('@/pages/LoginPage.vue'),
   },
 ];
 
