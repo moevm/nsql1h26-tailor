@@ -3,12 +3,12 @@
  * @description Конфигурация ESLint для фронтенда и бэкенда проекта.
  * @author @KorzikAlex @nhitar @DanilOtmakhov
  */
-import { defineConfig, globalIgnores } from 'eslint/config';
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 import vueParser from 'vue-eslint-parser';
 
 export default defineConfig([
@@ -29,6 +29,15 @@ export default defineConfig([
       globals: {
         ...globals.browser,
       },
+    },
+    rules: {
+      'vue/first-attribute-linebreak': [
+        'error',
+        {
+          singleline: 'beside',
+          multiline: 'beside',
+        },
+      ],
     },
   },
   // frontend
