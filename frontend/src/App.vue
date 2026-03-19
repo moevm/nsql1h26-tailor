@@ -6,6 +6,7 @@
  * @author @KorzikAlex
  */
 import {
+  GlobalThemeOverrides,
   NConfigProvider,
   NDialogProvider,
   NGlobalStyle,
@@ -15,10 +16,23 @@ import {
   dateRuRU,
   ruRU,
 } from 'naive-ui';
+
+const themeOverrides: GlobalThemeOverrides = {
+  common: {
+    primaryColor: '#023370',
+    primaryColorHover: '#01428e',
+    primaryColorPressed: '#01428e',
+    primaryColorSuppl: '#01428e',
+  },
+};
 </script>
 
 <template>
-  <n-config-provider :locale="ruRU" :date-locale="dateRuRU">
+  <n-config-provider
+    :locale="ruRU"
+    :date-locale="dateRuRU"
+    :theme-overrides="themeOverrides"
+  >
     <n-global-style />
     <n-loading-bar-provider>
       <n-message-provider>
