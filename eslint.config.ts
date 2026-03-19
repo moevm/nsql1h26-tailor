@@ -31,13 +31,7 @@ export default defineConfig([
       },
     },
     rules: {
-      'vue/first-attribute-linebreak': [
-        'error',
-        {
-          singleline: 'beside',
-          multiline: 'beside',
-        },
-      ],
+      'vue/first-attribute-linebreak': ['ignore'],
     },
   },
   // frontend
