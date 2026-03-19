@@ -13,8 +13,11 @@ import {
   NFormItem,
   NIcon,
   NInput,
+  NFlex,
   useMessage,
+  type FormRules,
 } from 'naive-ui';
+import { useAuthStore } from '@/stores';
 import { type Component, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -31,7 +34,9 @@ type FormFieldConfig = {
   showPasswordOn?: 'click';
 };
 
-const router = useRouter(); // Роутер для навигации
+const router = useRouter(); // Роутер для навигации'
+
+const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
 const message = useMessage(); // Сервис для отображения сообщений
 
@@ -40,11 +45,11 @@ const formRef = ref<FormInst | null>(null); // Ссылка на форму
 /**
  * Правила валидации для полей формы
  */
-const rules = {
-  username: [
+const rules: FormRules = {
+  email: [
     {
       required: true,
-      message: 'Введите имя пользователя',
+      message: 'Введите электронную почту',
       trigger: 'blur',
     },
   ],
@@ -103,24 +108,14 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules">
+  <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form">
     <n-card title="Вход в систему" size="huge" rounded>
-      <n-form-item
-        v-for="field in formFields"
-        :key="field.key"
-        :label="field.label"
-        :path="field.key"
-        :class="field.key"
-      >
-        <n-input
-          v-model:value="formValues[field.key]"
-          :type="field.type || 'text'"
-          :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
-          :show-password-on="field.showPasswordOn"
-          round
-          clearable
-        >
+
+      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
+        :class="field.key">
+        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :show-password-on="field.showPasswordOn"
+          round clearable>
           <template #prefix>
             <n-icon :component="field.icon" />
           </template>
@@ -128,31 +123,28 @@ async function handleSubmit() {
       </n-form-item>
 
       <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          :disabled="!formValues.email || !formValues.password"
-          round
-          @click="handleSubmit"
-        >
+        <n-button type="primary" block :disabled="!formValues.email || !formValues.password" round
+          @click="handleSubmit">
           Войти
         </n-button>
       </n-form-item>
 
-      <n-form-item class="no-account-button">
-        <router-link to="/signup">
-          <n-button quaternary round>
-            Нет аккаунта? Зарегистрироваться
-          </n-button>
-        </router-link>
-      </n-form-item>
+      <n-flex justify="center">
+        <n-form-item>
+          <router-link to="/signup">
+            <n-button quaternary round :disabled="authStore.isLoading">
+              Нет аккаунта? Зарегистрироваться
+            </n-button>
+          </router-link>
+        </n-form-item>
+      </n-flex>
+
     </n-card>
   </n-form>
 </template>
 
 <style scoped lang="scss">
-.no-account-button {
-  display: flex;
-  justify-content: center;
+.login-form {
+  width: 500px;
 }
 </style>
