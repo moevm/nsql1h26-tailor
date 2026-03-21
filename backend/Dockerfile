@@ -13,11 +13,11 @@ COPY backend/package.json ./backend/
 
 RUN pnpm install --frozen-lockfile --filter=@nosql/backend
 
-COPY . .
+COPY backend ./backend
 
-RUN pnpm --filter=@nosql/backend run build
+RUN pnpm run build
+
 RUN pnpm deploy --filter=@nosql/backend --prod /app/deployed
-
 
 FROM node:lts-alpine AS production
 
@@ -32,7 +32,6 @@ RUN apk add --no-cache curl
 WORKDIR /app
 
 COPY --from=build /app/deployed ./
-COPY --from=build /app/backend/dist ./dist
 
 EXPOSE 3000
 
