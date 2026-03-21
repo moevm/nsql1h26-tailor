@@ -7,9 +7,14 @@ RUN corepack enable
 
 WORKDIR /app
 
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+
+COPY backend/package.json ./backend/
+
+RUN pnpm install --frozen-lockfile --filter=@nosql/backend
+
 COPY . .
 
-RUN pnpm install --frozen-lockfile
 RUN pnpm --filter=@nosql/backend run build
 RUN pnpm deploy --filter=@nosql/backend --prod /app/deployed
 
