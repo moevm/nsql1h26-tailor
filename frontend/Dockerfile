@@ -13,11 +13,12 @@ COPY frontend/package.json ./frontend/
 
 RUN pnpm install --frozen-lockfile --filter=@nosql/frontend
 
-COPY . .
+COPY frontend ./frontend
 
 RUN pnpm deploy --filter=@nosql/frontend /app/deployed
 
 WORKDIR /app/deployed
+
 RUN pnpm run build
 
 
