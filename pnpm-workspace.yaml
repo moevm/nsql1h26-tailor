@@ -12,4 +12,5 @@ onlyBuiltDependencies:
   - '@swc/core'
   - bcrypt
   - esbuild
+  - lefthook
   - unrs-resolver
