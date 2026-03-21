@@ -4,20 +4,20 @@
  * @description Компонент карточки входа в систему
  * @author @KorzikAlex
  */
+import { useAuthStore } from '@/stores';
 import { KeyFilled, PersonFilled } from '@vicons/material';
 import {
   type FormInst,
+  type FormRules,
   NButton,
   NCard,
+  NFlex,
   NForm,
   NFormItem,
   NIcon,
   NInput,
-  NFlex,
   useMessage,
-  type FormRules,
 } from 'naive-ui';
-import { useAuthStore } from '@/stores';
 import { type Component, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -110,12 +110,22 @@ async function handleSubmit() {
 <template>
   <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form">
     <n-card title="Вход в систему" size="huge" rounded>
-
-      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
-        :class="field.key">
-        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :show-password-on="field.showPasswordOn"
-          round clearable>
+      <n-form-item
+        v-for="field in formFields"
+        :key="field.key"
+        :label="field.label"
+        :path="field.key"
+        :class="field.key"
+      >
+        <n-input
+          v-model:value="formValues[field.key]"
+          :type="field.type || 'text'"
+          :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
+          :show-password-on="field.showPasswordOn"
+          round
+          clearable
+        >
           <template #prefix>
             <n-icon :component="field.icon" />
           </template>
@@ -123,8 +133,13 @@ async function handleSubmit() {
       </n-form-item>
 
       <n-form-item class="submit">
-        <n-button type="primary" block :disabled="!formValues.email || !formValues.password" round
-          @click="handleSubmit">
+        <n-button
+          type="primary"
+          block
+          :disabled="!formValues.email || !formValues.password"
+          round
+          @click="handleSubmit"
+        >
           Войти
         </n-button>
       </n-form-item>
@@ -138,7 +153,6 @@ async function handleSubmit() {
           </router-link>
         </n-form-item>
       </n-flex>
-
     </n-card>
   </n-form>
 </template>

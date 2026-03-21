@@ -4,6 +4,7 @@
  * @description Карточка регистрации
  * @author @KorzikAlex
  */
+import { useAuthStore } from '@/stores';
 import { KeyFilled, PersonFilled } from '@vicons/material';
 import {
   type FormInst,
@@ -20,7 +21,6 @@ import {
 } from 'naive-ui';
 import { type Component, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores';
 
 const router = useRouter(); // Роутер для навигации
 
@@ -66,32 +66,32 @@ const formRef = ref<FormInst | null>(null);
 const formFields = ref<FormFieldConfig[]>([
   {
     key: 'firstName',
-    label: "Имя",
-    placeholder: "Введите имя",
+    label: 'Имя',
+    placeholder: 'Введите имя',
     autocomplete: 'given-name',
     icon: PersonFilled,
     class: 'username',
   },
   {
     key: 'secondName',
-    label: "Фамилия",
-    placeholder: "Введите фамилию",
+    label: 'Фамилия',
+    placeholder: 'Введите фамилию',
     autocomplete: 'family-name',
     icon: PersonFilled,
     class: 'surname',
   },
   {
     key: 'patronymic',
-    label: "Отчество",
-    placeholder: "Введите отчество",
+    label: 'Отчество',
+    placeholder: 'Введите отчество',
     autocomplete: 'additional-name',
     icon: PersonFilled,
     class: 'patronymic',
   },
   {
     key: 'phone',
-    label: "Телефон",
-    placeholder: "Введите номер телефона",
+    label: 'Телефон',
+    placeholder: 'Введите номер телефона',
     type: 'text',
     autocomplete: 'tel',
     icon: PersonFilled,
@@ -99,8 +99,8 @@ const formFields = ref<FormFieldConfig[]>([
   },
   {
     key: 'email',
-    label: "Электронная почта",
-    placeholder: "Введите электронную почту",
+    label: 'Электронная почта',
+    placeholder: 'Введите электронную почту',
     type: 'text',
     autocomplete: 'email',
     icon: PersonFilled,
@@ -108,8 +108,8 @@ const formFields = ref<FormFieldConfig[]>([
   },
   {
     key: 'password',
-    label: "Пароль",
-    placeholder: "Введите пароль",
+    label: 'Пароль',
+    placeholder: 'Введите пароль',
     type: 'password',
     autocomplete: 'new-password',
     icon: KeyFilled,
@@ -118,8 +118,8 @@ const formFields = ref<FormFieldConfig[]>([
   },
   {
     key: 'confirmPassword',
-    label: "Подтвердите пароль",
-    placeholder: "Введите пароль еще раз",
+    label: 'Подтвердите пароль',
+    placeholder: 'Введите пароль еще раз',
     type: 'password',
     autocomplete: 'new-password',
     icon: KeyFilled,
@@ -135,14 +135,14 @@ const rules: FormRules = {
   firstName: [
     {
       required: true,
-      message: "Пожалуйста, введите имя",
+      message: 'Пожалуйста, введите имя',
       trigger: 'blur',
     },
   ],
   secondName: [
     {
       required: true,
-      message: "Пожалуйста, введите фамилию",
+      message: 'Пожалуйста, введите фамилию',
       trigger: 'blur',
     },
   ],
@@ -155,12 +155,12 @@ const rules: FormRules = {
   email: [
     {
       required: true,
-      message: "Пожалуйста, введите электронную почту",
+      message: 'Пожалуйста, введите электронную почту',
       trigger: 'blur',
     },
     {
       type: 'email',
-      message: "Пожалуйста, введите корректный адрес электронной почты",
+      message: 'Пожалуйста, введите корректный адрес электронной почты',
       trigger: 'blur',
     },
   ],
@@ -173,14 +173,14 @@ const rules: FormRules = {
   password: [
     {
       required: true,
-      message: "Пожалуйста, введите пароль",
+      message: 'Пожалуйста, введите пароль',
       trigger: 'blur',
     },
   ],
   confirmPassword: [
     {
       required: true,
-      message: "Пожалуйста, подтвердите пароль",
+      message: 'Пожалуйста, подтвердите пароль',
       trigger: 'blur',
     },
     {
@@ -192,7 +192,7 @@ const rules: FormRules = {
         }
         return true;
       },
-      message: "Пароли не совпадают",
+      message: 'Пароли не совпадают',
       trigger: 'blur',
     },
   ],
@@ -221,8 +221,7 @@ async function handleSubmit() {
     if (!errors) {
       // Выполняем регистрацию
       router.push('/dashboard');
-    }
-    else {
+    } else {
       message.error('Пожалуйста, исправьте ошибки в форме');
     }
   });
@@ -232,12 +231,24 @@ async function handleSubmit() {
 <template>
   <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form">
     <n-card title="Регистрация в системе" size="huge" rounded>
-
-      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
-        :class="field.class">
-        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
+      <n-form-item
+        v-for="field in formFields"
+        :key="field.key"
+        :label="field.label"
+        :path="field.key"
+        :class="field.class"
+      >
+        <n-input
+          v-model:value="formValues[field.key]"
+          :type="field.type || 'text'"
+          :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
+          :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn"
+          clearable
+          round
+          :disabled="authStore.isLoading"
+        >
           <template #prefix>
             <n-icon :component="field.icon"></n-icon>
           </template>
@@ -245,9 +256,20 @@ async function handleSubmit() {
       </n-form-item>
 
       <n-form-item class="submit">
-        <n-button type="primary" block @click="handleSubmit"
-          :disabled="!formValues.firstName || !formValues.password || !formValues.secondName || !formValues.email"
-          :loading="authStore.isLoading" class="submit-button" round>
+        <n-button
+          type="primary"
+          block
+          @click="handleSubmit"
+          :disabled="
+            !formValues.firstName ||
+            !formValues.password ||
+            !formValues.secondName ||
+            !formValues.email
+          "
+          :loading="authStore.isLoading"
+          class="submit-button"
+          round
+        >
           Зарегистрироваться
         </n-button>
       </n-form-item>
@@ -261,7 +283,6 @@ async function handleSubmit() {
           </router-link>
         </n-form-item>
       </n-flex>
-
     </n-card>
   </n-form>
 </template>
