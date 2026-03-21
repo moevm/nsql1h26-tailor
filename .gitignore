@@ -30,12 +30,9 @@ node_modules
 
 # dotenv environment variable files
 .env*
+!.env
 .flaskenv*
-!.env.project
-!.env.vault
 !.env.example
-!.env.keys
-!.env.production
 
 # pnpm
 .pnpm-store
