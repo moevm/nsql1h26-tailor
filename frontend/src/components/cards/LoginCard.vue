@@ -5,7 +5,7 @@
  * @author @KorzikAlex
  */
 import { useAuthStore } from '@/stores';
-import { KeyFilled, PersonFilled } from '@vicons/material';
+import { EmailFilled, KeyFilled } from '@vicons/material';
 import {
   type FormInst,
   type FormRules,
@@ -80,7 +80,7 @@ const formFields = ref<FormFieldConfig[]>([
     placeholder: 'Введите электронную почту',
     type: 'text',
     autocomplete: 'email',
-    icon: PersonFilled,
+    icon: EmailFilled,
   },
   {
     key: 'password',
