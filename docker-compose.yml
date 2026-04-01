@@ -1,8 +1,5 @@
-name: nsql1h26-tailor
-
 services:
   db:
-    container_name: mongo
     image: mongo:8.2.5
     env_file: .env
     volumes: [mongo_data:/data/db]
@@ -14,7 +11,6 @@ services:
     restart: unless-stopped
 
   backend:
-    container_name: backend
     depends_on:
       db:
         condition: service_healthy
@@ -30,7 +26,6 @@ services:
     restart: unless-stopped
 
   frontend:
-    container_name: frontend
     depends_on:
       backend:
         condition: service_healthy
@@ -38,7 +33,7 @@ services:
       context: .
       dockerfile: ./frontend/Dockerfile
     env_file: .env
-    ports: ["127.0.0.1:8080:80"]
+    ports: ["${FRONTEND_HOST}:${FRONTEND_PORT}:80"]
 
 volumes:
   mongo_data:
