@@ -35,12 +35,17 @@ export class HealthController {
     private mongoose: MongooseHealthIndicator,
   ) {}
 
+  /**
+   * @method check
+   * @returns Результат проверок здоровья приложения,
+   * включая статус доступности внешних сервисов и баз данных.
+   */
   @Get()
   @HealthCheck()
   check() {
     return this.health.check([
       () => this.http.pingCheck('yandex', 'https://ya.ru'),
-      // () => this.mongoose.pingCheck('mongodb'),
+      () => this.mongoose.pingCheck('mongo', { timeout: 1000 }),
     ]);
   }
 }

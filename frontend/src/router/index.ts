@@ -19,7 +19,7 @@ const routes: RouterOptions['routes'] = [
     path: '/signup',
     name: 'Регистрация',
     component: () => import('@/pages/SignUpPage.vue'),
-  }
+  },
 ];
 
 /**
