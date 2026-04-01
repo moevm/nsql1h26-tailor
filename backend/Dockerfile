@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS build
+FROM node:lts-alpine3.23 AS build
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -19,15 +19,13 @@ RUN pnpm run build
 
 RUN pnpm deploy --filter=@nosql/backend --prod /app/deployed
 
-FROM node:lts-alpine AS production
+FROM node:lts-alpine3.23 AS production
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NODE_ENV=production
 
 RUN corepack enable
-
-RUN apk add --no-cache curl
 
 WORKDIR /app
 
