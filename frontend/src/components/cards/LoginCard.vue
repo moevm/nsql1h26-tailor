@@ -4,11 +4,14 @@
  * @description Компонент карточки входа в систему
  * @author @KorzikAlex
  */
+import { useAuthStore } from '@/stores';
 import { KeyFilled, PersonFilled } from '@vicons/material';
 import {
   type FormInst,
+  type FormRules,
   NButton,
   NCard,
+  NFlex,
   NForm,
   NFormItem,
   NIcon,
@@ -31,7 +34,9 @@ type FormFieldConfig = {
   showPasswordOn?: 'click';
 };
 
-const router = useRouter(); // Роутер для навигации
+const router = useRouter(); // Роутер для навигации'
+
+const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
 const message = useMessage(); // Сервис для отображения сообщений
 
@@ -40,11 +45,11 @@ const formRef = ref<FormInst | null>(null); // Ссылка на форму
 /**
  * Правила валидации для полей формы
  */
-const rules = {
-  username: [
+const rules: FormRules = {
+  email: [
     {
       required: true,
-      message: 'Введите имя пользователя',
+      message: 'Введите электронную почту',
       trigger: 'blur',
     },
   ],
@@ -103,7 +108,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules">
+  <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form">
     <n-card title="Вход в систему" size="huge" rounded>
       <n-form-item
         v-for="field in formFields"
@@ -139,20 +144,21 @@ async function handleSubmit() {
         </n-button>
       </n-form-item>
 
-      <n-form-item class="no-account-button">
-        <router-link to="/signup">
-          <n-button quaternary round>
-            Нет аккаунта? Зарегистрироваться
-          </n-button>
-        </router-link>
-      </n-form-item>
+      <n-flex justify="center">
+        <n-form-item>
+          <router-link to="/signup">
+            <n-button quaternary round :disabled="authStore.isLoading">
+              Нет аккаунта? Зарегистрироваться
+            </n-button>
+          </router-link>
+        </n-form-item>
+      </n-flex>
     </n-card>
   </n-form>
 </template>
 
 <style scoped lang="scss">
-.no-account-button {
-  display: flex;
-  justify-content: center;
+.login-form {
+  width: 500px;
 }
 </style>

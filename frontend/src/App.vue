@@ -6,7 +6,7 @@
  * @author @KorzikAlex
  */
 import {
-  GlobalThemeOverrides,
+  type GlobalThemeOverrides,
   NConfigProvider,
   NDialogProvider,
   NGlobalStyle,
