@@ -1,8 +1,3 @@
-/**
- * @file app.module.ts
- * @description Главный модуль приложения, который объединяет все остальные модули.
- * @author @KorzikAlex
- */
 import { resolve } from 'node:path';
 
 import { Module } from '@nestjs/common';
@@ -10,11 +5,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { HealthModule } from './health/health.module';
+import { OrdersModule } from './orders/orders.module';
+import { WorkersModule } from './workers/workers.module';
+import { AuthModule } from './auth/auth.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { ImportModule } from './import/import.module';
+import { ExportModule } from './export/export.module';
 
-/**
- * @class AppModule
- * @description Главный модуль приложения, который объединяет все остальные модули.
- */
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -42,6 +39,12 @@ import { HealthModule } from './health/health.module';
       },
     }),
     HealthModule,
+    OrdersModule,
+    WorkersModule,
+    AuthModule,
+    AnalyticsModule,
+    ImportModule,
+    ExportModule,
   ],
 })
 export class AppModule {}
