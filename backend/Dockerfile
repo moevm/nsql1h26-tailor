@@ -2,6 +2,9 @@ FROM node:lts-alpine3.23 AS build
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV PNPM_DISABLE_SELF_UPDATE_CHECK=true
+ENV PNPM_STORE_PATH=/pnpm/store
+ENV CI=true
 
 RUN corepack enable
 
