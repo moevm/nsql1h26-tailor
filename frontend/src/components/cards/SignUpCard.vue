@@ -5,7 +5,7 @@
  * @author @KorzikAlex
  */
 import { useAuthStore } from '@/stores';
-import { KeyFilled, PersonFilled } from '@vicons/material';
+import { EmailFilled, KeyFilled, PersonFilled, PhoneFilled } from '@vicons/material';
 import {
   type FormInst,
   type FormItemRule,
@@ -94,7 +94,7 @@ const formFields = ref<FormFieldConfig[]>([
     placeholder: 'Введите номер телефона',
     type: 'text',
     autocomplete: 'tel',
-    icon: PersonFilled,
+    icon: PhoneFilled,
     class: 'phone',
   },
   {
@@ -103,7 +103,7 @@ const formFields = ref<FormFieldConfig[]>([
     placeholder: 'Введите электронную почту',
     type: 'text',
     autocomplete: 'email',
-    icon: PersonFilled,
+    icon: EmailFilled,
     class: 'email',
   },
   {

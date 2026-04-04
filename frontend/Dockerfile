@@ -1,7 +1,10 @@
-FROM node:lts-alpine AS build
+FROM node:lts-alpine3.23 AS build
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV PNPM_DISABLE_SELF_UPDATE_CHECK=true
+ENV PNPM_STORE_PATH=/pnpm/store
+ENV CI=true
 
 RUN corepack enable
 
@@ -15,17 +18,13 @@ RUN pnpm install --frozen-lockfile --filter=@nosql/frontend
 
 COPY frontend ./frontend
 
-RUN pnpm deploy --filter=@nosql/frontend /app/deployed
+RUN pnpm run build --filter=@nosql/frontend
 
-WORKDIR /app/deployed
-
-RUN pnpm run build
-
-
-FROM nginx:stable-alpine AS production
+FROM nginx:1.28.3-alpine-slim AS production
 
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/deployed/dist /usr/share/nginx/html
+
+COPY --from=build /app/frontend/dist /usr/share/nginx/html
 
 EXPOSE 80
 

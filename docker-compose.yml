@@ -5,9 +5,10 @@ services:
     volumes: [mongo_data:/data/db]
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
+      interval: 30s
       timeout: 5s
       retries: 5
+      start_period: 10s
     restart: unless-stopped
 
   backend:
@@ -19,11 +20,12 @@ services:
       dockerfile: ./backend/Dockerfile
     env_file: .env
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
       retries: 5
     restart: unless-stopped
+    ports: ["${BACKEND_HOST}:${BACKEND_PORT}:3000"]
 
   frontend:
     depends_on:
