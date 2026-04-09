@@ -2,33 +2,36 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from '@/common/interfaces/order.interface';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
+
+  // посмотреть какие async, а какие - нет
   @Get()
-  findAll() {
+  async findAll(): Promise<Order[]> {
     return this.ordersService.getAllOrders();
   }
 
   @Get(':id') 
-  findOne(@Param('id') id: string){
+  async findOne(@Param('id') id: string){
     return this.ordersService.getOrderById(id);
   }
 
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto) {
+  async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.ordersService.createOrder(createOrderDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
+  async update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.updateOrder(id, updateOrderDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     return this.ordersService.deleteOrder(id);
   }
 }
