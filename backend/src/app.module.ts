@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { ImportModule } from './import/import.module';
 import { ExportModule } from './export/export.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ExportModule } from './export/export.module';
     AnalyticsModule,
     ImportModule,
     ExportModule,
+    DatabaseModule,
   ],
 })
 export class AppModule {}
