@@ -1,3 +1,1 @@
-export class UpdateWorkerDto {
-  
-}
+export class UpdateWorkerDto {}

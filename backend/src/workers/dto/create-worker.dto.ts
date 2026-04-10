@@ -1,3 +1,1 @@
-export class CreateWorkerDto {
-
-}
+export class CreateWorkerDto {}

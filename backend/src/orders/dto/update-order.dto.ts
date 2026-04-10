@@ -1,3 +1,1 @@
-export class UpdateOrderDto {
-  
-}
+export class UpdateOrderDto {}

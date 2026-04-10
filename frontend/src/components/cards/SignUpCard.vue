@@ -5,7 +5,12 @@
  * @author @KorzikAlex
  */
 import { useAuthStore } from '@/stores';
-import { EmailFilled, KeyFilled, PersonFilled, PhoneFilled } from '@vicons/material';
+import {
+  EmailFilled,
+  KeyFilled,
+  PersonFilled,
+  PhoneFilled,
+} from '@vicons/material';
 import {
   type FormInst,
   type FormItemRule,
