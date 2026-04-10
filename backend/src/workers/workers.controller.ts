@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { WorkersService } from './workers.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
+import { WorkersService } from './workers.service';
 
 @Controller('workers')
 export class WorkersController {
@@ -12,8 +21,8 @@ export class WorkersController {
     return this.workersService.getAllWorkers();
   }
 
-  @Get(':id') 
-  findOne(@Param('id') id: string){
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.workersService.getWorkerById(id);
   }
 
