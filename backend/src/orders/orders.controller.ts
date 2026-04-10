@@ -1,4 +1,3 @@
-import { Order } from '@/common/interfaces/order.interface';
 import {
   Body,
   Controller,
@@ -13,6 +12,7 @@ import { DeleteResult, UpdateResult } from 'mongoose';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
+import { Order } from './schemas/order.schema';
 
 @Controller('orders')
 export class OrdersController {
