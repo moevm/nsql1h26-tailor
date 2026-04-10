@@ -19,6 +19,9 @@ export class Finance {
 
   @Prop({ default: '' })
   description: string;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
 }
 
 export const FinanceSchema = SchemaFactory.createForClass(Finance);
