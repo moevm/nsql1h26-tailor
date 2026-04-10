@@ -1,10 +1,24 @@
-import mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
-export const FinanceSchema = new mongoose.Schema({
-  orderId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  authorId: { type: mongoose.Schema.Types.ObjectId, default: null },
-  type: { type: String, enum: ['income', 'expense'], required: true },
-  amount: { type: Number, required: true },
-  description: { type: String, default: '' },
-  createdAt: { type: Date, default: Date.now },
-});
+export type FinanceDocument = HydratedDocument<Finance>;
+
+@Schema()
+export class Finance {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  orderId: mongoose.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
+  authorId: mongoose.Types.ObjectId;
+
+  @Prop({ enum: ['income', 'expense'], required: true })
+  type: string;
+
+  @Prop({ required: true })
+  amount: number;
+
+  @Prop({ default: '' })
+  description: string;
+}
+
+export const FinanceSchema = SchemaFactory.createForClass(Finance);

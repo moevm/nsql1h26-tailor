@@ -1,10 +1,27 @@
-import mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
-export const ReviewSchema = new mongoose.Schema({
-  orderId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  tailorId: { type: mongoose.Schema.Types.ObjectId, default: null },
-  authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  rating: { type: Number, min: 1, max: 5, required: true },
-  comment: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+export type ReviewDocument = HydratedDocument<Review>;
+
+@Schema()
+export class Review {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  orderId: mongoose.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
+  tailorId: mongoose.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  authorId: mongoose.Types.ObjectId;
+
+  @Prop({ min: 1, max: 5, required: true })
+  rating: number;
+
+  @Prop({ required: true })
+  comment: string;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+}
+
+export const ReviewSchema = SchemaFactory.createForClass(Review);

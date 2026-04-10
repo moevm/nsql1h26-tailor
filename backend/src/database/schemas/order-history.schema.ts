@@ -1,13 +1,27 @@
-import mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
-export const OrderHistorySchema = new mongoose.Schema({
-  orderId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  status: {
-    type: String,
+export type OrderHistoryDocument = HydratedDocument<OrderHistory>;
+
+@Schema()
+export class OrderHistory {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  orderId: mongoose.Types.ObjectId;
+
+  @Prop({
     enum: ['created', 'accepted', 'in_progress', 'done', 'cancelled'],
     required: true,
-  },
-  changedBy: { type: mongoose.Schema.Types.ObjectId, default: null },
-  comment: { type: String, default: '' },
-  changedAt: { type: Date, default: Date.now },
-});
+  })
+  status: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
+  changedBy: mongoose.Types.ObjectId;
+
+  @Prop({ default: '' })
+  comment: string;
+
+  @Prop({ default: Date.now })
+  changedAt: Date;
+}
+
+export const OrderHistorySchema = SchemaFactory.createForClass(OrderHistory);

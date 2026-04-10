@@ -1,32 +1,51 @@
-import mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
-const UserNameSchema = new mongoose.Schema(
-  {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    patronymic: { type: String, default: '' },
-  },
-  {
-    _id: false,
-  },
-);
+export type UserDocument = HydratedDocument<User>;
 
-const UserPasswordSchema = new mongoose.Schema(
-  {
-    hash: { type: String, required: true },
-    salt: { type: String, required: true },
-  },
-  {
-    _id: false,
-  },
-);
+@Schema()
+class UserName {
+  @Prop({ required: true })
+  firstName: string;
 
-export const UserSchema = new mongoose.Schema({
-  name: { type: UserNameSchema, required: true },
-  phone: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: UserPasswordSchema, required: true },
-  role: { type: String, enum: ['customer', 'tailor'], required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+  @Prop({ required: true })
+  lastName: string;
+
+  @Prop({ default: '' })
+  patronymic: string;
+}
+
+@Schema()
+class UserPassword {
+  @Prop({ required: true })
+  hash: string;
+
+  @Prop({ required: true })
+  salt: string;
+}
+
+@Schema()
+export class User {
+  @Prop({ type: UserName, required: true })
+  name: UserName;
+
+  @Prop({ required: true, unique: true })
+  phone: string;
+
+  @Prop({ required: true, unique: true })
+  email: string;
+
+  @Prop({ type: UserPassword, required: true })
+  password: UserPassword;
+
+  @Prop({ enum: ['customer', 'tailor'], required: true })
+  role: string;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
+}
+
+export const UserSchema = SchemaFactory.createForClass(User);
