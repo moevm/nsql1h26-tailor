@@ -4,14 +4,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { AnalyticsModule } from './analytics/analytics.module';
+import { AuthModule } from './auth/auth.module';
+import { ExportModule } from './export/export.module';
 import { HealthModule } from './health/health.module';
+import { ImportModule } from './import/import.module';
 import { OrdersModule } from './orders/orders.module';
 import { WorkersModule } from './workers/workers.module';
-import { AuthModule } from './auth/auth.module';
-import { AnalyticsModule } from './analytics/analytics.module';
-import { ImportModule } from './import/import.module';
-import { ExportModule } from './export/export.module';
-import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -46,7 +45,6 @@ import { DatabaseModule } from './database/database.module';
     AnalyticsModule,
     ImportModule,
     ExportModule,
-    DatabaseModule,
   ],
 })
 export class AppModule {}
