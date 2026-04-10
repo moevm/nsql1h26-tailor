@@ -1,34 +1,53 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Order } from '@/common/interfaces/order.interface';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { DeleteResult, Model, UpdateResult } from 'mongoose';
 
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Model } from 'mongoose';
-import { Order } from '@/common/interfaces/order.interface';
 
 @Injectable()
 export class OrdersService {
   constructor(
-    @Inject('ORDER_MODEL')
+    @InjectModel('Order')
     private readonly orderModel: Model<Order>,
   ) {}
 
-  // непонятно когда exec прокидывать и добавить try/catch
-
-  async getAllOrders(): Promise<Order[]> {
+  getAllOrders(): Promise<Order[]> {
     return this.orderModel.find().exec();
   }
-  async getOrderById(id: string) {
-    return this.orderModel.findById(id);
+
+  async getOrderById(id: string): Promise<Order> {
+    const order = await this.orderModel.findById(id).exec();
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    return order;
   }
-  async createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
+
+  createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
     const createdOrder = new this.orderModel(createOrderDto);
     return createdOrder.save();
   }
-  async updateOrder(id: string, updateOrderDto: UpdateOrderDto) {
-    const updatedOrder = new this.orderModel(updateOrderDto);
-    return updatedOrder.updateOne();
+
+  async updateOrder(
+    id: string,
+    updateOrderDto: UpdateOrderDto,
+  ): Promise<UpdateResult> {
+    const result = await this.orderModel
+      .updateOne({ _id: id }, updateOrderDto)
+      .exec();
+    if (result.matchedCount === 0) {
+      throw new NotFoundException('Order not found');
+    }
+    return result;
   }
-  async deleteOrder(id: string) {
-    this.orderModel.deleteOne({id});
+
+  async deleteOrder(id: string): Promise<DeleteResult> {
+    const result = await this.orderModel.deleteOne({ _id: id }).exec();
+    if (result.deletedCount === 0) {
+      throw new NotFoundException('Order not found');
+    }
+    return result;
   }
 }
