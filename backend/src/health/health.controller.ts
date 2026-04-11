@@ -1,3 +1,4 @@
+import { SkipAuth } from '@/common/guards/auth.guard';
 import { Controller, Get } from '@nestjs/common';
 import {
   HealthCheck,
@@ -14,6 +15,7 @@ export class HealthController {
     private mongoose: MongooseHealthIndicator,
   ) {}
 
+  @SkipAuth()
   @Get()
   @HealthCheck()
   check() {

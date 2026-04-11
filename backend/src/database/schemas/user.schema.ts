@@ -29,7 +29,7 @@ export class User {
   @Prop({ type: UserName, required: true })
   name: UserName;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ unique: true })
   phone: string;
 
   @Prop({ required: true, unique: true })
