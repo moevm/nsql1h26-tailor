@@ -24,11 +24,11 @@ import { AuthService } from './auth.service';
   ],
   controllers: [AuthController],
   providers: [
-    AuthService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
+    // AuthService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
   ],
   exports: [AuthService],
 })
