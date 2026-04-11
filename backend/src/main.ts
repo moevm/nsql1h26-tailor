@@ -21,9 +21,6 @@ async function bootstrap() {
       // Frontend
       'http://127.0.0.1:8080',
       'http://localhost:8080',
-      // MongoDB
-      'http://127.0.0.1:27017',
-      'http://localhost:27017',
     ],
   });
 
