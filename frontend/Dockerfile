@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.23 AS build
+FROM node:24.14.1-alpine3.23 AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -10,15 +10,26 @@ RUN corepack enable
 
 WORKDIR /app
 
+
+FROM base AS deps
+
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm fetch
 
 COPY frontend/package.json ./frontend/
 
-RUN pnpm install --frozen-lockfile --filter=@nosql/frontend
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --filter=@nosql/frontend
+
+
+FROM deps AS build
 
 COPY frontend ./frontend
 
-RUN pnpm run build --filter=@nosql/frontend
+RUN pnpm run --filter=@nosql/frontend build
+
 
 FROM nginx:1.28.3-alpine-slim AS production
 
