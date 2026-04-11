@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -38,7 +38,7 @@ export class User {
   @Prop({ type: UserPassword, required: true })
   password: UserPassword;
 
-  @Prop({ enum: ['customer', 'tailor'], required: true })
+  @Prop({ enum: ['customer', 'tailor', 'manager'], required: true })
   role: string;
 
   @Prop({ default: Date.now })
