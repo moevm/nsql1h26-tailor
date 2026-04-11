@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DeleteResult, Model, UpdateResult } from 'mongoose';
 
@@ -25,9 +25,15 @@ export class WorkersService {
     }
   }
 
-  createWorker(createWorkerDto: CreateWorkerDto): Promise<User> {
-    const createdWorker = new this.userModel(createWorkerDto);
-    return createdWorker.save();
+  async createWorker(createWorkerDto: CreateWorkerDto): Promise<User> {
+    try {
+      const createdWorker = new this.userModel(createWorkerDto);
+      return await createdWorker.save();
+    } catch {
+      throw new ConflictException(
+        'Failed to create worker: phone or email already exists.',
+      );
+    }
   }
 
   async updateWorker(
