@@ -12,6 +12,8 @@
     "esbenp.prettier-vscode",
     "streetsidesoftware.code-spell-checker-russian",
     "vue.volar",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "ahmadalli.vscode-nginx-conf",
+    "mongodb.mongodb-vscode"
   ]
 }
