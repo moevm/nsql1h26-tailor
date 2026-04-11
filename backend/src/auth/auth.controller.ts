@@ -1,3 +1,4 @@
+import { SkipAuth } from '@/common/guards/auth.guard';
 import { Body, Controller, Post } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -8,12 +9,14 @@ import { SignUpDto } from './dto/sign-up.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @SkipAuth()
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    return this.authService.signIn(signInDto);
   }
 
-  @Post('signup')
+  @SkipAuth()
+  @Post('register')
   signUp(@Body() signUpDto: SignUpDto) {
     return this.authService.signUp(signUpDto);
   }
