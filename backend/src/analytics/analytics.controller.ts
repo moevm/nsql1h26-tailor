@@ -1,12 +1,14 @@
-import { OrdersService } from '@/orders/orders.service';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+
+import { AnalyticsService } from './analytics.service';
+import { orderQueryDto } from './dto/order-query.dto';
 
 @Controller('analytics')
 export class AnalyticsController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly analyticsService: AnalyticsService) {}
 
   @Get()
-  findAll() {
-    return this.ordersService.getAllOrders();
+  findAll(@Query() filter: orderQueryDto) {
+    return this.analyticsService.getAnalytics(filter);
   }
 }
