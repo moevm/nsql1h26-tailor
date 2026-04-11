@@ -1,10 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, UpdateResult } from 'mongoose';
+import { DeleteResult, Model, UpdateResult, isValidObjectId } from 'mongoose';
 
+import { Order } from '../database/schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Order } from './schemas/order.schema';
 
 @Injectable()
 export class OrdersService {
@@ -18,9 +22,13 @@ export class OrdersService {
   }
 
   async getOrderById(id: string): Promise<Order> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
+    }
+
     const order = await this.orderModel.findById(id).exec();
     if (!order) {
-      throw new NotFoundException('Order not found');
+      throw new NotFoundException('Order not found.');
     }
     return order;
   }
@@ -34,20 +42,28 @@ export class OrdersService {
     id: string,
     updateOrderDto: UpdateOrderDto,
   ): Promise<UpdateResult> {
-    const result = await this.orderModel
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
+    }
+
+    const order = await this.orderModel
       .updateOne({ _id: id }, updateOrderDto)
       .exec();
-    if (result.matchedCount === 0) {
-      throw new NotFoundException('Order not found');
+    if (!order) {
+      throw new NotFoundException('Order not found.');
     }
-    return result;
+    return order;
   }
 
   async deleteOrder(id: string): Promise<DeleteResult> {
-    const result = await this.orderModel.deleteOne({ _id: id }).exec();
-    if (result.deletedCount === 0) {
-      throw new NotFoundException('Order not found');
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
     }
-    return result;
+
+    const order = await this.orderModel.deleteOne({ _id: id }).exec();
+    if (!order) {
+      throw new NotFoundException('Order not found.');
+    }
+    return order;
   }
 }

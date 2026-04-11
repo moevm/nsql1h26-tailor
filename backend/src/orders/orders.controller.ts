@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'mongoose';
 
+import { Order } from '../database/schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
-import { Order } from './schemas/order.schema';
 
 @Controller('orders')
 export class OrdersController {
