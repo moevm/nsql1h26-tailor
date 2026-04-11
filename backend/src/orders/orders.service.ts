@@ -17,12 +17,12 @@ export class OrdersService {
     return this.orderModel.find().exec();
   }
 
-  async getOrderById(id: string): Promise<Order> {
-    const order = await this.orderModel.findById(id).exec();
-    if (!order) {
-      throw new NotFoundException('Order not found');
+  async getOrderById(id: string): Promise<Order | null> {
+    try {
+      return await this.orderModel.findById(id).exec();
+    } catch {
+      throw new NotFoundException('Order not found.');
     }
-    return order;
   }
 
   createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
@@ -34,20 +34,20 @@ export class OrdersService {
     id: string,
     updateOrderDto: UpdateOrderDto,
   ): Promise<UpdateResult> {
-    const result = await this.orderModel
-      .updateOne({ _id: id }, updateOrderDto)
-      .exec();
-    if (result.matchedCount === 0) {
-      throw new NotFoundException('Order not found');
+    try {
+      return await this.orderModel
+        .updateOne({ _id: id }, updateOrderDto)
+        .exec();
+    } catch {
+      throw new NotFoundException('Order not found.');
     }
-    return result;
   }
 
   async deleteOrder(id: string): Promise<DeleteResult> {
-    const result = await this.orderModel.deleteOne({ _id: id }).exec();
-    if (result.deletedCount === 0) {
-      throw new NotFoundException('Order not found');
+    try {
+      return await this.orderModel.deleteOne({ _id: id }).exec();
+    } catch {
+      throw new NotFoundException('Order not found.');
     }
-    return result;
   }
 }

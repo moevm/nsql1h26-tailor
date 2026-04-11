@@ -24,7 +24,7 @@ export class OrdersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Order> {
+  findOne(@Param('id') id: string): Promise<Order | null> {
     return this.ordersService.getOrderById(id);
   }
 
