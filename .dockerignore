@@ -11,6 +11,7 @@ coverage/
 .git/
 .gitignore
 .gitkeep
+.gitattributes
 
 .vscode/
 .idea/
@@ -32,3 +33,9 @@ Dockerfile
 
 docs/
 hello_world/
+nginx.conf
+
+eslint.config.ts
+.prettier*
+README.md
+LICENSE
