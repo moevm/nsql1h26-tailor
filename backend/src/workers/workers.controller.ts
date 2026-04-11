@@ -24,7 +24,7 @@ export class WorkersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User | null> {
+  findOne(@Param('id') id: string): Promise<User> {
     return this.workersService.getWorkerById(id);
   }
 

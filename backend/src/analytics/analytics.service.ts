@@ -1,5 +1,5 @@
+import { Order } from '@/database/schemas/order.schema';
 import { OrdersService } from '@/orders/orders.service';
-import { Order } from '@/orders/schemas/order.schema';
 import { Injectable } from '@nestjs/common';
 
 import { orderQueryDto } from './dto/order-query.dto';

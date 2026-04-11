@@ -1,10 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, UpdateResult } from 'mongoose';
+import { DeleteResult, Model, UpdateResult, isValidObjectId } from 'mongoose';
 
+import { Order } from '../database/schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Order } from './schemas/order.schema';
 
 @Injectable()
 export class OrdersService {
@@ -17,12 +21,16 @@ export class OrdersService {
     return this.orderModel.find().exec();
   }
 
-  async getOrderById(id: string): Promise<Order | null> {
-    try {
-      return await this.orderModel.findById(id).exec();
-    } catch {
+  async getOrderById(id: string): Promise<Order> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
+    }
+
+    const order = await this.orderModel.findById(id).exec();
+    if (!order) {
       throw new NotFoundException('Order not found.');
     }
+    return order;
   }
 
   createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
@@ -34,20 +42,28 @@ export class OrdersService {
     id: string,
     updateOrderDto: UpdateOrderDto,
   ): Promise<UpdateResult> {
-    try {
-      return await this.orderModel
-        .updateOne({ _id: id }, updateOrderDto)
-        .exec();
-    } catch {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
+    }
+
+    const order = await this.orderModel
+      .updateOne({ _id: id }, updateOrderDto)
+      .exec();
+    if (!order) {
       throw new NotFoundException('Order not found.');
     }
+    return order;
   }
 
   async deleteOrder(id: string): Promise<DeleteResult> {
-    try {
-      return await this.orderModel.deleteOne({ _id: id }).exec();
-    } catch {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid order ID format.');
+    }
+
+    const order = await this.orderModel.deleteOne({ _id: id }).exec();
+    if (!order) {
       throw new NotFoundException('Order not found.');
     }
+    return order;
   }
 }

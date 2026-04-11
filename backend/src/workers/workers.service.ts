@@ -1,6 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, UpdateResult } from 'mongoose';
+import { DeleteResult, Model, UpdateResult, isValidObjectId } from 'mongoose';
 
 import { User } from '../database/schemas/user.schema';
 import { CreateWorkerDto } from './dto/create-worker.dto';
@@ -17,12 +22,18 @@ export class WorkersService {
     return this.userModel.find({ role: 'tailor' }).exec();
   }
 
-  async getWorkerById(id: string): Promise<User | null> {
-    try {
-      return await this.userModel.findById({ _id: id, role: 'tailor' }).exec();
-    } catch {
+  async getWorkerById(id: string): Promise<User> {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid worker ID format.');
+    }
+
+    const worker = await this.userModel
+      .findById({ _id: id, role: 'tailor' })
+      .exec();
+    if (!worker) {
       throw new NotFoundException('Worker not found.');
     }
+    return worker;
   }
 
   async createWorker(createWorkerDto: CreateWorkerDto): Promise<User> {
@@ -40,20 +51,30 @@ export class WorkersService {
     id: string,
     updateWorkerDto: UpdateWorkerDto,
   ): Promise<UpdateResult> {
-    try {
-      return await this.userModel
-        .updateOne({ _id: id, role: 'tailor' }, updateWorkerDto)
-        .exec();
-    } catch {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid worker ID format.');
+    }
+
+    const worker = await this.userModel
+      .updateOne({ _id: id, role: 'tailor' }, updateWorkerDto)
+      .exec();
+    if (!worker) {
       throw new NotFoundException('Worker not found.');
     }
+    return worker;
   }
 
   async deleteWorker(id: string): Promise<DeleteResult> {
-    try {
-      return await this.userModel.deleteOne({ _id: id, role: 'tailor' }).exec();
-    } catch {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Invalid worker ID format.');
+    }
+
+    const worker = await this.userModel
+      .deleteOne({ _id: id, role: 'tailor' })
+      .exec();
+    if (!worker) {
       throw new NotFoundException('Worker not found.');
     }
+    return worker;
   }
 }
