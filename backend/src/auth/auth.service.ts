@@ -82,8 +82,15 @@ export class AuthService {
     });
     await createdUser.save();
 
+    const payload = {
+      sub: createdUser._id.toString(),
+      email: createdUser.email,
+      role: createdUser.role,
+    };
+
     return {
       user: this.toPublicUser(createdUser),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 
