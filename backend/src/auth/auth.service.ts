@@ -12,17 +12,9 @@ import { Model } from 'mongoose';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
 
-class PublicUser {
+type PublicUser = Omit<User, 'password' | 'createdAt' | 'updatedAt'> & {
   _id: string;
-  name: {
-    firstName: string;
-    lastName: string;
-    patronymic?: string;
-  };
-  phone?: string;
-  email: string;
-  role: string;
-}
+};
 
 @Injectable()
 export class AuthService {
