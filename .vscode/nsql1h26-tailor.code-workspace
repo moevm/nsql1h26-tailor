@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "path": "..",
+      "name": "root",
+    },
+    {
+      "path": "../frontend",
+      "name": "frontend",
+    },
+    {
+      "path": "../backend",
+      "name": "backend",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/node_modules": true,
+      "**/.eslintcache": true,
+      "**/docs": true,
+      "**/hello_world": true,
+      "**/dist": true,
+      "backend": true,
+      "frontend": true,
+    },
+  },
+}

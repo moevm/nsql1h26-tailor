@@ -14,4 +14,14 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  server: {
+    host: '127.0.0.1',
+    port: 8080,
+    open: true,
+  },
+  preview: {
+    host: '127.0.0.1',
+    port: 8080,
+    open: true,
+  },
 });
