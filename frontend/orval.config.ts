@@ -9,6 +9,7 @@ export default defineConfig({
     },
     output: {
       client: 'vue-query',
+      httpClient: 'axios',
       clean: true,
       mode: 'tags',
       target: 'src/api',
