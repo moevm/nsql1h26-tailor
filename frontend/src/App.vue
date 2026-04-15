@@ -1,10 +1,4 @@
 <script setup lang="ts">
-/**
- * @file App.vue
- * @description Главный компонент приложения,
- * обеспечивающий глобальные провайдеры и маршрутизацию.
- * @author @KorzikAlex
- */
 import {
   type GlobalThemeOverrides,
   NConfigProvider,

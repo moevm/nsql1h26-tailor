@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SignUpDto } from '@/api/schemas';
 import { useAuthStore } from '@/stores';
 import {
   EmailFilled,
@@ -23,7 +24,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import type { FormFieldConfig } from './shared';
-import type { SignUpDto } from '@/api/schemas';
 
 type SignUpFormModel = SignUpDto & { confirmPassword: string }; // Модель данных для формы регистрации
 
@@ -177,17 +177,15 @@ const rules: FormRules = {
 /**
  * Значения формы
  */
-const formValues = ref<SignUpFormModel>(
-  {
-    firstName: '',
-    lastName: '',
-    patronymic: '',
-    phone: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  }
-);
+const formValues = ref<SignUpFormModel>({
+  firstName: '',
+  lastName: '',
+  patronymic: '',
+  phone: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+});
 
 /**
  * Обработчик отправки формы
@@ -207,13 +205,38 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form" :size="'small'">
-    <n-card title="Регистрация в системе" size="medium" rounded class="signup-card">
-      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
-        :class="field.class" class="signup-fields">
-        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
+  <n-form
+    ref="formRef"
+    :model="formValues"
+    :rules="rules"
+    class="signup-form"
+    :size="'small'"
+  >
+    <n-card
+      title="Регистрация в системе"
+      size="medium"
+      rounded
+      class="signup-card"
+    >
+      <n-form-item
+        v-for="field in formFields"
+        :key="field.key"
+        :label="field.label"
+        :path="field.key"
+        :class="field.class"
+        class="signup-fields"
+      >
+        <n-input
+          v-model:value="formValues[field.key]"
+          :type="field.type || 'text'"
+          :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
+          :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn"
+          clearable
+          round
+          :disabled="authStore.isLoading"
+        >
           <template #prefix>
             <n-icon :component="field.icon" />
           </template>
@@ -222,11 +245,21 @@ async function handleSubmit() {
 
       <n-flex justify="center">
         <n-form-item class="submit">
-          <n-button type="primary" block :disabled="!formValues.firstName ||
-            !formValues.password ||
-            !formValues.lastName ||
-            !formValues.email
-            " :loading="authStore.isLoading" class="submit-button" round @click="handleSubmit">
+          <n-button
+            type="primary"
+            block
+            :disabled="
+              !formValues.firstName ||
+              !formValues.password ||
+              !formValues.lastName ||
+              !formValues.email ||
+              !formValues.confirmPassword
+            "
+            :loading="authStore.isLoading"
+            class="submit-button"
+            round
+            @click="handleSubmit"
+          >
             Зарегистрироваться
           </n-button>
         </n-form-item>

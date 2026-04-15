@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores';
 import { type SignInDto } from '@/api/schemas';
+import { useAuthStore } from '@/stores';
 import { EmailFilled, KeyFilled } from '@vicons/material';
 import {
   type FormInst,
@@ -127,6 +127,6 @@ async function handleSubmit() {
 
 <style scoped lang="scss">
 .login-form {
-  width: min(400px, 100%)
+  width: min(400px, 100%);
 }
 </style>
