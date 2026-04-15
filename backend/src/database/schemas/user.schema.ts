@@ -6,46 +6,49 @@ export type UserDocument = HydratedDocument<User>;
 @Schema()
 class UserName {
   @Prop({ required: true })
-  firstName: string;
+  firstName!: string;
 
   @Prop({ required: true })
-  lastName: string;
+  lastName!: string;
 
   @Prop({ default: '' })
-  patronymic: string;
+  patronymic!: string;
 }
 
 @Schema()
 class UserPassword {
   @Prop({ required: true })
-  hash: string;
+  hash!: string;
 
   @Prop({ required: true })
-  salt: string;
+  salt!: string;
 }
 
 @Schema()
 export class User {
-  @Prop({ type: UserName, required: true })
-  name: UserName;
+  @Prop({ required: true })
+  name!: UserName;
 
   @Prop({ unique: true })
-  phone: string;
+  phone?: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
+  email!: string;
 
-  @Prop({ type: UserPassword, required: true })
-  password: UserPassword;
+  @Prop({ required: true })
+  password!: UserPassword;
 
-  @Prop({ enum: ['customer', 'tailor', 'manager'], required: true })
-  role: string;
+  @Prop({
+    enum: ['customer', 'tailor', 'manager'],
+    required: true,
+  })
+  role!: string;
 
   @Prop({ default: Date.now })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Prop({ default: Date.now })
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

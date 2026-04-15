@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsMongoId, IsOptional, IsString } from 'class-validator';
 
 export class orderQueryDto {
   @IsOptional()
@@ -10,7 +10,7 @@ export class orderQueryDto {
   endDate?: string;
 
   @IsOptional()
-  @IsUUID()
+  @IsMongoId()
   tailorId?: string;
 
   @IsOptional()
