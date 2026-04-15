@@ -39,3 +39,5 @@ eslint.config.ts
 .prettier*
 README.md
 LICENSE
+
+src/metadata.ts

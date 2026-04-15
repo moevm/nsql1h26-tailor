@@ -59,3 +59,6 @@ Zone.Identifier
 *.swp
 *.swo
 *~
+
+api
+backend/src/metadata.ts

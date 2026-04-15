@@ -15,7 +15,14 @@ export default defineConfig([
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
-  globalIgnores(['node_modules/**', 'dist/**', 'build/**', 'coverage/**']),
+  globalIgnores([
+    'node_modules/**',
+    'dist/**',
+    'build/**',
+    'coverage/**',
+    'api/**',
+    'src/metadata.ts',
+  ]),
   // настройки для файлов .vue
   {
     files: ['**/*.vue'],
@@ -31,7 +38,7 @@ export default defineConfig([
       },
     },
     rules: {
-      'vue/first-attribute-linebreak': ['ignore'],
+      'vue/first-attribute-linebreak': ['off'],
     },
   },
   // frontend
