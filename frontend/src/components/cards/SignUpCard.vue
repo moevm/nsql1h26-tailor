@@ -1,9 +1,4 @@
 <script setup lang="ts">
-/**
- * @file SignupCard.vue
- * @description Карточка регистрации
- * @author @KorzikAlex
- */
 import { useAuthStore } from '@/stores';
 import {
   EmailFilled,
@@ -24,8 +19,9 @@ import {
   NInput,
   useMessage,
 } from 'naive-ui';
-import { type Component, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { FormFieldConfig, ModelType } from './shared';
 
 const router = useRouter(); // Роутер для навигации
 
@@ -36,34 +32,22 @@ const message = useMessage(); // Сервис для отображения со
 /**
  * Тип модели формы
  */
-interface ModelType {
-  firstName: string | null;
-  secondName: string | null;
-  patronymic: string | null;
-  phone: string | null;
-  email: string | null;
-  password: string | null;
-  confirmPassword: string | null;
-}
+interface Model extends ModelType {
+  firstName: string;
+  secondName: string;
+  patronymic: string;
+  phone: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
-/**
- * Конфигурация поля формы
- */
-interface FormFieldConfig {
-  key: keyof ModelType;
-  label: string;
-  placeholder: string;
-  type?: 'text' | 'password';
-  autocomplete?: string;
-  icon: Component;
-  class?: string;
-  showPasswordOn?: 'click';
-}
+
 
 /**
  * Ссылка на форму
  */
-const formRef = ref<FormInst | null>(null);
+const formRef = ref<FormInst>();
 
 /**
  * Конфигурация полей формы
@@ -97,7 +81,6 @@ const formFields = ref<FormFieldConfig[]>([
     key: 'phone',
     label: 'Телефон',
     placeholder: 'Введите номер телефона',
-    type: 'text',
     autocomplete: 'tel',
     icon: PhoneFilled,
     class: 'phone',
@@ -106,7 +89,6 @@ const formFields = ref<FormFieldConfig[]>([
     key: 'email',
     label: 'Электронная почта',
     placeholder: 'Введите электронную почту',
-    type: 'text',
     autocomplete: 'email',
     icon: EmailFilled,
     class: 'email',
@@ -201,19 +183,19 @@ const rules: FormRules = {
       trigger: 'blur',
     },
   ],
-};
+} as const;
 
 /**
  * Значения формы
  */
-const formValues = ref<ModelType>({
-  firstName: null,
-  secondName: null,
-  patronymic: null,
-  phone: null,
-  email: null,
-  password: null,
-  confirmPassword: null,
+const formValues = ref<Model>({
+  firstName: '',
+  secondName: '',
+  patronymic: '',
+  phone: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
 });
 
 /**
@@ -236,24 +218,11 @@ async function handleSubmit() {
 <template>
   <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form">
     <n-card title="Регистрация в системе" size="huge" rounded>
-      <n-form-item
-        v-for="field in formFields"
-        :key="field.key"
-        :label="field.label"
-        :path="field.key"
-        :class="field.class"
-      >
-        <n-input
-          v-model:value="formValues[field.key]"
-          :type="field.type || 'text'"
-          :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
-          :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn"
-          clearable
-          round
-          :disabled="authStore.isLoading"
-        >
+      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
+        :class="field.class">
+        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
           <template #prefix>
             <n-icon :component="field.icon"></n-icon>
           </template>
@@ -261,20 +230,11 @@ async function handleSubmit() {
       </n-form-item>
 
       <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          @click="handleSubmit"
-          :disabled="
-            !formValues.firstName ||
-            !formValues.password ||
-            !formValues.secondName ||
-            !formValues.email
-          "
-          :loading="authStore.isLoading"
-          class="submit-button"
-          round
-        >
+        <n-button type="primary" block :disabled="!formValues.firstName ||
+          !formValues.password ||
+          !formValues.secondName ||
+          !formValues.email
+          " :loading="authStore.isLoading" class="submit-button" round @click="handleSubmit">
           Зарегистрироваться
         </n-button>
       </n-form-item>

@@ -5,6 +5,7 @@
  */
 import App from '@/App.vue';
 import { router } from '@/router';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
@@ -17,6 +18,9 @@ const app = createApp(App);
 // Подключение компонентов к приложению
 app.use(pinia);
 app.use(router);
+app.use(VueQueryPlugin, {
+  enableDevtoolsV6Plugin: true,
+});
 
 // Монтирование приложения на элемент с id 'app'
 app.mount('#app');

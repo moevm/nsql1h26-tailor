@@ -4,7 +4,7 @@
  * @module useAuthStore
  * @author @KorzikAlex
  */
-import { type User } from '@/types';
+import { type SignInDto } from '@/api/schemas';
 import { useLocalStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -13,10 +13,10 @@ import { computed, ref } from 'vue';
  * Store для управления авторизацией.
  */
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null);
-  const token = useLocalStorage<string | null>('accessToken', null);
+  const user = ref<SignInDto>();
+  const token = useLocalStorage<string>('accessToken', null);
   const isLoading = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref<string>();
 
   /**
    * Флаг, указывающий, авторизован ли пользователь.
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
    */
   async function login() {
     isLoading.value = true;
-    error.value = null;
+    error.value = '';
   }
 
   /**
@@ -42,9 +42,9 @@ export const useAuthStore = defineStore('auth', () => {
    * Очистка данных авторизации.
    */
   function clearAuth() {
-    user.value = null;
+    user.value = undefined;
     token.value = null;
-    error.value = null;
+    error.value = '';
   }
 
   return {
