@@ -17,7 +17,7 @@ import { SignUpCard } from '@/components/cards';
 .signup-page {
   display: flex;
   justify-content: center;
+  height: 100dvh;
   align-items: center;
-  height: 100vh;
 }
 </style>

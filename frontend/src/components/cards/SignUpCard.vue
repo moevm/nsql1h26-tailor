@@ -22,26 +22,16 @@ import {
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import type { FormFieldConfig, ModelType } from './shared';
+import type { FormFieldConfig } from './shared';
+import type { SignUpDto } from '@/api/schemas';
+
+type SignUpFormModel = SignUpDto & { confirmPassword: string }; // Модель данных для формы регистрации
 
 const router = useRouter(); // Роутер для навигации
 
 const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
 const message = useMessage(); // Сервис для отображения сообщений
-
-/**
- * Тип модели формы
- */
-interface Model extends ModelType {
-  firstName: string;
-  secondName: string;
-  patronymic: string;
-  phone: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 
 /**
  * Ссылка на форму
@@ -51,7 +41,7 @@ const formRef = ref<FormInst>();
 /**
  * Конфигурация полей формы
  */
-const formFields = ref<FormFieldConfig[]>([
+const formFields: FormFieldConfig<keyof SignUpFormModel>[] = [
   {
     key: 'firstName',
     label: 'Имя',
@@ -61,7 +51,7 @@ const formFields = ref<FormFieldConfig[]>([
     class: 'username',
   },
   {
-    key: 'secondName',
+    key: 'lastName',
     label: 'Фамилия',
     placeholder: 'Введите фамилию',
     autocomplete: 'family-name',
@@ -112,7 +102,7 @@ const formFields = ref<FormFieldConfig[]>([
     class: 'confirm-password',
     showPasswordOn: 'click',
   },
-]);
+];
 
 /**
  * Правила валидации формы
@@ -125,7 +115,7 @@ const rules: FormRules = {
       trigger: 'blur',
     },
   ],
-  secondName: [
+  lastName: [
     {
       required: true,
       message: 'Пожалуйста, введите фамилию',
@@ -187,15 +177,17 @@ const rules: FormRules = {
 /**
  * Значения формы
  */
-const formValues = ref<Model>({
-  firstName: '',
-  secondName: '',
-  patronymic: '',
-  phone: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-});
+const formValues = ref<SignUpFormModel>(
+  {
+    firstName: '',
+    lastName: '',
+    patronymic: '',
+    phone: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
+);
 
 /**
  * Обработчик отправки формы
@@ -215,56 +207,34 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form">
-    <n-card title="Регистрация в системе" size="huge" rounded>
-      <n-form-item
-        v-for="field in formFields"
-        :key="field.key"
-        :label="field.label"
-        :path="field.key"
-        :class="field.class"
-      >
-        <n-input
-          v-model:value="formValues[field.key]"
-          :type="field.type || 'text'"
-          :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
-          :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn"
-          clearable
-          round
-          :disabled="authStore.isLoading"
-        >
+  <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form" :size="'small'">
+    <n-card title="Регистрация в системе" size="medium" rounded class="signup-card">
+      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
+        :class="field.class" class="signup-fields">
+        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
           <template #prefix>
-            <n-icon :component="field.icon"></n-icon>
+            <n-icon :component="field.icon" />
           </template>
         </n-input>
       </n-form-item>
 
-      <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          :disabled="
-            !formValues.firstName ||
-            !formValues.password ||
-            !formValues.secondName ||
-            !formValues.email
-          "
-          :loading="authStore.isLoading"
-          class="submit-button"
-          round
-          @click="handleSubmit"
-        >
-          Зарегистрироваться
-        </n-button>
-      </n-form-item>
-
       <n-flex justify="center">
-        <n-form-item>
+        <n-form-item class="submit">
+          <n-button type="primary" block :disabled="!formValues.firstName ||
+            !formValues.password ||
+            !formValues.lastName ||
+            !formValues.email
+            " :loading="authStore.isLoading" class="submit-button" round @click="handleSubmit">
+            Зарегистрироваться
+          </n-button>
+        </n-form-item>
+
+        <n-form-item class="login-link">
           <router-link to="/login">
             <n-button quaternary round :disabled="authStore.isLoading">
-              Уже есть аккаунт? Войти
+              Уже есть аккаунт?
             </n-button>
           </router-link>
         </n-form-item>
@@ -275,6 +245,6 @@ async function handleSubmit() {
 
 <style scoped lang="scss">
 .signup-form {
-  width: 500px;
+  width: min(600px, 100%);
 }
 </style>

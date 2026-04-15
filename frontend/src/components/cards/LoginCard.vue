@@ -1,10 +1,6 @@
 <script setup lang="ts">
-/**
- * @file LoginCard.vue
- * @description Компонент карточки входа в систему
- * @author @KorzikAlex
- */
 import { useAuthStore } from '@/stores';
+import { type SignInDto } from '@/api/schemas';
 import { EmailFilled, KeyFilled } from '@vicons/material';
 import {
   type FormInst,
@@ -21,12 +17,7 @@ import {
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import type { FormFieldConfig, ModelType } from './shared';
-
-interface Model extends ModelType {
-  email: string;
-  password: string;
-}
+import type { FormFieldConfig } from './shared';
 
 const router = useRouter(); // Роутер для навигации'
 
@@ -59,7 +50,7 @@ const rules: FormRules = {
 /**
  * Значения полей формы
  */
-const formValues = ref<Model>({
+const formValues = ref<SignInDto>({
   email: '',
   password: '',
 });
@@ -67,7 +58,7 @@ const formValues = ref<Model>({
 /**
  * Конфигурация полей формы для входа в систему
  */
-const formFields = ref<FormFieldConfig[]>([
+const formFields: FormFieldConfig<keyof SignInDto>[] = [
   {
     key: 'email',
     label: 'Электронная почта',
@@ -85,7 +76,7 @@ const formFields = ref<FormFieldConfig[]>([
     icon: KeyFilled,
     showPasswordOn: 'click',
   },
-]);
+];
 
 /**
  * Обработчик отправки формы
@@ -102,47 +93,30 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form">
-    <n-card title="Вход в систему" size="huge" rounded>
-      <n-form-item
-        v-for="field in formFields"
-        :key="field.key"
-        :label="field.label"
-        :path="field.key"
-        :class="field.key"
-      >
-        <n-input
-          v-model:value="formValues[field.key]"
-          :type="field.type || 'text'"
-          :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
-          :show-password-on="field.showPasswordOn"
-          round
-          clearable
-        >
+  <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form" :size="'large'">
+    <n-card title="Вход в систему" size="large" rounded>
+      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
+        :class="field.key">
+        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :show-password-on="field.showPasswordOn"
+          round clearable>
           <template #prefix>
             <n-icon :component="field.icon" />
           </template>
         </n-input>
       </n-form-item>
-
-      <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          :disabled="!formValues.email || !formValues.password"
-          round
-          @click="handleSubmit"
-        >
-          Войти
-        </n-button>
-      </n-form-item>
-
       <n-flex justify="center">
-        <n-form-item>
+        <n-form-item class="submit">
+          <n-button type="primary" block :disabled="!formValues.email || !formValues.password" round
+            @click="handleSubmit">
+            Войти
+          </n-button>
+        </n-form-item>
+
+        <n-form-item class="signup-link">
           <router-link to="/signup">
             <n-button quaternary round :disabled="authStore.isLoading">
-              Нет аккаунта? Зарегистрироваться
+              Нет аккаунта?
             </n-button>
           </router-link>
         </n-form-item>
@@ -153,6 +127,6 @@ async function handleSubmit() {
 
 <style scoped lang="scss">
 .login-form {
-  width: 500px;
+  width: min(400px, 100%)
 }
 </style>

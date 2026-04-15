@@ -1,12 +1,10 @@
 import type { Component } from 'vue';
 
-import type { ModelType } from './ModelType';
-
 /**
  * Конфигурация поля формы
  */
-export interface FormFieldConfig {
-  key: keyof ModelType;
+export interface FormFieldConfig<TKey extends string> {
+  key: TKey;
   label: string;
   placeholder: string;
   type?: 'text' | 'password';
