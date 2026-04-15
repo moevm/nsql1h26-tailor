@@ -21,6 +21,7 @@ import {
 } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import type { FormFieldConfig, ModelType } from './shared';
 
 const router = useRouter(); // Роутер для навигации
@@ -40,9 +41,7 @@ interface Model extends ModelType {
   email: string;
   password: string;
   confirmPassword: string;
-};
-
-
+}
 
 /**
  * Ссылка на форму
@@ -218,11 +217,24 @@ async function handleSubmit() {
 <template>
   <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form">
     <n-card title="Регистрация в системе" size="huge" rounded>
-      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
-        :class="field.class">
-        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
+      <n-form-item
+        v-for="field in formFields"
+        :key="field.key"
+        :label="field.label"
+        :path="field.key"
+        :class="field.class"
+      >
+        <n-input
+          v-model:value="formValues[field.key]"
+          :type="field.type || 'text'"
+          :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
+          :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn"
+          clearable
+          round
+          :disabled="authStore.isLoading"
+        >
           <template #prefix>
             <n-icon :component="field.icon"></n-icon>
           </template>
@@ -230,11 +242,20 @@ async function handleSubmit() {
       </n-form-item>
 
       <n-form-item class="submit">
-        <n-button type="primary" block :disabled="!formValues.firstName ||
-          !formValues.password ||
-          !formValues.secondName ||
-          !formValues.email
-          " :loading="authStore.isLoading" class="submit-button" round @click="handleSubmit">
+        <n-button
+          type="primary"
+          block
+          :disabled="
+            !formValues.firstName ||
+            !formValues.password ||
+            !formValues.secondName ||
+            !formValues.email
+          "
+          :loading="authStore.isLoading"
+          class="submit-button"
+          round
+          @click="handleSubmit"
+        >
           Зарегистрироваться
         </n-button>
       </n-form-item>
