@@ -8,6 +8,7 @@ onlyBuiltDependencies:
   - '@nestjs/core'
   - '@parcel/watcher'
   - '@scarf/scarf'
+  - '@swc/core'
   - bcrypt
   - esbuild
   - unrs-resolver
