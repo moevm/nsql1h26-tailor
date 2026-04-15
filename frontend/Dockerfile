@@ -27,6 +27,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 FROM deps AS build
 
 COPY frontend ./frontend
+COPY ./openapi.json ./openapi.json
 
 RUN pnpm run --filter=@nosql/frontend build
 

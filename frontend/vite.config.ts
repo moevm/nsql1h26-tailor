@@ -8,6 +8,7 @@ import { defineConfig } from 'vite';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
+  envDir: '..',
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
@@ -17,11 +18,9 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 8080,
-    open: true,
   },
   preview: {
     host: '127.0.0.1',
     port: 8080,
-    open: true,
   },
 });
