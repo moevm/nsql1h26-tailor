@@ -2,14 +2,19 @@ services:
   db:
     image: mongo:8.2.5
     env_file: .env
-    volumes: [mongo_data:/data/db]
+    volumes: [ mongo_data:/data/db ]
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     depends_on:
@@ -32,14 +37,19 @@ services:
           "CMD",
           "/usr/local/bin/bun",
           "-e",
-          "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+          "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
         ]
       interval: 5s
       timeout: 3s
       retries: 5
       start_period: 10s
     restart: unless-stopped
-    ports: ["127.0.0.1:3000:3000"]
+    ports: [ "127.0.0.1:3000:3000" ]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   frontend:
     depends_on:
@@ -49,7 +59,12 @@ services:
       context: .
       dockerfile: ./frontend/Dockerfile
     env_file: .env
-    ports: ["127.0.0.1:8080:80"]
+    ports: [ "127.0.0.1:8080:80" ]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   mongo_data:
