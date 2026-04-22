@@ -6,22 +6,22 @@ export type FinanceDocument = HydratedDocument<Finance>;
 @Schema()
 export class Finance {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  orderId: mongoose.Types.ObjectId;
+  orderId!: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
-  authorId: mongoose.Types.ObjectId;
+  authorId?: mongoose.Types.ObjectId;
 
   @Prop({ enum: ['income', 'expense'], required: true })
-  type: string;
+  type!: string;
 
   @Prop({ required: true })
-  amount: number;
+  amount!: number;
 
   @Prop({ default: '' })
-  description: string;
+  description!: string;
 
   @Prop({ default: Date.now })
-  createdAt: Date;
+  createdAt!: Date;
 }
 
 export const FinanceSchema = SchemaFactory.createForClass(Finance);

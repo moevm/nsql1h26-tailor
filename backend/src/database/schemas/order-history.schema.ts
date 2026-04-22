@@ -6,22 +6,22 @@ export type OrderHistoryDocument = HydratedDocument<OrderHistory>;
 @Schema()
 export class OrderHistory {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  orderId: mongoose.Types.ObjectId;
+  orderId!: mongoose.Types.ObjectId;
 
   @Prop({
     enum: ['created', 'accepted', 'in_progress', 'done', 'cancelled'],
     required: true,
   })
-  status: string;
+  status!: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
-  changedBy: mongoose.Types.ObjectId;
+  changedBy?: mongoose.Types.ObjectId;
 
   @Prop({ default: '' })
-  comment: string;
+  comment!: string;
 
   @Prop({ default: Date.now })
-  changedAt: Date;
+  changedAt!: Date;
 }
 
 export const OrderHistorySchema = SchemaFactory.createForClass(OrderHistory);

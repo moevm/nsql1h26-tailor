@@ -1,11 +1,19 @@
-import { IsEmail, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
 
 export class SignUpDto {
   @IsString()
-  firstName: string;
+  @IsNotEmpty()
+  firstName!: string;
 
   @IsString()
-  lastName: string;
+  @IsNotEmpty()
+  lastName!: string;
 
   @IsOptional()
   @IsString()
@@ -17,9 +25,13 @@ export class SignUpDto {
   phone?: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email!: string;
 
+  // TODO: Добавить валидацию на сложность пароля
   @IsString()
-  password: string;
+  @IsNotEmpty()
+  // @IsStrongPassword()
+  password!: string;
 }

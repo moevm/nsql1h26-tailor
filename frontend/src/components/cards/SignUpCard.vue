@@ -264,7 +264,6 @@ async function handleSubmit() {
         <n-button
           type="primary"
           block
-          @click="handleSubmit"
           :disabled="
             !formValues.firstName ||
             !formValues.password ||
@@ -274,6 +273,7 @@ async function handleSubmit() {
           :loading="authStore.isLoading"
           class="submit-button"
           round
+          @click="handleSubmit"
         >
           Зарегистрироваться
         </n-button>
