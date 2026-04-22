@@ -1,24 +1,25 @@
-/**
- * @file router/index.ts
- * @description Конфигурация маршрутизатора для приложения на Vue.js.
- * @author @KorzikAlex
- */
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 
 const routes: RouterOptions['routes'] = [
   {
     path: '/',
-    redirect: 'login',
-  },
-  {
-    path: '/login',
-    name: 'Вход в систему',
-    component: () => import('@/pages/LoginPage.vue'),
-  },
-  {
-    path: '/signup',
-    name: 'Регистрация',
-    component: () => import('@/pages/SignUpPage.vue'),
+    component: () => import('@/pages/AuthPage.vue'),
+    children: [
+      {
+        path: '',
+        redirect: { name: 'login' },
+      },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/components/cards/LoginCard.vue'),
+      },
+      {
+        path: 'signup',
+        name: 'signup',
+        component: () => import('@/components/cards/SignUpCard.vue'),
+      },
+    ],
   },
 ];
 
