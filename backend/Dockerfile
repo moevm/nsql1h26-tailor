@@ -36,7 +36,7 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 
 
 # FROM node:24.14.1-alpine3.23 AS prod
-FROM oven/bun:1.3.12-distroless AS prod
+FROM oven/bun:1.3.12-alpine AS prod
 
 ENV NODE_ENV=production
 
@@ -48,4 +48,4 @@ COPY --from=build /app/deploy/dist ./dist
 EXPOSE 3000
 
 # CMD ["node", "dist/main.js"]
-CMD ["dist/main.js"]
+CMD ["bun", "dist/main.js"]
