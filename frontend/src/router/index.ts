@@ -1,9 +1,6 @@
-/**
- * @file router/index.ts
- * @description Конфигурация маршрутизатора для приложения на Vue.js.
- * @author @KorzikAlex
- */
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
+
+const authPage = () => import('@/pages/AuthPage.vue');
 
 const routes: RouterOptions['routes'] = [
   {
@@ -13,12 +10,14 @@ const routes: RouterOptions['routes'] = [
   {
     path: '/login',
     name: 'Вход в систему',
-    component: () => import('@/pages/LoginPage.vue'),
+    component: authPage,
+    props: { mode: 'login' },
   },
   {
     path: '/signup',
     name: 'Регистрация',
-    component: () => import('@/pages/SignUpPage.vue'),
+    component: authPage,
+    props: { mode: 'signup' },
   },
 ];
 
