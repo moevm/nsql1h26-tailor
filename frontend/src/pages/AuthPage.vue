@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { LoginCard, SignUpCard } from '@/components/cards';
-
-type AuthMode = 'login' | 'signup';
-
-const props = withDefaults(defineProps<{ mode?: AuthMode }>(), {
-  mode: 'login',
-});
 </script>
 
 <template>
   <div class="auth-page">
-    <LoginCard v-if="props.mode === 'login'" />
-    <SignUpCard v-else />
+    <router-view />
   </div>
 </template>
 
