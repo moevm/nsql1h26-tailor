@@ -7,12 +7,12 @@ import {
 } from 'class-validator';
 
 export class SignUpDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   firstName!: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   lastName!: string;
 
   @IsOptional()
@@ -20,18 +20,18 @@ export class SignUpDto {
   patronymic?: string;
 
   @IsOptional()
-  @IsString()
   @IsPhoneNumber()
+  @IsString()
   phone?: string;
 
-  @IsString()
-  @IsNotEmpty()
   @IsEmail()
+  @IsNotEmpty()
+  @IsString()
   email!: string;
 
   // TODO: Добавить валидацию на сложность пароля
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   // @IsStrongPassword()
   password!: string;
 }
