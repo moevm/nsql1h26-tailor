@@ -12,7 +12,7 @@ class UserName {
   lastName!: string;
 
   @Prop({ default: '' })
-  patronymic!: string;
+  patronymic?: string;
 }
 
 @Schema()
