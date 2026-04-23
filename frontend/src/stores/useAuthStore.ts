@@ -1,10 +1,6 @@
-/**
- * @file useAuthStore.ts
- * @description Pinia store для управления авторизацией.
- * @module useAuthStore
- * @author @KorzikAlex
- */
+import { authApi } from '@/api/auth';
 import { type User } from '@/types';
+import { type LoginCredentials } from '@/types/auth';
 import { useLocalStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -13,7 +9,7 @@ import { computed, ref } from 'vue';
  * Store для управления авторизацией.
  */
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null);
+  const user = useLocalStorage<User | null>('authUser', null);
   const token = useLocalStorage<string | null>('accessToken', null);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
@@ -26,15 +22,32 @@ export const useAuthStore = defineStore('auth', () => {
   /**
    * Функция для входа пользователя.
    */
-  async function login() {
+  async function login(credentials: LoginCredentials) {
     isLoading.value = true;
     error.value = null;
+
+    try {
+      const response = await authApi.login(credentials);
+      user.value = response.user;
+      token.value = response.accessToken;
+      return true;
+    } catch (caughtError) {
+      const message =
+        caughtError instanceof Error
+          ? caughtError.message
+          : 'Не удалось выполнить вход';
+      clearAuth();
+      error.value = message;
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   /**
    * Функция для выхода пользователя.
    */
-  async function logout() {
+  function logout() {
     clearAuth();
   }
 
