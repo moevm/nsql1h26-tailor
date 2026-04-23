@@ -1,31 +1,26 @@
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 
+import { authRoutes, homeRoutes } from './routes';
+
 const routes: RouterOptions['routes'] = [
   {
     path: '/',
+    name: 'Авторизация',
     component: () => import('@/pages/AuthPage.vue'),
-    children: [
-      {
-        path: '',
-        redirect: { name: 'login' },
-      },
-      {
-        path: 'login',
-        name: 'Вход в систему',
-        component: () => import('@/components/cards/LoginCard.vue'),
-      },
-      {
-        path: 'signup',
-        name: 'Регистрация',
-        component: () => import('@/components/cards/SignUpCard.vue'),
-      },
-    ],
+    children: authRoutes,
   },
   {
     path: '/home',
     name: 'Главная',
-    component: () => import('@/components/layout/BaseLayout.vue'),
-    children: [],
+    component: () => import('@/pages/BasePage.vue'),
+    props: {
+      items: [
+        { text: 'Главная', href: '/home' },
+        { text: 'Профиль', href: '/home/profile' },
+        { text: 'Настройки', href: '/home/settings' },
+      ],
+    },
+    children: homeRoutes,
   },
 ];
 
