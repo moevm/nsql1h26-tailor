@@ -11,15 +11,21 @@ const routes: RouterOptions['routes'] = [
       },
       {
         path: 'login',
-        name: 'login',
+        name: 'Вход в систему',
         component: () => import('@/components/cards/LoginCard.vue'),
       },
       {
         path: 'signup',
-        name: 'signup',
+        name: 'Регистрация',
         component: () => import('@/components/cards/SignUpCard.vue'),
       },
     ],
+  },
+  {
+    path: '/home',
+    name: 'Главная',
+    component: () => import('@/components/layout/BaseLayout.vue'),
+    children: [],
   },
 ];
 
