@@ -11,7 +11,6 @@ class UserName {
   @Prop({ required: true })
   lastName!: string;
 
-  @Prop({ default: '' })
   patronymic?: string;
 }
 
