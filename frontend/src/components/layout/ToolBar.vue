@@ -1,12 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { NLayoutHeader, NFlex } from 'naive-ui';
-import { useRoute } from 'vue-router';
 import { LogOutButton, ProfileButton } from '@/components/buttons';
+import { useAuthStore } from '@/stores';
+import { NFlex, NLayoutHeader } from 'naive-ui';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
+const authStore = useAuthStore();
 
-const title = computed(() => route.name)
+const title = computed(() => route.name);
+const profileInfo = computed(() => ({
+  firstName: authStore.user?.name.firstName ?? 'Пользователь',
+  lastName: authStore.user?.name.lastName ?? '',
+  email: authStore.user?.email ?? '',
+}));
 </script>
 
 <template>
@@ -14,7 +21,11 @@ const title = computed(() => route.name)
     <n-flex justify="space-between" align="center" class="layout-header">
       <h1>{{ title }}</h1>
       <n-flex justify="space-between" align="center">
-        <ProfileButton first-name="Иван" last-name="Иванов" email="ivan@example.com" />
+        <ProfileButton
+          :first-name="profileInfo.firstName"
+          :last-name="profileInfo.lastName"
+          :email="profileInfo.email"
+        />
         <LogOutButton />
       </n-flex>
     </n-flex>

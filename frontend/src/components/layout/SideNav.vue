@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { NIcon, type MenuOption, NLayoutSider, NMenu } from 'naive-ui';
+import { type MenuOption, NIcon, NLayoutSider, NMenu } from 'naive-ui';
 import { type Component, computed, h } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+
 import type { NavItem } from './shared';
 
 interface Props {
@@ -31,8 +32,6 @@ const menuOptions = computed<MenuOption[]>(() =>
 );
 
 const activeKey = computed(() => route.path);
-
-
 </script>
 
 <template>
