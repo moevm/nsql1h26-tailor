@@ -1,1 +1,1 @@
-export { NavItem } from './NavItem.ts';
+export { type NavItem } from './NavItem.ts';

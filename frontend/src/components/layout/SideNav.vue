@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NIcon, type MenuOption } from 'naive-ui';
+import { NIcon, type MenuOption, NLayoutSider, NMenu } from 'naive-ui';
 import { type Component, computed, h } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import type { NavItem } from './shared';
@@ -41,6 +41,4 @@ const activeKey = computed(() => route.path);
   </n-layout-sider>
 </template>
 
-<style lang="scss" scoped>
-.side-nav {}
-</style>
+<style lang="scss" scoped></style>
