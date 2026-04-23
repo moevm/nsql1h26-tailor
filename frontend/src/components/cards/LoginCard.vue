@@ -94,7 +94,7 @@ const formFields: FormFieldConfig[] = [
 async function handleSubmit() {
   formRef.value?.validate(async (errors) => {
     if (!errors) {
-      router.push('/dashboard');
+      router.push('/home');
     } else {
       message.error('Пожалуйста, исправьте ошибки в форме');
     }
