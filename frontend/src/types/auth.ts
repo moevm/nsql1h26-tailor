@@ -1,55 +1,27 @@
-/**
- * @file types/auth.ts
- * @description Типы для авторизации.
- * @module types/auth
- */
+interface UserName {
+  firstName: string;
+  lastName: string;
+  patronymic?: string;
+}
+
+export type role = 'customer' | 'tailor' | 'manager';
 
 /**
  * Публичные данные пользователя.
  */
 export interface User {
-  /**
-   * Уникальный идентификатор пользователя.
-   */
-  uuid: string;
-  /**
-   * Логин пользователя.
-   */
+  _id: string;
   email: string;
-
-  /**
-   * Имя пользователя.
-   */
-  firstName: string;
-
-  /**
-   * Фамилия пользователя.
-   */
-  lastName: string;
-
-  /**
-   * Отчество пользователя (опционально).
-   */
-  patronymic?: string;
-
-  /**
-   * Телефон пользователя (опционально).
-   */
+  name: UserName;
   phone?: string;
+  role: role;
 }
 
 /**
  * Данные для входа.
  */
 export interface LoginCredentials {
-  /**
-   * Почта пользователя.
-   */
   email: string;
-
-  /**
-   * Пароль пользователя.
-   */
   password: string;
 }
 

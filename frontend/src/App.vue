@@ -26,7 +26,11 @@ const themeOverrides: GlobalThemeOverrides = {
 </script>
 
 <template>
-  <n-config-provider :locale="ruRU" :date-locale="dateRuRU" :theme-overrides="themeOverrides">
+  <n-config-provider
+    :locale="ruRU"
+    :date-locale="dateRuRU"
+    :theme-overrides="themeOverrides"
+  >
     <n-global-style />
     <n-loading-bar-provider>
       <n-message-provider>
