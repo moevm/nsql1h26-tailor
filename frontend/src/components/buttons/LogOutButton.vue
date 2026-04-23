@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores';
 
 function handleLogOut() {
   authStore.logout();
-  router.push({ name: 'login' });
+  router.push('/login');
 }
 
 const router = useRouter();
@@ -15,9 +15,12 @@ const authStore = useAuthStore();
 
 <template>
   <n-button @click="handleLogOut">
-    <n-icon>
-      <LogOutRound />
-    </n-icon>
+    <template #icon>
+      <n-icon>
+        <LogOutRound />
+      </n-icon>
+    </template>
+    Выход
   </n-button>
 </template>
 
