@@ -1,22 +1,36 @@
 <script setup lang="ts">
-import { NLayout, NLayoutContent } from 'naive-ui';
-import { SideNav, type NavItem, ToolBar } from '@/components/layout';
+import { type NavItem, SideNav, ToolBar } from '@/components/layout';
 import { useAuthStore } from '@/stores';
-
-type role = 'customer' | 'tailor' | 'manager';
+import { type role } from '@/types/auth';
+import {
+  HomeRound,
+  ImportExportRound,
+  PieChartRound,
+  ShoppingCartRound,
+} from '@vicons/material';
+import { NLayout, NLayoutContent } from 'naive-ui';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
 const menuByRole: Record<role, NavItem[]> = {
   customer: [
+    { text: 'Главная', href: '/home', icon: HomeRound },
+    { text: 'Мои заказы', href: '/orders', icon: ShoppingCartRound },
   ],
   tailor: [
+    { text: 'Главная', href: '/home', icon: HomeRound },
+    { text: 'Заказы', href: '/orders', icon: ShoppingCartRound },
   ],
   manager: [
+    { text: 'Главная', href: '/home', icon: HomeRound },
+    { text: 'Управление заказами', href: '/orders', icon: ShoppingCartRound },
+    { text: 'Статистика', href: '/statistics', icon: PieChartRound },
+    { text: 'Импорт/Экспорт', href: '/import-export', icon: ImportExportRound },
   ],
 };
 
-const items = menuByRole['customer'];
+const items = computed(() => menuByRole[authStore.user?.role ?? 'customer']);
 </script>
 
 <template>

@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { NLayout } from 'naive-ui';
 </script>
 
 <template>
-  <div class="auth-page">
-    <router-view />
-  </div>
+  <n-layout embedded>
+    <div class="auth-page">
+      <router-view />
+    </div>
+  </n-layout>
 </template>
 
 <style lang="scss" scoped>
