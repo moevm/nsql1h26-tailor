@@ -14,7 +14,7 @@ import {
   useMessage,
 } from 'naive-ui';
 import { type Component, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 /**
  * Конфигурация поля формы
@@ -29,7 +29,8 @@ type FormFieldConfig = {
   showPasswordOn?: 'click';
 };
 
-const router = useRouter(); // Роутер для навигации'
+const router = useRouter(); // Роутер для навигации
+const route = useRoute();
 
 const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
@@ -94,7 +95,21 @@ const formFields: FormFieldConfig[] = [
 async function handleSubmit() {
   formRef.value?.validate(async (errors) => {
     if (!errors) {
-      router.push('/home');
+      const isLoggedIn = await authStore.login({
+        email: formValues.value.email,
+        password: formValues.value.password,
+      });
+
+      if (isLoggedIn) {
+        message.success('Вы успешно вошли в аккаунт');
+        const redirectPath =
+          typeof route.query.redirect === 'string'
+            ? route.query.redirect
+            : '/home';
+        await router.push(redirectPath);
+      } else {
+        message.error(authStore.error ?? 'Неверная почта или пароль');
+      }
     } else {
       message.error('Пожалуйста, исправьте ошибки в форме');
     }
@@ -137,7 +152,10 @@ async function handleSubmit() {
           <n-button
             type="primary"
             block
-            :disabled="!formValues.email || !formValues.password"
+            :disabled="
+              !formValues.email || !formValues.password || authStore.isLoading
+            "
+            :loading="authStore.isLoading"
             round
             @click="handleSubmit"
           >
