@@ -1,6 +1,5 @@
 import { authApi } from '@/api/auth';
-import { type User } from '@/types';
-import { type LoginCredentials } from '@/types/auth';
+import { type LoginCredentials, type User } from '@/types/auth';
 import { useLocalStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
