@@ -10,8 +10,8 @@ const authStore = useAuthStore();
 
 const title = computed(() => route.name);
 const profileInfo = computed(() => ({
-  firstName: authStore.user?.name.firstName ?? 'Пользователь',
-  lastName: authStore.user?.name.lastName ?? '',
+  firstName: authStore.user?.name?.firstName ?? 'Пользователь',
+  lastName: authStore.user?.name?.lastName ?? '',
   email: authStore.user?.email ?? '',
 }));
 </script>
