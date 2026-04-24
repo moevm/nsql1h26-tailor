@@ -27,7 +27,7 @@ export const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore();
   const requiresAuth = Boolean(to.meta.requiresAuth);
   const isGuestOnly = Boolean(to.meta.guestOnly);
@@ -50,7 +50,10 @@ router.beforeEach((to) => {
   // Если маршрут имеет ограничения по ролям, проверяем роль пользователя
   if (routeRoles && routeRoles.length > 0) {
     if (!authStore.user) {
-      return '/home';
+      return {
+        path: '/login',
+        query: { redirect: to.fullPath },
+      };
     }
 
     // Если роль пользователя не соответствует требованиям маршрута, перенаправляем на главную страницу
