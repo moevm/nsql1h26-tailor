@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AuthGuard } from '@/common/guards/auth.guard';
 import { UserSchema } from '@/database/schemas/user.schema';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -25,10 +27,10 @@ import { AuthService } from './auth.service';
   controllers: [AuthController],
   providers: [
     AuthService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
   exports: [AuthService],
 })

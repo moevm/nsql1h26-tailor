@@ -1,9 +1,4 @@
 <script setup lang="ts">
-/**
- * @file LoginCard.vue
- * @description Компонент карточки входа в систему
- * @author @KorzikAlex
- */
 import { useAuthStore } from '@/stores';
 import { EmailFilled, KeyFilled } from '@vicons/material';
 import {
@@ -73,7 +68,7 @@ const formValues = ref({
 /**
  * Конфигурация полей формы для входа в систему
  */
-const formFields = ref<FormFieldConfig[]>([
+const formFields: FormFieldConfig[] = [
   {
     key: 'email',
     label: 'Электронная почта',
@@ -91,7 +86,7 @@ const formFields = ref<FormFieldConfig[]>([
     icon: KeyFilled,
     showPasswordOn: 'click',
   },
-]);
+];
 
 /**
  * Обработчик отправки формы
@@ -108,8 +103,14 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules" class="login-form">
-    <n-card title="Вход в систему" size="huge" rounded>
+  <n-form
+    ref="formRef"
+    :model="formValues"
+    :rules="rules"
+    class="login-form"
+    :size="'large'"
+  >
+    <n-card title=" Вход в систему" size="huge" rounded>
       <n-form-item
         v-for="field in formFields"
         :key="field.key"
@@ -131,24 +132,23 @@ async function handleSubmit() {
           </template>
         </n-input>
       </n-form-item>
-
-      <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          :disabled="!formValues.email || !formValues.password"
-          round
-          @click="handleSubmit"
-        >
-          Войти
-        </n-button>
-      </n-form-item>
-
       <n-flex justify="center">
+        <n-form-item class="submit">
+          <n-button
+            type="primary"
+            block
+            :disabled="!formValues.email || !formValues.password"
+            round
+            @click="handleSubmit"
+          >
+            Войти
+          </n-button>
+        </n-form-item>
+
         <n-form-item>
           <router-link to="/signup">
             <n-button quaternary round :disabled="authStore.isLoading">
-              Нет аккаунта? Зарегистрироваться
+              Нет аккаунта?
             </n-button>
           </router-link>
         </n-form-item>

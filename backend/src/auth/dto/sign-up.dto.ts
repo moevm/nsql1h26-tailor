@@ -1,25 +1,37 @@
-import { IsEmail, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
 
 export class SignUpDto {
+  @IsNotEmpty()
   @IsString()
-  firstName: string;
+  firstName!: string;
 
+  @IsNotEmpty()
   @IsString()
-  lastName: string;
+  lastName!: string;
 
   @IsOptional()
   @IsString()
   patronymic?: string;
 
   @IsOptional()
-  @IsString()
   @IsPhoneNumber()
+  @IsString()
   phone?: string;
 
-  @IsString()
   @IsEmail()
-  email: string;
-
+  @IsNotEmpty()
   @IsString()
-  password: string;
+  email!: string;
+
+  // TODO: Добавить валидацию на сложность пароля
+  @IsNotEmpty()
+  @IsString()
+  // @IsStrongPassword()
+  password!: string;
 }

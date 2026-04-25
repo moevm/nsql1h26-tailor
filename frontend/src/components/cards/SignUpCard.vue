@@ -1,9 +1,4 @@
 <script setup lang="ts">
-/**
- * @file SignupCard.vue
- * @description Карточка регистрации
- * @author @KorzikAlex
- */
 import { useAuthStore } from '@/stores';
 import {
   EmailFilled,
@@ -68,7 +63,7 @@ const formRef = ref<FormInst | null>(null);
 /**
  * Конфигурация полей формы
  */
-const formFields = ref<FormFieldConfig[]>([
+const formFields: FormFieldConfig[] = [
   {
     key: 'firstName',
     label: 'Имя',
@@ -131,7 +126,7 @@ const formFields = ref<FormFieldConfig[]>([
     class: 'confirm-password',
     showPasswordOn: 'click',
   },
-]);
+];
 
 /**
  * Правила валидации формы
@@ -234,8 +229,14 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form">
-    <n-card title="Регистрация в системе" size="huge" rounded>
+  <n-form
+    ref="formRef"
+    :model="formValues"
+    :rules="rules"
+    class="signup-form"
+    :size="'small'"
+  >
+    <n-card title="Регистрация в системе" size="small" rounded>
       <n-form-item
         v-for="field in formFields"
         :key="field.key"
@@ -259,31 +260,30 @@ async function handleSubmit() {
           </template>
         </n-input>
       </n-form-item>
-
-      <n-form-item class="submit">
-        <n-button
-          type="primary"
-          block
-          @click="handleSubmit"
-          :disabled="
-            !formValues.firstName ||
-            !formValues.password ||
-            !formValues.secondName ||
-            !formValues.email
-          "
-          :loading="authStore.isLoading"
-          class="submit-button"
-          round
-        >
-          Зарегистрироваться
-        </n-button>
-      </n-form-item>
-
       <n-flex justify="center">
+        <n-form-item class="submit">
+          <n-button
+            type="primary"
+            block
+            :disabled="
+              !formValues.firstName ||
+              !formValues.password ||
+              !formValues.secondName ||
+              !formValues.email
+            "
+            :loading="authStore.isLoading"
+            class="submit-button"
+            round
+            @click="handleSubmit"
+          >
+            Зарегистрироваться
+          </n-button>
+        </n-form-item>
+
         <n-form-item>
           <router-link to="/login">
             <n-button quaternary round :disabled="authStore.isLoading">
-              Уже есть аккаунт? Войти
+              Есть аккаунт?
             </n-button>
           </router-link>
         </n-form-item>
@@ -295,5 +295,9 @@ async function handleSubmit() {
 <style scoped lang="scss">
 .signup-form {
   width: 500px;
+
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 }
 </style>
