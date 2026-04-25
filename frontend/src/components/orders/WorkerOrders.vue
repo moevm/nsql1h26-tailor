@@ -13,8 +13,10 @@ import {
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const allOrders = ref<Order[]>([]);
 const myOrders = ref<Order[]>([]);
@@ -42,7 +44,7 @@ async function loadMyOrders() {
   if (!authStore.user) return;
   isLoadingMy.value = true;
   try {
-    const res = await ordersApi.getByTailor(authStore.user._id);
+    const res = await ordersApi.getByTailor(authStore.user.uuid);
     myOrders.value = res.data;
   } finally {
     isLoadingMy.value = false;
@@ -85,6 +87,13 @@ const filteredAll = computed(() =>
 const filteredMy = computed(() =>
   myOrders.value.filter((o) => o._id.includes(searchMy.value.trim())),
 );
+
+function handleRowProps(row: Order) {
+  return {
+    style: 'cursor: pointer',
+    onClick: () => router.push(`/orders/${row._id}`),
+  };
+}
 </script>
 
 <template>
@@ -106,6 +115,7 @@ const filteredMy = computed(() =>
             :pagination="false"
             :bordered="true"
             size="small"
+            :row-props="handleRowProps"
           />
         </n-spin>
       </n-tab-pane>
@@ -126,6 +136,7 @@ const filteredMy = computed(() =>
             :pagination="false"
             :bordered="true"
             size="small"
+            :row-props="handleRowProps"
           />
         </n-spin>
       </n-tab-pane>

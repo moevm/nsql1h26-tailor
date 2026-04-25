@@ -23,8 +23,18 @@ const routes: RouterOptions['routes'] = [
   },
   {
     path: '/orders',
-    name: 'Заказы',
+    name: 'orders',
     component: () => import('@/pages/OrdersPage.vue'),
+  },
+  {
+    path: '/orders/new',
+    name: 'NewOrder',
+    component: () => import('@/pages/NewOrderPage.vue'),
+  },
+  {
+    path: '/orders/:id',
+    name: 'OrderDetail',
+    component: () => import('@/pages/OrderDetailPage.vue'),
   },
 ];
 

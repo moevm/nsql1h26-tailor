@@ -28,6 +28,16 @@ export type OrderStatus =
   | 'done'
   | 'cancelled';
 
+export interface Worker {
+  _id: string;
+  name: {
+    firstName: string;
+    lastName: string;
+    patronymic?: string;
+  };
+  email: string;
+}
+
 export interface Order {
   _id: string;
   customerId: string;
@@ -36,6 +46,8 @@ export interface Order {
   status: OrderStatus;
   comments: OrderComment[];
   totalPrice: number;
+  preferredDate?: string;
+  contactNumber?: string;
   createdAt: string;
   updatedAt: string;
 }

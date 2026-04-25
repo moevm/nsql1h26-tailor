@@ -25,7 +25,7 @@ export const useOrdersStore = defineStore('orders', () => {
       } else {
         res = await ordersApi.getAll();
       }
-      orders.value = res.data;
+      orders.value = Array.isArray(res.data) ? res.data : [];
     } catch {
       error.value = 'Не удалось загрузить заказы';
     } finally {
@@ -38,7 +38,7 @@ export const useOrdersStore = defineStore('orders', () => {
     error.value = null;
     try {
       const res = await ordersApi.getByTailor(tailorId);
-      orders.value = res.data;
+      orders.value = Array.isArray(res.data) ? res.data : [];
     } catch {
       error.value = 'Не удалось загрузить заказы';
     } finally {
@@ -51,7 +51,7 @@ export const useOrdersStore = defineStore('orders', () => {
     error.value = null;
     try {
       const res = await ordersApi.getUnassigned();
-      orders.value = res.data;
+      orders.value = Array.isArray(res.data) ? res.data : [];
     } catch {
       error.value = 'Не удалось загрузить заказы';
     } finally {

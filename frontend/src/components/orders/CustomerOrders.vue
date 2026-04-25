@@ -10,7 +10,6 @@ import {
   NInput,
   NSpin,
   NTag,
-  useMessage,
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
@@ -20,7 +19,6 @@ import { ORDER_STATUS_LABELS } from '@/types/order';
 const authStore = useAuthStore();
 const ordersStore = useOrdersStore();
 const router = useRouter();
-const message = useMessage();
 
 const search = ref('');
 
@@ -61,22 +59,14 @@ const columns: DataTableColumns<Order> = [
         default: () => ORDER_STATUS_LABELS[row.status],
       }),
   },
-  {
-    title: 'Действия',
-    key: 'actions',
-    render: (row) =>
-      h(
-        NButton,
-        {
-          size: 'small',
-          type: 'default',
-          disabled: row.status !== 'done',
-          onClick: () => message.info('Добавление отзыва'),
-        },
-        { default: () => 'Add Review' },
-      ),
-  },
 ];
+
+function handleRowProps(row: Order) {
+  return {
+    style: 'cursor: pointer',
+    onClick: () => router.push(`/orders/${row._id}`),
+  };
+}
 
 function handleLogout() {
   authStore.logout();
@@ -110,11 +100,12 @@ function handleLogout() {
         :pagination="false"
         :bordered="true"
         size="small"
+        :row-props="handleRowProps"
       />
     </n-spin>
 
-    <n-button type="primary" round class="place-order-btn" @click="message.info('Создание заказа')">
-      Новый заказ
+    <n-button type="primary" round class="place-order-btn" @click="router.push('/orders/new')">
+      Создать заказ
     </n-button>
   </div>
 </template>

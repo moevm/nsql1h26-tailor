@@ -13,6 +13,9 @@ import {
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
@@ -77,6 +80,13 @@ const columns: DataTableColumns<Order> = [
 const filteredOrders = computed(() =>
   orders.value.filter((o) => o._id.includes(search.value.trim())),
 );
+
+function handleRowProps(row: Order) {
+  return {
+    style: 'cursor: pointer',
+    onClick: () => router.push(`/orders/${row._id}`),
+  };
+}
 </script>
 
 <template>
@@ -98,6 +108,7 @@ const filteredOrders = computed(() =>
             :pagination="false"
             :bordered="true"
             size="small"
+            :row-props="handleRowProps"
           />
         </n-spin>
       </n-tab-pane>
