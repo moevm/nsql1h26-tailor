@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
 import { ExportModule } from './export/export.module';
 import { HealthModule } from './health/health.module';
 import { ImportModule } from './import/import.module';
@@ -45,6 +46,7 @@ import { WorkersModule } from './workers/workers.module';
     AnalyticsModule,
     ImportModule,
     ExportModule,
+    DatabaseModule,
   ],
 })
 export class AppModule {}
