@@ -1,10 +1,4 @@
 <script setup lang="ts">
-/**
- * @file App.vue
- * @description Главный компонент приложения,
- * обеспечивающий глобальные провайдеры и маршрутизацию.
- * @author @KorzikAlex
- */
 import {
   type GlobalThemeOverrides,
   NConfigProvider,
@@ -23,6 +17,10 @@ const themeOverrides: GlobalThemeOverrides = {
     primaryColorHover: '#01428e',
     primaryColorPressed: '#01428e',
     primaryColorSuppl: '#01428e',
+    infoColor: '#023370',
+    infoColorHover: '#01428e',
+    infoColorPressed: '#01428e',
+    infoColorSuppl: '#01428e',
   },
 };
 </script>

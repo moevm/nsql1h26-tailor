@@ -1,8 +1,3 @@
-/**
- * @file main.ts
- * @description Точка входа для приложения на Vue.js.
- * @author @KorzikAlex
- */
 import App from '@/App.vue';
 import { router } from '@/router';
 import { createPinia } from 'pinia';
