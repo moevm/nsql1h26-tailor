@@ -94,24 +94,15 @@ const formFields: FormFieldConfig[] = [
  */
 async function handleSubmit() {
   formRef.value?.validate(async (errors) => {
-    if (!errors) {
-      const isLoggedIn = await authStore.login({
-        email: formValues.value.email,
-        password: formValues.value.password,
-      });
-
-      if (isLoggedIn) {
-        message.success('Вы успешно вошли в аккаунт');
-        const redirectPath =
-          typeof route.query.redirect === 'string'
-            ? route.query.redirect
-            : '/home';
-        await router.push(redirectPath);
-      } else {
-        message.error(authStore.error ?? 'Неверная почта или пароль');
-      }
-    } else {
+    if (errors) {
       message.error('Пожалуйста, исправьте ошибки в форме');
+      return;
+    }
+    try {
+      await authStore.login(formValues.value.email, formValues.value.password);
+      router.push({ name: 'orders' });
+    } catch {
+      message.error(authStore.error ?? 'Ошибка входа');
     }
   });
 }
@@ -152,9 +143,7 @@ async function handleSubmit() {
           <n-button
             type="primary"
             block
-            :disabled="
-              !formValues.email || !formValues.password || authStore.isLoading
-            "
+            :disabled="!formValues.email || !formValues.password"
             :loading="authStore.isLoading"
             round
             @click="handleSubmit"

@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { NLayout } from 'naive-ui';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <n-layout embedded>

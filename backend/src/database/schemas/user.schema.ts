@@ -11,8 +11,8 @@ class UserName {
   @Prop({ required: true })
   lastName!: string;
 
-  @Prop({ default: '' })
-  patronymic!: string;
+  @Prop()
+  patronymic?: string;
 }
 
 @Schema()
@@ -29,7 +29,7 @@ export class User {
   @Prop({ type: UserName, required: true })
   name!: UserName;
 
-  @Prop({ unique: true, required: false })
+  @Prop({ required: false, unique: true, sparse: true })
   phone?: string;
 
   @Prop({ required: true, unique: true })

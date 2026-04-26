@@ -1,26 +1,15 @@
-import { type AuthResponse, type LoginCredentials } from '@/types/auth';
-import { isAxiosError } from 'axios';
+import type {
+  AuthResponse,
+  LoginCredentials,
+  RegisterCredentials,
+} from '@/types';
 
-import { apiClient } from './apiClient';
+import { api } from './index';
 
 export const authApi = {
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    try {
-      const { data } = await apiClient.post<AuthResponse>(
-        '/auth/login',
-        credentials,
-      );
-      return data;
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const message =
-          typeof error.response?.data?.message === 'string'
-            ? error.response.data.message
-            : 'Ошибка авторизации';
-        throw new Error(message, { cause: error });
-      }
+  login: (credentials: LoginCredentials) =>
+    api.post<AuthResponse>('/auth/login', credentials),
 
-      throw new Error('Ошибка сети при авторизации', { cause: error });
-    }
-  },
+  register: (credentials: RegisterCredentials) =>
+    api.post<AuthResponse>('/auth/register', credentials),
 };

@@ -1,5 +1,4 @@
 import { useAuthStore } from '@/stores';
-import type { role } from '@/types/auth';
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 
 import { authRoutes, homeRoutes } from './routes';
@@ -16,51 +15,40 @@ const routes: RouterOptions['routes'] = [
     meta: { requiresAuth: true },
     children: homeRoutes,
   },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: () => import('@/pages/OrdersPage.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/orders/new',
+    name: 'NewOrder',
+    component: () => import('@/pages/NewOrderPage.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/orders/:id',
+    name: 'OrderDetail',
+    component: () => import('@/pages/OrderDetailPage.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
-/**
- * @constant router
- * @description Экземпляр маршрутизатора.
- */
 export const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
-router.beforeEach(async (to) => {
+router.beforeEach((to) => {
   const authStore = useAuthStore();
-  const requiresAuth = Boolean(to.meta.requiresAuth);
-  const isGuestOnly = Boolean(to.meta.guestOnly);
-  const routeRoles = to.meta.roles as role[] | undefined;
+  const isAuthRoute = ['login', 'signup'].includes(to.name as string);
 
-  // Если маршрут требует авторизации, а пользователь не авторизован, перенаправляем на страницу входа
-  if (requiresAuth && !authStore.isAuthenticated) {
-    return {
-      path: '/login',
-      query: { redirect: to.fullPath },
-    };
+  if (!authStore.isAuthenticated && !isAuthRoute) {
+    return { name: 'login' };
   }
 
-  // Если маршрут предназначен только для гостей,
-  // а пользователь уже авторизован, перенаправляем на главную страницу
-  if (isGuestOnly && authStore.isAuthenticated) {
-    return '/home';
+  if (authStore.isAuthenticated && isAuthRoute) {
+    return { name: 'orders' };
   }
-
-  // Если маршрут имеет ограничения по ролям, проверяем роль пользователя
-  if (routeRoles && routeRoles.length > 0) {
-    if (!authStore.user) {
-      return {
-        path: '/login',
-        query: { redirect: to.fullPath },
-      };
-    }
-
-    // Если роль пользователя не соответствует требованиям маршрута, перенаправляем на главную страницу
-    if (!routeRoles.includes(authStore.user.role)) {
-      return '/home';
-    }
-  }
-
-  return true;
 });

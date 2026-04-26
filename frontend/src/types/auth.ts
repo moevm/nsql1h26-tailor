@@ -6,35 +6,34 @@ interface UserName {
 
 export type role = 'customer' | 'tailor' | 'manager';
 
-/**
- * Публичные данные пользователя.
- */
+export interface UserName {
+  firstName: string;
+  lastName: string;
+  patronymic?: string;
+}
 export interface User {
   _id: string;
   email: string;
   name: UserName;
   phone?: string;
-  role: role;
+  role: 'customer' | 'tailor' | 'manager';
 }
 
-/**
- * Данные для входа.
- */
 export interface LoginCredentials {
   email: string;
   password: string;
 }
 
-/**
- * Ответ от сервера при авторизации.
- */
+export interface RegisterCredentials {
+  firstName: string;
+  lastName: string;
+  patronymic?: string;
+  phone?: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthResponse {
-  /**
-   * JWT токен доступа.
-   */
   accessToken: string;
-  /**
-   * Данные пользователя.
-   */
   user: User;
 }
