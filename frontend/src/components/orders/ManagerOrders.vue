@@ -126,10 +126,10 @@ async function handleExport() {
     if (res.data) {
       message.success('Экспорт выполнен');
     } else {
-      message.warning('Экспорт пока не реализован');
+      message.warning('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
     }
   } catch {
-    message.error('Экспорт пока не реализован');
+    message.error('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
   } finally {
     isExporting.value = false;
   }
@@ -154,10 +154,10 @@ async function handleImport() {
       message.success('Данные успешно импортированы');
       importFileList.value = [];
     } else {
-      message.warning('Импорт пока не реализован');
+      message.warning('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
     }
   } catch {
-    message.error('Импорт пока не реализован');
+    message.error('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
   } finally {
     isImporting.value = false;
   }
