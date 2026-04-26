@@ -28,7 +28,11 @@ export class DatabaseService implements OnModuleInit {
   private async seedUsers() {
     const users = [
       {
-        name: { firstName: 'customer', lastName: 'customer', patronymic: 'customer' },
+        name: {
+          firstName: 'customer',
+          lastName: 'customer',
+          patronymic: 'customer',
+        },
         phone: '+71111111111',
         email: 'customer@mail.com',
         password: {
@@ -48,7 +52,11 @@ export class DatabaseService implements OnModuleInit {
         role: 'tailor',
       },
       {
-        name: { firstName: 'tailor2', lastName: 'tailor2', patronymic: 'tailor2' },
+        name: {
+          firstName: 'tailor2',
+          lastName: 'tailor2',
+          patronymic: 'tailor2',
+        },
         phone: '+74444444444',
         email: 'tailor2@mail.com',
         password: {
@@ -58,7 +66,11 @@ export class DatabaseService implements OnModuleInit {
         role: 'tailor',
       },
       {
-        name: { firstName: 'manager', lastName: 'manager', patronymic: 'manager' },
+        name: {
+          firstName: 'manager',
+          lastName: 'manager',
+          patronymic: 'manager',
+        },
         phone: '+73333333333',
         email: 'manager@mail.com',
         password: {
@@ -74,7 +86,9 @@ export class DatabaseService implements OnModuleInit {
   }
 
   private async seedOrders() {
-    const customer = await this.userModel.findOne({ email: 'customer@mail.com' });
+    const customer = await this.userModel.findOne({
+      email: 'customer@mail.com',
+    });
     const tailor1 = await this.userModel.findOne({ email: 'tailor@mail.com' });
     const tailor2 = await this.userModel.findOne({ email: 'tailor2@mail.com' });
 
@@ -88,42 +102,69 @@ export class DatabaseService implements OnModuleInit {
         customerId: customer._id,
         tailorId: tailor1._id,
         status: 'in_progress',
-        items: [{ name: 'Платье', description: 'Укоротить платье', quantity: 1, price: 5000 }],
+        items: [
+          {
+            name: 'Платье',
+            description: 'Укоротить платье',
+            quantity: 1,
+            price: 5000,
+          },
+        ],
         totalPrice: 5000,
       },
       {
         customerId: customer._id,
         tailorId: tailor1._id,
         status: 'done',
-        items: [{ name: 'Юбка', description: 'Подшить юбку', quantity: 1, price: 3000 }],
+        items: [
+          {
+            name: 'Юбка',
+            description: 'Подшить юбку',
+            quantity: 1,
+            price: 3000,
+          },
+        ],
         totalPrice: 3000,
       },
       {
         customerId: customer._id,
         tailorId: tailor2._id,
         status: 'accepted',
-        items: [{ name: 'Брюки', description: 'Ремонт брюк', quantity: 1, price: 4000 }],
+        items: [
+          {
+            name: 'Брюки',
+            description: 'Ремонт брюк',
+            quantity: 1,
+            price: 4000,
+          },
+        ],
         totalPrice: 4000,
       },
       {
         customerId: customer._id,
         tailorId: tailor2._id,
         status: 'done',
-        items: [{ name: 'Пальто', description: 'Пальто', quantity: 1, price: 12000 }],
+        items: [
+          { name: 'Пальто', description: 'Пальто', quantity: 1, price: 12000 },
+        ],
         totalPrice: 12000,
       },
       {
         customerId: customer._id,
         tailorId: null,
         status: 'created',
-        items: [{ name: 'Блузка', description: 'Блузка', quantity: 2, price: 2500 }],
+        items: [
+          { name: 'Блузка', description: 'Блузка', quantity: 2, price: 2500 },
+        ],
         totalPrice: 5000,
       },
       {
         customerId: customer._id,
         tailorId: null,
         status: 'created',
-        items: [{ name: 'Костюм', description: 'Костюм', quantity: 1, price: 15000 }],
+        items: [
+          { name: 'Костюм', description: 'Костюм', quantity: 1, price: 15000 },
+        ],
         totalPrice: 15000,
       },
     ];
