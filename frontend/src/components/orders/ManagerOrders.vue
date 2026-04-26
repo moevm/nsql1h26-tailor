@@ -7,8 +7,6 @@ import {
   NFlex,
   NInput,
   NSpin,
-  NTabPane,
-  NTabs,
   NTag,
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
@@ -20,7 +18,6 @@ const router = useRouter();
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
 const search = ref('');
-const activeTab = ref('orders');
 
 onMounted(async () => {
   isLoading.value = true;
@@ -98,76 +95,14 @@ function handleRowProps(row: Order) {
 
 <template>
   <div class="orders-page">
-    <n-tabs v-model:value="activeTab" type="line" animated>
-      <n-tab-pane name="orders" tab="Заказы">
-        <h1 class="title"><em>Заказы</em></h1>
-        <n-input
-          v-model:value="search"
-          placeholder="Поиск"
-          round
-          clearable
-          class="search"
-        />
-        <n-spin :show="isLoading">
-          <n-data-table
-            :columns="columns"
-            :data="filteredOrders"
-            :pagination="false"
-            :bordered="true"
-            size="small"
-            :row-props="handleRowProps"
-          />
-        </n-spin>
-      </n-tab-pane>
-
-      <n-tab-pane name="analytics" tab="Аналитика">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
-        >
-          Аналитика
-        </n-flex>
-      </n-tab-pane>
-
-      <n-tab-pane name="import" tab="Импорт">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
-        >
-          Импорт
-        </n-flex>
-      </n-tab-pane>
-
-      <n-tab-pane name="export" tab="Экспорт">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
-        >
-          Экспорт
-        </n-flex>
-      </n-tab-pane>
-    </n-tabs>
+    <n-flex vertical :size="16">
+      <n-input v-model:value="search" placeholder="Поиск" round clearable class="search" />
+      <n-spin :show="isLoading">
+        <n-data-table :columns="columns" :data="filteredOrders" :pagination="false" :bordered="true" size="small"
+          :row-props="handleRowProps" />
+      </n-spin>
+    </n-flex>
   </div>
 </template>
 
-<style scoped lang="scss">
-.orders-page {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 0 24px;
-}
-
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-
-.search {
-  margin-bottom: 16px;
-  max-width: 200px;
-}
-</style>
+<style scoped lang="scss"></style>
