@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsDate,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
@@ -34,6 +35,7 @@ class OrderComment {
   @IsString()
   text!: string;
 
+  @IsDate()
   @IsOptional()
   createdAt?: Date;
 }
