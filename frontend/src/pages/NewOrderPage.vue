@@ -25,7 +25,6 @@ async function handleSubmit() {
   }
   if (!authStore.user) return;
 
-  const now = new Date().toISOString();
   isLoading.value = true;
   try {
     await ordersApi.create({
@@ -39,10 +38,7 @@ async function handleSubmit() {
         },
       ],
       status: 'created',
-      comments: [],
       totalPrice: 0,
-      createdAt: now,
-      updatedAt: now,
     });
     message.success('Заказ успешно создан');
     router.push('/orders');
