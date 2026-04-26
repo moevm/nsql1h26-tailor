@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -6,6 +6,7 @@ import { User } from './schemas/user.schema';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit {
+  private readonly logger = new Logger(DatabaseService.name);
   constructor(
     @InjectModel('User')
     private readonly userModel: Model<User>,
@@ -67,6 +68,6 @@ export class DatabaseService implements OnModuleInit {
       },
     ];
     await this.userModel.insertMany(users);
-    console.log('Successfully seeded test users.');
+    this.logger.log('Successfully seeded test users.');
   }
 }
