@@ -1,5 +1,12 @@
-import { Type } from "class-transformer";
-import { IsDate, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from 'class-transformer';
+import {
+  IsDate,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 class OrderItem {
   @IsNotEmpty()
@@ -37,7 +44,7 @@ export class CreateOrderDto {
   @IsMongoId()
   @IsNotEmpty()
   customerId!: string;
-  
+
   @IsMongoId()
   @IsOptional()
   tailorId?: string;
@@ -49,7 +56,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   status!: string;
-  
+
   @IsNotEmpty()
   @Type(() => OrderComment)
   comments!: OrderComment[];
@@ -57,7 +64,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsNumber()
   totalPrice!: number;
-  
+
   @IsDate()
   @IsNotEmpty()
   createdAt!: Date;

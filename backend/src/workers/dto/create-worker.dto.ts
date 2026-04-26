@@ -1,5 +1,12 @@
-import { Type } from "class-transformer";
-import { IsDate, IsEmail, IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from 'class-transformer';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 class UserName {
   @IsNotEmpty()
@@ -33,7 +40,7 @@ export class CreateWorkerDto {
   @IsOptional()
   @IsString()
   phone?: string;
-  
+
   @IsEmail()
   @IsNotEmpty()
   @IsString()
@@ -46,7 +53,7 @@ export class CreateWorkerDto {
   @IsNotEmpty()
   @IsEnum(['customer', 'tailor', 'manager'])
   role!: string;
-  
+
   @IsDate()
   @IsNotEmpty()
   createdAt!: Date;
