@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
-import {
-  NButton,
-  NInput,
-  NSelect,
-  useMessage,
-} from 'naive-ui';
+import { NButton, NInput, NSelect, useMessage } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -20,7 +15,7 @@ const isLoading = ref(false);
 
 const serviceTypeOptions = [
   { label: 'Ремонт', value: 'Ремонт' },
-  { label: 'Пошив', value: 'Пошив' }
+  { label: 'Пошив', value: 'Пошив' },
 ];
 
 async function handleSubmit() {
@@ -77,7 +72,6 @@ async function handleSubmit() {
           placeholder="Описание"
           :rows="5"
         />
-
       </div>
 
       <div class="order-right">

@@ -23,7 +23,9 @@ const selectedStatus = ref<OrderStatus | null>(null);
 
 const role = computed(() => authStore.user?.role);
 const orderId = computed(() => route.params.id as string);
-const currentUserId = computed(() => authStore.user?._id || authStore.user?.uuid || '');
+const currentUserId = computed(
+  () => authStore.user?._id || authStore.user?.uuid || '',
+);
 
 const tailorId = computed(() => {
   if (!order.value?.tailorId) return null;
@@ -51,9 +53,14 @@ const orderNumber = computed(() =>
 );
 
 const orderType = computed(() => order.value?.items[0]?.name ?? '');
-const orderDescription = computed(() => order.value?.items[0]?.description ?? '');
+const orderDescription = computed(
+  () => order.value?.items[0]?.description ?? '',
+);
 
-function formatDate(dateStr: string | undefined): { date: string; time: string } {
+function formatDate(dateStr: string | undefined): {
+  date: string;
+  time: string;
+} {
   if (!dateStr) return { date: '-', time: '' };
   const d = new Date(dateStr);
   const day = d.getDate().toString().padStart(2, '0');
@@ -63,7 +70,6 @@ function formatDate(dateStr: string | undefined): { date: string; time: string }
   const minutes = d.getMinutes().toString().padStart(2, '0');
   return { date: `${day}.${month}.${year}`, time: `${hours}:${minutes}` };
 }
-
 
 const createdAt = computed(() => formatDate(order.value?.createdAt));
 const updatedAt = computed(() => formatDate(order.value?.updatedAt));
@@ -159,7 +165,9 @@ async function handleManagerUpdate() {
     <n-spin :show="isLoading">
       <template v-if="order">
         <div class="header-row">
-          <h1 class="page-title"><em>Заказ {{ orderNumber }}</em></h1>
+          <h1 class="page-title">
+            <em>Заказ {{ orderNumber }}</em>
+          </h1>
           <div class="dates">
             <div class="date-item">
               <span class="date-label">Создан:</span>

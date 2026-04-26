@@ -3,14 +3,7 @@ import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import {
-  NDataTable,
-  NInput,
-  NSpin,
-  NTabPane,
-  NTabs,
-  NTag,
-} from 'naive-ui';
+import { NDataTable, NInput, NSpin, NTabPane, NTabs, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -54,7 +47,10 @@ async function loadMyOrders() {
 const statusTagType = (
   status: OrderStatus,
 ): 'default' | 'info' | 'warning' | 'success' | 'error' => {
-  const map: Record<OrderStatus, 'default' | 'info' | 'warning' | 'success' | 'error'> = {
+  const map: Record<
+    OrderStatus,
+    'default' | 'info' | 'warning' | 'success' | 'error'
+  > = {
     created: 'default',
     accepted: 'info',
     in_progress: 'warning',
@@ -74,9 +70,13 @@ const baseColumns: DataTableColumns<Order> = [
     title: 'Статус',
     key: 'status',
     render: (row) =>
-      h(NTag, { type: statusTagType(row.status), size: 'small', round: true }, {
-        default: () => ORDER_STATUS_LABELS[row.status],
-      }),
+      h(
+        NTag,
+        { type: statusTagType(row.status), size: 'small', round: true },
+        {
+          default: () => ORDER_STATUS_LABELS[row.status],
+        },
+      ),
   },
 ];
 

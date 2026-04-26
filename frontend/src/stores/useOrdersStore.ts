@@ -2,6 +2,7 @@ import { ordersApi } from '@/api/orders';
 import type { Order } from '@/types';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+
 import { useAuthStore } from './useAuthStore';
 
 export const useOrdersStore = defineStore('orders', () => {
@@ -19,7 +20,7 @@ export const useOrdersStore = defineStore('orders', () => {
     try {
       let res;
       if (user.role === 'customer') {
-        res = await ordersApi.getByCustomer(user._id);
+        res = await ordersApi.getByCustomer(user._id ?? user.uuid);
       } else if (user.role === 'manager') {
         res = await ordersApi.getAll();
       } else {

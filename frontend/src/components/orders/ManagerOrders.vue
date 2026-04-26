@@ -35,7 +35,10 @@ onMounted(async () => {
 const statusTagType = (
   status: OrderStatus,
 ): 'default' | 'info' | 'warning' | 'success' | 'error' => {
-  const map: Record<OrderStatus, 'default' | 'info' | 'warning' | 'success' | 'error'> = {
+  const map: Record<
+    OrderStatus,
+    'default' | 'info' | 'warning' | 'success' | 'error'
+  > = {
     created: 'default',
     accepted: 'info',
     in_progress: 'warning',
@@ -61,9 +64,13 @@ const columns: DataTableColumns<Order> = [
     title: 'Статус',
     key: 'status',
     render: (row) =>
-      h(NTag, { type: statusTagType(row.status), size: 'small', round: true }, {
-        default: () => ORDER_STATUS_LABELS[row.status],
-      }),
+      h(
+        NTag,
+        { type: statusTagType(row.status), size: 'small', round: true },
+        {
+          default: () => ORDER_STATUS_LABELS[row.status],
+        },
+      ),
   },
   {
     title: 'Работник',
@@ -114,19 +121,31 @@ function handleRowProps(row: Order) {
       </n-tab-pane>
 
       <n-tab-pane name="analytics" tab="Аналитика">
-        <n-flex justify="center" align="center" style="height: 200px; color: #999">
+        <n-flex
+          justify="center"
+          align="center"
+          style="height: 200px; color: #999"
+        >
           Аналитика
         </n-flex>
       </n-tab-pane>
 
       <n-tab-pane name="import" tab="Импорт">
-        <n-flex justify="center" align="center" style="height: 200px; color: #999">
+        <n-flex
+          justify="center"
+          align="center"
+          style="height: 200px; color: #999"
+        >
           Импорт
         </n-flex>
       </n-tab-pane>
 
       <n-tab-pane name="export" tab="Экспорт">
-        <n-flex justify="center" align="center" style="height: 200px; color: #999">
+        <n-flex
+          justify="center"
+          align="center"
+          style="height: 200px; color: #999"
+        >
           Экспорт
         </n-flex>
       </n-tab-pane>

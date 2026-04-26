@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore, useOrdersStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
+import { ORDER_STATUS_LABELS } from '@/types/order';
 import { AccountCircleFilled } from '@vicons/material';
 import {
   NButton,
@@ -14,7 +15,6 @@ import {
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ORDER_STATUS_LABELS } from '@/types/order';
 
 const authStore = useAuthStore();
 const ordersStore = useOrdersStore();
@@ -29,7 +29,10 @@ onMounted(async () => {
 });
 
 const statusTagType = (status: OrderStatus) => {
-  const map: Record<OrderStatus, 'default' | 'info' | 'warning' | 'success' | 'error'> = {
+  const map: Record<
+    OrderStatus,
+    'default' | 'info' | 'warning' | 'success' | 'error'
+  > = {
     created: 'default',
     accepted: 'info',
     in_progress: 'warning',
@@ -40,9 +43,7 @@ const statusTagType = (status: OrderStatus) => {
 };
 
 const filteredOrders = computed(() =>
-  ordersStore.orders.filter((o) =>
-    o._id.includes(search.value.trim()),
-  ),
+  ordersStore.orders.filter((o) => o._id.includes(search.value.trim())),
 );
 
 const columns: DataTableColumns<Order> = [
@@ -55,9 +56,13 @@ const columns: DataTableColumns<Order> = [
     title: 'Статус',
     key: 'status',
     render: (row) =>
-      h(NTag, { type: statusTagType(row.status), size: 'small', round: true }, {
-        default: () => ORDER_STATUS_LABELS[row.status],
-      }),
+      h(
+        NTag,
+        { type: statusTagType(row.status), size: 'small', round: true },
+        {
+          default: () => ORDER_STATUS_LABELS[row.status],
+        },
+      ),
   },
 ];
 
@@ -104,7 +109,12 @@ function handleLogout() {
       />
     </n-spin>
 
-    <n-button type="primary" round class="place-order-btn" @click="router.push('/orders/new')">
+    <n-button
+      type="primary"
+      round
+      class="place-order-btn"
+      @click="router.push('/orders/new')"
+    >
       Создать заказ
     </n-button>
   </div>
