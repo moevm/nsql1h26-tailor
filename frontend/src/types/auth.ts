@@ -4,74 +4,34 @@
  * @module types/auth
  */
 
-/**
- * Публичные данные пользователя.
- */
-export interface User {
-  /**
-   * Уникальный идентификатор пользователя.
-   */
-  uuid: string;
-  /**
-   * MongoDB ObjectId пользователя (опционально).
-   */
-  _id?: string;
-  /**
-   * Логин пользователя.
-   */
-  email: string;
-
-  /**
-   * Имя пользователя.
-   */
+export interface UserName {
   firstName: string;
-
-  /**
-   * Фамилия пользователя.
-   */
   lastName: string;
-
-  /**
-   * Отчество пользователя (опционально).
-   */
   patronymic?: string;
-
-  /**
-   * Телефон пользователя (опционально).
-   */
+}
+export interface User {
+  _id: string;
+  email: string;
+  name: UserName;
   phone?: string;
-
-  /**
-   * Роль пользователя.
-   */
-  role?: 'customer' | 'tailor' | 'manager';
+  role: 'customer' | 'tailor' | 'manager';
 }
 
-/**
- * Данные для входа.
- */
 export interface LoginCredentials {
-  /**
-   * Почта пользователя.
-   */
   email: string;
-
-  /**
-   * Пароль пользователя.
-   */
   password: string;
 }
 
-/**
- * Ответ от сервера при авторизации.
- */
+export interface RegisterCredentials {
+  firstName: string;
+  lastName: string;
+  patronymic?: string;
+  phone?: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthResponse {
-  /**
-   * JWT токен доступа.
-   */
   accessToken: string;
-  /**
-   * Данные пользователя.
-   */
   user: User;
 }
