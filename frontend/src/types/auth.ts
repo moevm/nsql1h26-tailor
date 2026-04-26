@@ -13,6 +13,10 @@ export interface User {
    */
   uuid: string;
   /**
+   * MongoDB ObjectId пользователя (опционально).
+   */
+  _id?: string;
+  /**
    * Логин пользователя.
    */
   email: string;
@@ -36,6 +40,11 @@ export interface User {
    * Телефон пользователя (опционально).
    */
   phone?: string;
+
+  /**
+   * Роль пользователя.
+   */
+  role?: 'customer' | 'tailor' | 'manager';
 }
 
 /**

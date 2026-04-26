@@ -4,3 +4,4 @@
  * @module types/index
  */
 export * from './auth';
+export * from './order';
