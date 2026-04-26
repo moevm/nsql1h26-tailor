@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { exportApi } from '@/api/export';
+import { importApi } from '@/api/import';
 import { ordersApi } from '@/api/orders';
 import type { Order, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
+  NButton,
+  NCheckbox,
   NDataTable,
   NFlex,
   NInput,
@@ -10,17 +14,30 @@ import {
   NTabPane,
   NTabs,
   NTag,
+  NUpload,
+  useMessage,
 } from 'naive-ui';
-import type { DataTableColumns } from 'naive-ui';
+import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const message = useMessage();
 
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
 const search = ref('');
 const activeTab = ref('orders');
+
+const exportUsers = ref(true);
+const exportOrders = ref(true);
+const exportAnalytics = ref(false);
+const isExporting = ref(false);
+
+const importUsers = ref(true);
+const importOrders = ref(true);
+const importFileList = ref<UploadFileInfo[]>([]);
+const isImporting = ref(false);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -94,6 +111,57 @@ function handleRowProps(row: Order) {
     onClick: () => router.push(`/orders/${row._id}`),
   };
 }
+
+async function handleExport() {
+  if (!exportUsers.value && !exportOrders.value && !exportAnalytics.value) {
+    message.warning('Выберите хотя бы один пункт для экспорта');
+    return;
+  }
+  isExporting.value = true;
+  try {
+    const res = await exportApi.exportReport({
+      users: exportUsers.value,
+      orders: exportOrders.value,
+    });
+    if (res.data) {
+      message.success('Экспорт выполнен');
+    } else {
+      message.warning('Экспорт пока не реализован');
+    }
+  } catch {
+    message.error('Экспорт пока не реализован');
+  } finally {
+    isExporting.value = false;
+  }
+}
+
+async function handleImport() {
+  if (!importUsers.value && !importOrders.value) {
+    message.warning('Выберите хотя бы один тип данных для импорта');
+    return;
+  }
+  if (!importFileList.value.length) {
+    message.warning('Выберите файл для импорта');
+    return;
+  }
+  isImporting.value = true;
+  try {
+    const res = await importApi.importData({
+      users: importUsers.value,
+      orders: importOrders.value,
+    });
+    if (res.data) {
+      message.success('Данные успешно импортированы');
+      importFileList.value = [];
+    } else {
+      message.warning('Импорт пока не реализован');
+    }
+  } catch {
+    message.error('Импорт пока не реализован');
+  } finally {
+    isImporting.value = false;
+  }
+}
 </script>
 
 <template>
@@ -131,23 +199,54 @@ function handleRowProps(row: Order) {
       </n-tab-pane>
 
       <n-tab-pane name="import" tab="Импорт">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
+        <h1 class="title"><em>Импорт</em></h1>
+        <div class="check-group">
+          <n-checkbox v-model:checked="importUsers">Пользователи</n-checkbox>
+          <div class="check-row">
+            <n-checkbox v-model:checked="importOrders">Заказы</n-checkbox>
+            <n-upload
+              v-model:file-list="importFileList"
+              :max="1"
+              accept=".json,.csv"
+              :show-file-list="false"
+            >
+              <n-button size="small" secondary>
+                {{
+                  importFileList.length
+                    ? importFileList[0].name
+                    : 'Выбрать файл'
+                }}
+              </n-button>
+            </n-upload>
+          </div>
+        </div>
+        <n-button
+          type="primary"
+          round
+          :loading="isImporting"
+          class="action-btn"
+          @click="handleImport"
         >
           Импорт
-        </n-flex>
+        </n-button>
       </n-tab-pane>
 
       <n-tab-pane name="export" tab="Экспорт">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
+        <h1 class="title"><em>Экспорт</em></h1>
+        <div class="check-group">
+          <n-checkbox v-model:checked="exportUsers">Пользователи</n-checkbox>
+          <n-checkbox v-model:checked="exportOrders">Заказы</n-checkbox>
+          <n-checkbox v-model:checked="exportAnalytics">Аналитика</n-checkbox>
+        </div>
+        <n-button
+          type="primary"
+          round
+          :loading="isExporting"
+          class="action-btn"
+          @click="handleExport"
         >
           Экспорт
-        </n-flex>
+        </n-button>
       </n-tab-pane>
     </n-tabs>
   </div>
@@ -169,5 +268,25 @@ function handleRowProps(row: Order) {
 .search {
   margin-bottom: 16px;
   max-width: 200px;
+}
+
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-btn {
+  height: 52px;
+  min-width: 160px;
+  font-size: 15px;
+  font-weight: 600;
 }
 </style>
