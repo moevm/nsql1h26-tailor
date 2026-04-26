@@ -40,5 +40,4 @@ const activeKey = computed(() => route.path);
   </n-layout-sider>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

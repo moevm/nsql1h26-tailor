@@ -3,7 +3,15 @@ import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import { NDataTable, NInput, NSpin, NTabPane, NTabs, NTag, NFlex } from 'naive-ui';
+import {
+  NDataTable,
+  NFlex,
+  NInput,
+  NSpin,
+  NTabPane,
+  NTabs,
+  NTag,
+} from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -101,20 +109,44 @@ function handleRowProps(row: Order) {
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
         <n-flex vertical :size="16">
-          <n-input v-model:value="searchAll" placeholder="Поиск" round clearable class="search" />
+          <n-input
+            v-model:value="searchAll"
+            placeholder="Поиск"
+            round
+            clearable
+            class="search"
+          />
           <n-spin :show="isLoadingAll">
-            <n-data-table :columns="baseColumns" :data="filteredAll" :pagination="false" :bordered="true" size="small"
-              :row-props="handleRowProps" />
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredAll"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
           </n-spin>
         </n-flex>
       </n-tab-pane>
 
       <n-tab-pane name="my" tab="Мои заказы">
         <n-flex vertical>
-          <n-input v-model:value="searchMy" placeholder="Поиск" round clearable class="search" />
+          <n-input
+            v-model:value="searchMy"
+            placeholder="Поиск"
+            round
+            clearable
+            class="search"
+          />
           <n-spin :show="isLoadingMy">
-            <n-data-table :columns="baseColumns" :data="filteredMy" :pagination="false" :bordered="true" size="small"
-              :row-props="handleRowProps" />
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredMy"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
           </n-spin>
         </n-flex>
       </n-tab-pane>
@@ -122,5 +154,4 @@ function handleRowProps(row: Order) {
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

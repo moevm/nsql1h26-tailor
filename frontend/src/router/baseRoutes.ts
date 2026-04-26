@@ -36,5 +36,5 @@ export const baseRoutes: RouteRecordRaw[] = [
     name: 'Импорт/Экспорт',
     component: () => import('@/pages/ImportExportPage.vue'),
     meta: { requiresAuth: true } satisfies RouteMeta,
-  }
+  },
 ];

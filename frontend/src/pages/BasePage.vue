@@ -13,12 +13,8 @@ import { computed } from 'vue';
 const authStore = useAuthStore();
 
 const menuByRole: Record<Role, NavItem[]> = {
-  customer: [
-    { text: 'Мои заказы', href: '/orders', icon: ShoppingCartRound },
-  ],
-  tailor: [
-    { text: 'Заказы', href: '/orders', icon: ShoppingCartRound },
-  ],
+  customer: [{ text: 'Мои заказы', href: '/orders', icon: ShoppingCartRound }],
+  tailor: [{ text: 'Заказы', href: '/orders', icon: ShoppingCartRound }],
   manager: [
     { text: 'Управление заказами', href: '/orders', icon: ShoppingCartRound },
     { text: 'Аналитика', href: '/analytics', icon: PieChartRound },
@@ -30,7 +26,7 @@ const items = computed(() => menuByRole[authStore.user?.role ?? 'customer']);
 </script>
 
 <template>
-  <n-layout >
+  <n-layout>
     <ToolBar />
     <n-layout has-sider>
       <SideNav :items="items" />

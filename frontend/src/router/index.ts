@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores';
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
+
 import { authRoutes } from './authRoutes';
 import { baseRoutes } from './baseRoutes';
 
@@ -12,8 +13,8 @@ const routes: RouterOptions['routes'] = [
   {
     path: '/',
     component: () => import('@/pages/BasePage.vue'),
-    children: baseRoutes
-  }
+    children: baseRoutes,
+  },
 ];
 
 export const router = createRouter({
