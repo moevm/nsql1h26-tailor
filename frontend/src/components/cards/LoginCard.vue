@@ -93,10 +93,15 @@ const formFields: FormFieldConfig[] = [
  */
 async function handleSubmit() {
   formRef.value?.validate(async (errors) => {
-    if (!errors) {
-      router.push('/dashboard');
-    } else {
+    if (errors) {
       message.error('Пожалуйста, исправьте ошибки в форме');
+      return;
+    }
+    try {
+      await authStore.login(formValues.value.email, formValues.value.password);
+      router.push({ name: 'orders' });
+    } catch {
+      message.error(authStore.error ?? 'Ошибка входа');
     }
   });
 }
@@ -138,6 +143,7 @@ async function handleSubmit() {
             type="primary"
             block
             :disabled="!formValues.email || !formValues.password"
+            :loading="authStore.isLoading"
             round
             @click="handleSubmit"
           >

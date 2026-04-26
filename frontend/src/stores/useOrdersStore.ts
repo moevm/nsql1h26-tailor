@@ -20,7 +20,7 @@ export const useOrdersStore = defineStore('orders', () => {
     try {
       let res;
       if (user.role === 'customer') {
-        res = await ordersApi.getByCustomer(user._id ?? user.uuid);
+        res = await ordersApi.getByCustomer(user._id);
       } else if (user.role === 'manager') {
         res = await ordersApi.getAll();
       } else {

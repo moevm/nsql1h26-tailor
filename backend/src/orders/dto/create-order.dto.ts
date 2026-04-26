@@ -36,8 +36,8 @@ class OrderComment {
   text!: string;
 
   @IsDate()
-  @IsNotEmpty()
-  createdAt!: Date;
+  @IsOptional()
+  createdAt?: Date;
 }
 
 export class CreateOrderDto {
@@ -57,19 +57,11 @@ export class CreateOrderDto {
   @IsString()
   status!: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @Type(() => OrderComment)
-  comments!: OrderComment[];
+  comments?: OrderComment[];
 
   @IsNotEmpty()
   @IsNumber()
   totalPrice!: number;
-
-  @IsDate()
-  @IsNotEmpty()
-  createdAt!: Date;
-
-  @IsDate()
-  @IsNotEmpty()
-  updatedAt!: Date;
 }

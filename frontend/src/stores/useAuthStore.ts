@@ -4,43 +4,55 @@
  * @module useAuthStore
  * @author @KorzikAlex
  */
-import { type User } from '@/types';
+import { authApi } from '@/api/auth';
+import type { RegisterCredentials, User } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
+import axios from 'axios';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-/**
- * Store для управления авторизацией.
- */
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const token = useLocalStorage<string | null>('accessToken', null);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
-  /**
-   * Флаг, указывающий, авторизован ли пользователь.
-   */
   const isAuthenticated = computed(() => !!token.value);
 
-  /**
-   * Функция для входа пользователя.
-   */
-  async function login() {
+  async function login(email: string, password: string) {
     isLoading.value = true;
     error.value = null;
+    try {
+      const { data } = await authApi.login({ email, password });
+      token.value = data.accessToken;
+      user.value = data.user;
+    } catch (err) {
+      error.value = extractMessage(err, 'Ошибка входа');
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  /**
-   * Функция для выхода пользователя.
-   */
+  async function register(credentials: RegisterCredentials) {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const { data } = await authApi.register(credentials);
+      token.value = data.accessToken;
+      user.value = data.user;
+    } catch (err) {
+      error.value = extractMessage(err, 'Ошибка регистрации');
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   async function logout() {
     clearAuth();
   }
 
-  /**
-   * Очистка данных авторизации.
-   */
   function clearAuth() {
     user.value = null;
     token.value = null;
@@ -54,7 +66,16 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     error,
     login,
+    register,
     logout,
     clearAuth,
   };
 });
+
+function extractMessage(err: unknown, fallback: string): string {
+  if (axios.isAxiosError(err)) {
+    const msg = err.response?.data?.message;
+    return Array.isArray(msg) ? msg[0] : (msg ?? fallback);
+  }
+  return fallback;
+}

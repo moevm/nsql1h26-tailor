@@ -37,7 +37,7 @@ async function loadMyOrders() {
   if (!authStore.user) return;
   isLoadingMy.value = true;
   try {
-    const res = await ordersApi.getByTailor(authStore.user.uuid);
+    const res = await ordersApi.getByTailor(authStore.user._id);
     myOrders.value = res.data;
   } finally {
     isLoadingMy.value = false;

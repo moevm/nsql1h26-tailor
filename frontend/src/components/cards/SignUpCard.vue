@@ -215,14 +215,23 @@ const formValues = ref<ModelType>({
  * Обработчик отправки формы
  */
 async function handleSubmit() {
-  // Валидируем форму
   formRef.value?.validate(async (errors) => {
-    // Если ошибок нет, выполняем регистрацию
-    if (!errors) {
-      // Выполняем регистрацию
-      router.push('/dashboard');
-    } else {
+    if (errors) {
       message.error('Пожалуйста, исправьте ошибки в форме');
+      return;
+    }
+    try {
+      await authStore.register({
+        firstName: formValues.value.firstName!,
+        lastName: formValues.value.secondName!,
+        patronymic: formValues.value.patronymic ?? undefined,
+        phone: formValues.value.phone ?? undefined,
+        email: formValues.value.email!,
+        password: formValues.value.password!,
+      });
+      router.push({ name: 'orders' });
+    } catch {
+      message.error(authStore.error ?? 'Ошибка регистрации');
     }
   });
 }
