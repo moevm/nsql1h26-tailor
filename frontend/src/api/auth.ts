@@ -1,4 +1,8 @@
-import type { AuthResponse, LoginCredentials, RegisterCredentials } from '@/types';
+import type {
+  AuthResponse,
+  LoginCredentials,
+  RegisterCredentials,
+} from '@/types';
 
 import { api } from './index';
 

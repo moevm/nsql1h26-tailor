@@ -1,7 +1,6 @@
 import { useAuthStore } from '@/stores';
 import { type RouterOptions, createRouter, createWebHistory } from 'vue-router';
 
-
 const routes: RouterOptions['routes'] = [
   {
     path: '/',
