@@ -24,7 +24,7 @@ const selectedStatus = ref<OrderStatus | null>(null);
 const role = computed(() => authStore.user?.role);
 const orderId = computed(() => route.params.id as string);
 const currentUserId = computed(
-  () => authStore.user?._id || authStore.user?.uuid || '',
+  () => authStore.user?._id ?? '',
 );
 
 const tailorId = computed(() => {

@@ -29,7 +29,7 @@ async function handleSubmit() {
   isLoading.value = true;
   try {
     await ordersApi.create({
-      customerId: authStore.user.uuid,
+      customerId: authStore.user._id,
       items: [
         {
           name: serviceType.value,
