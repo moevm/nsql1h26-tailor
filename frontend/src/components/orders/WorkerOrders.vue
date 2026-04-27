@@ -93,7 +93,9 @@ const filteredAll = computed(() =>
 );
 
 const filteredMy = computed(() =>
-  myOrders.value.filter((o) => o._id.includes(searchMy.value.trim())),
+  myOrders.value.filter(
+    (o) => o._id.includes(searchMy.value.trim()) && o.status !== 'created',
+  ),
 );
 
 function handleRowProps(row: Order) {

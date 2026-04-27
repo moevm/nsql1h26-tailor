@@ -49,6 +49,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function initAuth() {
+    if (!token.value) return;
+    try {
+      const { data } = await authApi.getCurrentUser();
+      user.value = data;
+    } catch {
+      clearAuth();
+    }
+  }
+
   async function logout() {
     clearAuth();
   }
@@ -69,6 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     logout,
     clearAuth,
+    initAuth,
   };
 });
 
