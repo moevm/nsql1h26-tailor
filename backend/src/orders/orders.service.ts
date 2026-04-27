@@ -78,8 +78,13 @@ export class OrdersService {
       throw new BadRequestException('Invalid order ID format.');
     }
 
+    const updatePayload = {
+      ...updateOrderDto,
+      updatedAt: new Date(),
+    };
+
     const order = await this.orderModel
-      .updateOne({ _id: id }, updateOrderDto)
+      .updateOne({ _id: id }, updatePayload)
       .exec();
     if (!order) {
       throw new NotFoundException('Order not found.');
