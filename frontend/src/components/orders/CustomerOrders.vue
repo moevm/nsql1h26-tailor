@@ -83,7 +83,6 @@ function handleRowProps(row: Order) {
         round
         clearable
         class="search"
-        style="max-width: 320px"
       />
 
       <n-spin :show="ordersStore.isLoading">

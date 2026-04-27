@@ -117,7 +117,6 @@ function handleRowProps(row: Order) {
             round
             clearable
             class="search"
-            style="max-width: 320px"
           />
           <n-spin :show="isLoadingAll">
             <n-data-table
@@ -140,7 +139,6 @@ function handleRowProps(row: Order) {
             round
             clearable
             class="search"
-            style="max-width: 320px"
           />
           <n-spin :show="isLoadingMy">
             <n-data-table
