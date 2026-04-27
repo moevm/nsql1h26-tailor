@@ -13,7 +13,7 @@ import type { UploadFileInfo } from 'naive-ui';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 onMounted(() => {
-  message.destroyAll()
+  message.destroyAll();
   message.info(
     'Реализация функций импорта и экспорта будет выполнена в дальнейшем в прототипе "Анализ"',
   );
@@ -103,7 +103,12 @@ async function handleImport() {
           <n-checkbox v-model:checked="importUsers">Пользователи</n-checkbox>
           <div class="check-row">
             <n-checkbox v-model:checked="importOrders">Заказы</n-checkbox>
-            <n-upload v-model:file-list="importFileList" :max="1" accept=".json,.csv" :show-file-list="false">
+            <n-upload
+              v-model:file-list="importFileList"
+              :max="1"
+              accept=".json,.csv"
+              :show-file-list="false"
+            >
               <n-button size="small" secondary>
                 {{
                   importFileList.length
@@ -114,7 +119,13 @@ async function handleImport() {
             </n-upload>
           </div>
         </div>
-        <n-button type="primary" round :loading="isImporting" class="action-btn" @click="handleImport">
+        <n-button
+          type="primary"
+          round
+          :loading="isImporting"
+          class="action-btn"
+          @click="handleImport"
+        >
           Импорт
         </n-button>
       </n-tab-pane>
@@ -125,7 +136,13 @@ async function handleImport() {
           <n-checkbox v-model:checked="exportOrders">Заказы</n-checkbox>
           <n-checkbox v-model:checked="exportAnalytics">Аналитика</n-checkbox>
         </div>
-        <n-button type="primary" round :loading="isExporting" class="action-btn" @click="handleExport">
+        <n-button
+          type="primary"
+          round
+          :loading="isExporting"
+          class="action-btn"
+          @click="handleExport"
+        >
           Экспорт
         </n-button>
       </n-tab-pane>

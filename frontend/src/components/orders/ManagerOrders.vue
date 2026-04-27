@@ -2,13 +2,7 @@
 import { ordersApi } from '@/api/orders';
 import type { Order, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import {
-  NDataTable,
-  NFlex,
-  NInput,
-  NSpin,
-  NTag,
-} from 'naive-ui';
+import { NDataTable, NFlex, NInput, NSpin, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
