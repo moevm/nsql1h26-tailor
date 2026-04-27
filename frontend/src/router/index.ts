@@ -47,9 +47,13 @@ export const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore();
   const isAuthRoute = ['login', 'signup'].includes(to.name as string);
+
+  if (authStore.token && !authStore.user) {
+    await authStore.initAuth();
+  }
 
   if (!authStore.isAuthenticated && !isAuthRoute) {
     return { name: 'login' };

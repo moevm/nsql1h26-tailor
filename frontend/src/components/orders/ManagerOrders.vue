@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
+import ManagerAnalytics from '@/components/analytics/ManagerAnalytics.vue';
 import type { Order, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
@@ -121,13 +122,7 @@ function handleRowProps(row: Order) {
       </n-tab-pane>
 
       <n-tab-pane name="analytics" tab="Аналитика">
-        <n-flex
-          justify="center"
-          align="center"
-          style="height: 200px; color: #999"
-        >
-          Аналитика
-        </n-flex>
+        <ManagerAnalytics />
       </n-tab-pane>
 
       <n-tab-pane name="import" tab="Импорт">
