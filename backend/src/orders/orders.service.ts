@@ -8,6 +8,7 @@ import { DeleteResult, Model, UpdateResult, isValidObjectId } from 'mongoose';
 
 import { Order } from '../database/schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { FindOrderDto } from './dto/find-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
@@ -19,6 +20,37 @@ export class OrdersService {
 
   getAllOrders(): Promise<Order[]> {
     return this.orderModel.find().exec();
+  }
+
+  async getAllOrdersFiltered(findOrderDto: FindOrderDto): Promise<Order[]> {
+    let orders = await this.getAllOrders();
+    if (findOrderDto.startDate) {
+      const startDate = new Date(findOrderDto.startDate);
+      orders = orders.filter((order) => new Date(order.createdAt) >= startDate);
+    }
+
+    if (findOrderDto.endDate) {
+      const endDate = new Date(findOrderDto.endDate);
+      orders = orders.filter((order) => new Date(order.createdAt) <= endDate);
+    }
+
+    if (findOrderDto.minPrice) {
+      orders = orders.filter(
+        (order) => order.totalPrice >= findOrderDto.minPrice!,
+      );
+    }
+
+    if (findOrderDto.maxPrice) {
+      orders = orders.filter(
+        (order) => order.totalPrice <= findOrderDto.maxPrice!,
+      );
+    }
+
+    if (findOrderDto.status) {
+      orders = orders.filter((order) => order.status === findOrderDto.status);
+    }
+
+    return orders;
   }
 
   async getOrderById(id: string): Promise<Order> {

@@ -1,17 +1,18 @@
-import type { Order } from '@/types';
+import type { Order, OrderFilters } from '@/types';
 
 import { api } from './index';
 
 export const ordersApi = {
-  getAll: () => api.get<Order[]>('/orders'),
+  getAll: (filters?: OrderFilters) =>
+    api.get<Order[]>('/orders', { params: filters }),
 
   getById: (id: string) => api.get<Order>(`/orders/${id}`),
 
-  getByCustomer: (customerId: string) =>
-    api.get<Order[]>('/orders', { params: { customerId } }),
+  getByCustomer: (customerId: string, filters?: OrderFilters) =>
+    api.get<Order[]>('/orders', { params: { customerId, ...filters } }),
 
-  getByTailor: (tailorId: string) =>
-    api.get<Order[]>('/orders', { params: { tailorId } }),
+  getByTailor: (tailorId: string, filters?: OrderFilters) =>
+    api.get<Order[]>('/orders', { params: { tailorId, ...filters } }),
 
   getUnassigned: () =>
     api.get<Order[]>('/orders', { params: { unassigned: true } }),

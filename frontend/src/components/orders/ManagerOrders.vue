@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
-import type { Order, OrderStatus, OrderTailor } from '@/types';
+import type { Order, OrderFilters, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import {
-  NDataTable,
-  NFlex,
-  NSpin,
-  NTag,
-} from 'naive-ui';
+import { NDataTable, NFlex, NSpin, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import OrderFiltersPanel from './OrderFiltersPanel.vue';
 
 const router = useRouter();
 
@@ -20,14 +17,18 @@ const isLoading = ref(false);
 const filteredOrders = ref<Order[]>([]);
 
 onMounted(async () => {
+  await loadOrders();
+});
+
+async function loadOrders(filters?: OrderFilters) {
   isLoading.value = true;
   try {
-    const res = await ordersApi.getAll();
+    const res = await ordersApi.getAll(filters);
     orders.value = res.data;
   } finally {
     isLoading.value = false;
   }
-});
+}
 
 const statusTagType = (
   status: OrderStatus,
@@ -92,7 +93,8 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
-      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
+      <order-filters-panel @change="loadOrders" />
+  <SearchBar v-model:filtered="filteredOrders" :items="orders" />
       <n-spin :show="isLoading">
         <n-data-table :columns="columns" :data="filteredOrders" :pagination="false" :bordered="true" size="small"
           :row-props="handleRowProps" />
