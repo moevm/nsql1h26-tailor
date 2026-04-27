@@ -24,6 +24,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const message = useMessage();
 
+const activeTab = ref('orders');
+
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
 const search = ref('');
@@ -173,22 +175,15 @@ async function handleImport() {
 
 <template>
   <div class="orders-page">
-    <n-flex vertical :size="16">
-      <n-input
-        v-model:value="search"
-        placeholder="Поиск"
-        round
-        clearable
-        class="search"
-      />
-      <n-spin :show="isLoading">
-        <n-data-table
-          :columns="columns"
-          :data="filteredOrders"
-          :pagination="false"
-          :bordered="true"
-          size="small"
-          :row-props="handleRowProps"
+    <n-tabs v-model:value="activeTab" type="line" animated>
+      <n-tab-pane name="orders" tab="Заказы">
+        <h1 class="title"><em>Заказы</em></h1>
+        <n-input
+          v-model:value="search"
+          placeholder="Поиск"
+          round
+          clearable
+          class="search"
         />
         <n-spin :show="isLoading">
           <n-data-table
