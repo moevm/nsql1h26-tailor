@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
@@ -6,7 +7,6 @@ import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
   NDataTable,
   NFlex,
-  NInput,
   NSpin,
   NTabPane,
   NTabs,
@@ -23,8 +23,8 @@ const allOrders = ref<Order[]>([]);
 const myOrders = ref<Order[]>([]);
 const isLoadingAll = ref(false);
 const isLoadingMy = ref(false);
-const searchAll = ref('');
-const searchMy = ref('');
+const filteredAll = ref<Order[]>([]);
+const filteredMy = ref<Order[]>([]);
 const activeTab = ref('all');
 
 onMounted(async () => {
@@ -88,14 +88,8 @@ const baseColumns: DataTableColumns<Order> = [
   },
 ];
 
-const filteredAll = computed(() =>
-  allOrders.value.filter((o) => o._id.includes(searchAll.value.trim())),
-);
-
-const filteredMy = computed(() =>
-  myOrders.value.filter(
-    (o) => o._id.includes(searchMy.value.trim()) && o.status !== 'created',
-  ),
+const myOrdersVisible = computed(() =>
+  myOrders.value.filter((order) => order.status !== 'created'),
 );
 
 function handleRowProps(row: Order) {
@@ -111,44 +105,20 @@ function handleRowProps(row: Order) {
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
         <n-flex vertical :size="16">
-          <n-input
-            v-model:value="searchAll"
-            placeholder="Поиск"
-            round
-            clearable
-            class="search"
-          />
+          <SearchBar v-model:filtered="filteredAll" :items="allOrders" />
           <n-spin :show="isLoadingAll">
-            <n-data-table
-              :columns="baseColumns"
-              :data="filteredAll"
-              :pagination="false"
-              :bordered="true"
-              size="small"
-              :row-props="handleRowProps"
-            />
+            <n-data-table :columns="baseColumns" :data="filteredAll" :pagination="false" :bordered="true" size="small"
+              :row-props="handleRowProps" />
           </n-spin>
         </n-flex>
       </n-tab-pane>
 
       <n-tab-pane name="my" tab="Мои заказы">
         <n-flex vertical>
-          <n-input
-            v-model:value="searchMy"
-            placeholder="Поиск"
-            round
-            clearable
-            class="search"
-          />
+          <SearchBar v-model:filtered="filteredMy" :items="myOrdersVisible" />
           <n-spin :show="isLoadingMy">
-            <n-data-table
-              :columns="baseColumns"
-              :data="filteredMy"
-              :pagination="false"
-              :bordered="true"
-              size="small"
-              :row-props="handleRowProps"
-            />
+            <n-data-table :columns="baseColumns" :data="filteredMy" :pagination="false" :bordered="true" size="small"
+              :row-props="handleRowProps" />
           </n-spin>
         </n-flex>
       </n-tab-pane>

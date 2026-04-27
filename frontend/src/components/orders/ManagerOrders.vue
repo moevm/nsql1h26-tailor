@@ -1,23 +1,23 @@
 <script setup lang="ts">
+import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
 import type { Order, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
   NDataTable,
   NFlex,
-  NInput,
   NSpin,
   NTag,
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
-import { computed, h, onMounted, ref } from 'vue';
+import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
-const search = ref('');
+const filteredOrders = ref<Order[]>([]);
 
 onMounted(async () => {
   isLoading.value = true;
@@ -81,10 +81,6 @@ const columns: DataTableColumns<Order> = [
   },
 ];
 
-const filteredOrders = computed(() =>
-  orders.value.filter((o) => o._id.includes(search.value.trim())),
-);
-
 function handleRowProps(row: Order) {
   return {
     style: 'cursor: pointer',
@@ -96,22 +92,10 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
-      <n-input
-        v-model:value="search"
-        placeholder="Поиск"
-        round
-        clearable
-        class="search"
-      />
+      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
       <n-spin :show="isLoading">
-        <n-data-table
-          :columns="columns"
-          :data="filteredOrders"
-          :pagination="false"
-          :bordered="true"
-          size="small"
-          :row-props="handleRowProps"
-        />
+        <n-data-table :columns="columns" :data="filteredOrders" :pagination="false" :bordered="true" size="small"
+          :row-props="handleRowProps" />
       </n-spin>
     </n-flex>
   </div>
