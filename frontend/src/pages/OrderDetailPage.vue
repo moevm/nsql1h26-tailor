@@ -85,6 +85,7 @@ const updatedAt = computed(() => formatDate(order.value?.updatedAt));
 const showUpdatedAt = computed(() => order.value?.status !== 'created');
 
 const workerStatusOptions = [
+  { label: ORDER_STATUS_LABELS.accepted, value: 'accepted', disabled: true },
   { label: 'В процессе', value: 'in_progress' },
   { label: 'Готов', value: 'done' },
   { label: 'Отменен', value: 'cancelled' },

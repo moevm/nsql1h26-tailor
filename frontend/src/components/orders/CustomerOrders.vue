@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderFilters, OrderStatus } from '@/types';
@@ -9,12 +10,11 @@ import {
   NFlex,
   NFloatButton,
   NIcon,
-  NInput,
   NSpin,
   NTag,
 } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
-import { computed, h, onMounted, ref } from 'vue';
+import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import OrderFiltersPanel from './OrderFiltersPanel.vue';
@@ -24,7 +24,7 @@ const router = useRouter();
 
 const orders = ref<Order[]>([]);
 const isLoading = ref(false);
-const search = ref('');
+const filteredOrders = ref<Order[]>([]);
 
 onMounted(async () => {
   await loadOrders();
@@ -54,10 +54,6 @@ const statusTagType = (status: OrderStatus) => {
   };
   return map[status];
 };
-
-const filteredOrders = computed(() =>
-  orders.value.filter((o) => o._id.includes(search.value.trim())),
-);
 
 const columns: DataTableColumns<Order> = [
   {
@@ -91,14 +87,7 @@ function handleRowProps(row: Order) {
   <div class="orders-page">
     <n-flex vertical :size="16">
       <order-filters-panel @change="loadOrders" />
-
-      <n-input
-        v-model:value="search"
-        placeholder="Поиск"
-        round
-        clearable
-        class="search"
-      />
+      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
 
       <n-spin :show="isLoading">
         <n-data-table
@@ -111,12 +100,7 @@ function handleRowProps(row: Order) {
         />
       </n-spin>
 
-      <n-float-button
-        type="primary"
-        :right="24"
-        :bottom="24"
-        @click="router.push('/orders/new')"
-      >
+      <n-float-button type="primary" :right="24" :bottom="24" @click="router.push('/orders/new')">
         <n-icon>
           <PlusRound />
         </n-icon>

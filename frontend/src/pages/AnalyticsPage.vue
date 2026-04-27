@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import {
-  NButton,
+  // NButton,
   NCheckbox,
   NDatePicker,
   NFlex,
@@ -156,14 +156,14 @@ const totalRevenue = computed(() =>
     .reduce((sum, o) => sum + (o.totalPrice ?? 0), 0),
 );
 
-function exportCsv() {}
+// function exportCsv() {}
 </script>
 
 <template>
   <div class="analytics">
-    <div class="header-row">
+    <!-- <div class="header-row">
       <n-button type="primary" round @click="exportCsv">Экспорт</n-button>
-    </div>
+    </div> -->
 
     <div class="content">
       <div class="filters">
