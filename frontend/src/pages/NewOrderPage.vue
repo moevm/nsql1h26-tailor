@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
-import { NButton, NInput, NSelect, useMessage } from 'naive-ui';
-import { ref } from 'vue';
+import { NButton, NInput, NInputNumber, NSelect, useMessage } from 'naive-ui';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -11,12 +11,23 @@ const message = useMessage();
 
 const serviceType = ref<string | null>(null);
 const description = ref('');
+const quantity = ref<number>(1);
 const isLoading = ref(false);
+
+const SERVICE_PRICES: Record<string, number> = {
+  Ремонт: 2500,
+  Пошив: 5000,
+};
 
 const serviceTypeOptions = [
   { label: 'Ремонт', value: 'Ремонт' },
   { label: 'Пошив', value: 'Пошив' },
 ];
+
+const price = computed(() =>
+  serviceType.value ? (SERVICE_PRICES[serviceType.value] ?? 0) : 0,
+);
+const totalPrice = computed(() => price.value * quantity.value);
 
 async function handleSubmit() {
   if (!serviceType.value) {
@@ -33,12 +44,12 @@ async function handleSubmit() {
         {
           name: serviceType.value,
           description: description.value,
-          quantity: 1,
-          price: 0,
+          quantity: quantity.value,
+          price: price.value,
         },
       ],
       status: 'created',
-      totalPrice: 0,
+      totalPrice: totalPrice.value,
     });
     message.success('Заказ успешно создан');
     router.push('/orders');
@@ -68,6 +79,23 @@ async function handleSubmit() {
           placeholder="Описание"
           :rows="5"
         />
+
+        <div class="row-two">
+          <div class="field-group">
+            <span class="field-label">Количество</span>
+            <n-input-number v-model:value="quantity" :min="1" />
+          </div>
+          <div class="field-group">
+            <span class="field-label">Стоимость</span>
+            <div class="price-display">
+              <template v-if="serviceType">
+                {{ price.toLocaleString('ru-RU') }} ₽ x {{ quantity }} =
+                <strong>{{ totalPrice.toLocaleString('ru-RU') }} ₽</strong>
+              </template>
+              <template v-else>—</template>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="order-right">
@@ -111,6 +139,12 @@ async function handleSubmit() {
   gap: 12px;
 }
 
+.row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 .field-group {
   display: flex;
   flex-direction: column;
@@ -120,6 +154,15 @@ async function handleSubmit() {
 .field-label {
   font-size: 13px;
   color: #555;
+}
+
+.price-display {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  gap: 4px;
 }
 
 .order-right {
