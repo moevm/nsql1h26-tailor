@@ -9,7 +9,6 @@ import {
   NButton,
   NCheckbox,
   NDataTable,
-  NFlex,
   NInput,
   NSpin,
   NTabPane,
@@ -127,10 +126,14 @@ async function handleExport() {
     if (res.data) {
       message.success('Экспорт выполнен');
     } else {
-      message.warning('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
+      message.warning(
+        'Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"',
+      );
     }
   } catch {
-    message.error('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
+    message.error(
+      'Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"',
+    );
   } finally {
     isExporting.value = false;
   }
@@ -155,10 +158,14 @@ async function handleImport() {
       message.success('Данные успешно импортированы');
       importFileList.value = [];
     } else {
-      message.warning('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
+      message.warning(
+        'Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"',
+      );
     }
   } catch {
-    message.error('Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"');
+    message.error(
+      'Реализация данной функции будет выполнена в дальнейшем в прототипе "Анализ"',
+    );
   } finally {
     isImporting.value = false;
   }

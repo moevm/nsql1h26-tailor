@@ -4,7 +4,7 @@ import { workersApi } from '@/api/workers';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderStatus, Worker } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import { NButton, NInput, NSelect, NSpin, useMessage } from 'naive-ui';
+import { NButton, NSelect, NSpin, NTag, useMessage } from 'naive-ui';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -50,9 +50,20 @@ const orderNumber = computed(() =>
   order.value ? `#${order.value._id.slice(-6).toUpperCase()}` : '',
 );
 
-const orderType = computed(() => order.value?.items[0]?.name ?? '');
-const orderDescription = computed(
-  () => order.value?.items[0]?.description ?? '',
+const STATUS_TYPES: Record<
+  OrderStatus,
+  'default' | 'info' | 'warning' | 'success' | 'error'
+> = {
+  created: 'default',
+  accepted: 'info',
+  in_progress: 'warning',
+  done: 'success',
+  cancelled: 'error',
+};
+
+const orderItems = computed(() => order.value?.items ?? []);
+const totalPrice = computed(() =>
+  orderItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
 );
 
 function formatDate(dateStr: string | undefined): {
@@ -145,7 +156,7 @@ async function handleManagerUpdate() {
   isSaving.value = true;
   try {
     await ordersApi.update(orderId.value, {
-      tailorId: selectedWorkerId.value ?? undefined,
+      tailorId: selectedWorkerId.value,
       status: selectedStatus.value ?? undefined,
     });
     message.success('Заказ обновлён');
@@ -163,9 +174,14 @@ async function handleManagerUpdate() {
     <n-spin :show="isLoading">
       <template v-if="order">
         <div class="header-row">
-          <h1 class="page-title">
-            <em>Заказ {{ orderNumber }}</em>
-          </h1>
+          <div class="title-row">
+            <h1 class="page-title">
+              <em>Заказ {{ orderNumber }}</em>
+            </h1>
+            <n-tag :type="STATUS_TYPES[order.status]" round size="medium">
+              {{ ORDER_STATUS_LABELS[order.status] }}
+            </n-tag>
+          </div>
           <div class="dates">
             <div class="date-item">
               <span class="date-label">Создан:</span>
@@ -186,13 +202,35 @@ async function handleManagerUpdate() {
 
         <div class="order-grid">
           <div class="order-left">
-            <n-input :value="orderType" readonly />
-            <n-input
-              :value="orderDescription"
-              type="textarea"
-              readonly
-              :rows="4"
-            />
+            <div class="price-dict">
+              <div
+                v-for="(item, idx) in orderItems"
+                :key="idx"
+                class="price-row"
+              >
+                <div class="price-row-top">
+                  <span class="price-name">{{ item.name }}</span>
+                  <span class="price-subtotal">
+                    {{ (item.price * item.quantity).toLocaleString('ru-RU') }} ₽
+                  </span>
+                </div>
+                <div class="price-row-meta">
+                  <span v-if="item.description" class="price-desc">{{
+                    item.description
+                  }}</span>
+                  <span class="price-qty-unit">
+                    {{ item.quantity }} шт. x
+                    {{ item.price.toLocaleString('ru-RU') }} ₽
+                  </span>
+                </div>
+              </div>
+              <div class="price-total-row">
+                <span class="price-total-label">Итого</span>
+                <span class="price-total-val">
+                  {{ totalPrice.toLocaleString('ru-RU') }} ₽
+                </span>
+              </div>
+            </div>
           </div>
 
           <div class="order-right">
@@ -272,6 +310,12 @@ async function handleManagerUpdate() {
   margin-bottom: 20px;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .page-title {
   font-size: 28px;
   font-weight: 700;
@@ -314,6 +358,78 @@ async function handleManagerUpdate() {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.price-dict {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.price-row {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.price-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.price-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.price-subtotal {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.price-row-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.price-desc {
+  font-size: 12px;
+  color: #777;
+}
+
+.price-qty-unit {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.price-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #f7f7f7;
+  border-top: 1px solid #e0e0e0;
+}
+
+.price-total-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.price-total-val {
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .field-group {
