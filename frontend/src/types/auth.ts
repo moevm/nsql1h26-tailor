@@ -1,20 +1,17 @@
-/**
- * @file types/auth.ts
- * @description Типы для авторизации.
- * @module types/auth
- */
+export type Role = 'customer' | 'tailor' | 'manager';
 
 export interface UserName {
   firstName: string;
   lastName: string;
   patronymic?: string;
 }
+
 export interface User {
   _id: string;
   email: string;
   name: UserName;
   phone?: string;
-  role: 'customer' | 'tailor' | 'manager';
+  role: Role;
 }
 
 export interface LoginCredentials {

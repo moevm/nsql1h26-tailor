@@ -99,7 +99,7 @@ async function handleSubmit() {
     }
     try {
       await authStore.login(formValues.value.email, formValues.value.password);
-      router.push({ name: 'orders' });
+      router.push({ path: 'orders' });
     } catch {
       message.error(authStore.error ?? 'Ошибка входа');
     }
@@ -152,11 +152,14 @@ async function handleSubmit() {
         </n-form-item>
 
         <n-form-item>
-          <router-link to="/signup">
-            <n-button quaternary round :disabled="authStore.isLoading">
-              Нет аккаунта?
-            </n-button>
-          </router-link>
+          <n-button
+            quaternary
+            round
+            :disabled="authStore.isLoading"
+            @click="router.push('/signup')"
+          >
+            Нет аккаунта?
+          </n-button>
         </n-form-item>
       </n-flex>
     </n-card>

@@ -37,7 +37,7 @@ export class DatabaseService implements OnModuleInit {
         email: 'customer@mail.com',
         password: {
           hash: '$2a$13$imhLgqVT1BymN7HVsxhkI.EIatca9T3YxNDvNjsp0ICR0KQ1AWvuK',
-          salt: 'salt',
+          salt: 'salt1',
         },
         role: 'customer',
       },
@@ -47,7 +47,7 @@ export class DatabaseService implements OnModuleInit {
         email: 'tailor@mail.com',
         password: {
           hash: '$2a$13$/D2AkhMzUkNjUF5roKeqyOyZJsXnQ3Wxt69iGJzNZBaTKRlUr/IaS',
-          salt: 'salt',
+          salt: 'salt2',
         },
         role: 'tailor',
       },
@@ -75,7 +75,7 @@ export class DatabaseService implements OnModuleInit {
         email: 'manager@mail.com',
         password: {
           hash: '$2a$13$bw25qS0HjLgUBwTAtN1QtewDSVa52fTXBOwBkTrOPAXB/szU3ND8C',
-          salt: 'salt',
+          salt: 'salt3',
         },
         role: 'manager',
       },

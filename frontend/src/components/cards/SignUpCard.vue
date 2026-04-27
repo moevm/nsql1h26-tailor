@@ -19,7 +19,7 @@ import {
   NInput,
   useMessage,
 } from 'naive-ui';
-import { type Component, ref } from 'vue';
+import { type Component, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter(); // Роутер для навигации
@@ -27,6 +27,8 @@ const router = useRouter(); // Роутер для навигации
 const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
 const message = useMessage(); // Сервис для отображения сообщений
+
+onMounted(() => message.info('Регистрация нового пользователя будет реализована в прототипе "Анализ"'))
 
 /**
  * Тип модели формы
@@ -198,6 +200,10 @@ const rules: FormRules = {
   ],
 };
 
+function handleToLogin() {
+  message.destroyAll();
+  router.push('/login');
+}
 /**
  * Значения формы
  */
@@ -229,7 +235,7 @@ async function handleSubmit() {
         email: formValues.value.email!,
         password: formValues.value.password!,
       });
-      router.push({ name: 'orders' });
+      router.push('/orders');
     } catch {
       message.error(authStore.error ?? 'Ошибка регистрации');
     }
@@ -238,32 +244,13 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <n-form
-    ref="formRef"
-    :model="formValues"
-    :rules="rules"
-    class="signup-form"
-    :size="'small'"
-  >
+  <n-form ref="formRef" :model="formValues" :rules="rules" class="signup-form" :size="'small'">
     <n-card title="Регистрация в системе" size="small" rounded>
-      <n-form-item
-        v-for="field in formFields"
-        :key="field.key"
-        :label="field.label"
-        :path="field.key"
-        :class="field.class"
-      >
-        <n-input
-          v-model:value="formValues[field.key]"
-          :type="field.type || 'text'"
-          :placeholder="field.placeholder"
-          :input-props="{ name: field.key, autocomplete: field.autocomplete }"
-          :class="`${field.class}-input`"
-          :show-password-on="field.showPasswordOn"
-          clearable
-          round
-          :disabled="authStore.isLoading"
-        >
+      <n-form-item v-for="field in formFields" :key="field.key" :label="field.label" :path="field.key"
+        :class="field.class">
+        <n-input v-model:value="formValues[field.key]" :type="field.type || 'text'" :placeholder="field.placeholder"
+          :input-props="{ name: field.key, autocomplete: field.autocomplete }" :class="`${field.class}-input`"
+          :show-password-on="field.showPasswordOn" clearable round :disabled="authStore.isLoading">
           <template #prefix>
             <n-icon :component="field.icon"></n-icon>
           </template>
@@ -271,30 +258,19 @@ async function handleSubmit() {
       </n-form-item>
       <n-flex justify="center">
         <n-form-item class="submit">
-          <n-button
-            type="primary"
-            block
-            :disabled="
-              !formValues.firstName ||
-              !formValues.password ||
-              !formValues.secondName ||
-              !formValues.email
-            "
-            :loading="authStore.isLoading"
-            class="submit-button"
-            round
-            @click="handleSubmit"
-          >
+          <n-button type="primary" block :disabled="!formValues.firstName ||
+            !formValues.password ||
+            !formValues.secondName ||
+            !formValues.email
+            " :loading="authStore.isLoading" class="submit-button" round @click="handleSubmit">
             Зарегистрироваться
           </n-button>
         </n-form-item>
 
         <n-form-item>
-          <router-link to="/login">
-            <n-button quaternary round :disabled="authStore.isLoading">
-              Есть аккаунт?
-            </n-button>
-          </router-link>
+          <n-button quaternary round :disabled="authStore.isLoading" @click="handleToLogin">
+            Есть аккаунт?
+          </n-button>
         </n-form-item>
       </n-flex>
     </n-card>

@@ -3,7 +3,15 @@ import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import { NDataTable, NInput, NSpin, NTabPane, NTabs, NTag } from 'naive-ui';
+import {
+  NDataTable,
+  NFlex,
+  NInput,
+  NSpin,
+  NTabPane,
+  NTabs,
+  NTag,
+} from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -102,65 +110,50 @@ function handleRowProps(row: Order) {
   <div class="orders-page">
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
-        <h1 class="title"><em>Все заказы</em></h1>
-        <n-input
-          v-model:value="searchAll"
-          placeholder="Поиск"
-          round
-          clearable
-          class="search"
-        />
-        <n-spin :show="isLoadingAll">
-          <n-data-table
-            :columns="baseColumns"
-            :data="filteredAll"
-            :pagination="false"
-            :bordered="true"
-            size="small"
-            :row-props="handleRowProps"
+        <n-flex vertical :size="16">
+          <n-input
+            v-model:value="searchAll"
+            placeholder="Поиск"
+            round
+            clearable
+            class="search"
           />
-        </n-spin>
+          <n-spin :show="isLoadingAll">
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredAll"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
+          </n-spin>
+        </n-flex>
       </n-tab-pane>
 
       <n-tab-pane name="my" tab="Мои заказы">
-        <h1 class="title"><em>Мои заказы</em></h1>
-        <n-input
-          v-model:value="searchMy"
-          placeholder="Поиск"
-          round
-          clearable
-          class="search"
-        />
-        <n-spin :show="isLoadingMy">
-          <n-data-table
-            :columns="baseColumns"
-            :data="filteredMy"
-            :pagination="false"
-            :bordered="true"
-            size="small"
-            :row-props="handleRowProps"
+        <n-flex vertical>
+          <n-input
+            v-model:value="searchMy"
+            placeholder="Поиск"
+            round
+            clearable
+            class="search"
           />
-        </n-spin>
+          <n-spin :show="isLoadingMy">
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredMy"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
+          </n-spin>
+        </n-flex>
       </n-tab-pane>
     </n-tabs>
   </div>
 </template>
 
-<style scoped lang="scss">
-.orders-page {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 0 24px;
-}
-
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-
-.search {
-  margin-bottom: 16px;
-  max-width: 200px;
-}
-</style>
+<style scoped lang="scss"></style>

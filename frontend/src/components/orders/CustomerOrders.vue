@@ -2,11 +2,11 @@
 import { useAuthStore, useOrdersStore } from '@/stores';
 import type { Order, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import { AccountCircleFilled } from '@vicons/material';
+import { PlusRound } from '@vicons/material';
 import {
-  NButton,
   NDataTable,
   NFlex,
+  NFloatButton,
   NIcon,
   NInput,
   NSpin,
@@ -72,78 +72,42 @@ function handleRowProps(row: Order) {
     onClick: () => router.push(`/orders/${row._id}`),
   };
 }
-
-function handleLogout() {
-  authStore.logout();
-  router.push('/login');
-}
 </script>
 
 <template>
   <div class="orders-page">
-    <n-flex justify="space-between" align="center" class="header">
-      <h1 class="title"><em>Мои заказы</em></h1>
-      <n-button quaternary circle @click="handleLogout">
-        <template #icon>
-          <n-icon :component="AccountCircleFilled" size="28" />
-        </template>
-      </n-button>
-    </n-flex>
-
-    <n-input
-      v-model:value="search"
-      placeholder="Поиск"
-      round
-      clearable
-      class="search"
-    />
-
-    <n-spin :show="ordersStore.isLoading">
-      <n-data-table
-        :columns="columns"
-        :data="filteredOrders"
-        :pagination="false"
-        :bordered="true"
-        size="small"
-        :row-props="handleRowProps"
+    <n-flex vertical :size="16">
+      <n-input
+        v-model:value="search"
+        placeholder="Поиск"
+        round
+        clearable
+        class="search"
       />
-    </n-spin>
 
-    <n-button
-      type="primary"
-      round
-      class="place-order-btn"
-      @click="router.push('/orders/new')"
-    >
-      Создать заказ
-    </n-button>
+      <n-spin :show="ordersStore.isLoading">
+        <n-data-table
+          :columns="columns"
+          :data="filteredOrders"
+          :pagination="false"
+          :bordered="true"
+          size="small"
+          :row-props="handleRowProps"
+        />
+      </n-spin>
+
+      <n-float-button
+        type="primary"
+        :right="24"
+        :bottom="24"
+        @click="router.push('/orders/new')"
+      >
+        <n-icon>
+          <PlusRound />
+        </n-icon>
+      </n-float-button>
+    </n-flex>
   </div>
 </template>
 
-<style scoped lang="scss">
-.orders-page {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 0 24px;
-}
-
-.header {
-  margin-bottom: 16px;
-}
-
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.search {
-  margin-bottom: 16px;
-  max-width: 200px;
-}
-
-.place-order-btn {
-  margin-top: 24px;
-  float: right;
-}
-</style>
+<style scoped lang="scss"></style>
