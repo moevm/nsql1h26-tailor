@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FindOrderDto {
@@ -11,10 +12,12 @@ export class FindOrderDto {
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   minPrice?: number;
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   maxPrice?: number;
 
   @IsOptional()
