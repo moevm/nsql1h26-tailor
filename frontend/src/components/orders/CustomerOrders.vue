@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useAuthStore, useOrdersStore } from '@/stores';
-import type { Order, OrderStatus } from '@/types';
+import { ordersApi } from '@/api/orders';
+import { useAuthStore } from '@/stores';
+import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import { PlusRound } from '@vicons/material';
 import {
@@ -16,17 +17,29 @@ import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import OrderFiltersPanel from './OrderFiltersPanel.vue';
+
 const authStore = useAuthStore();
-const ordersStore = useOrdersStore();
 const router = useRouter();
 
+const orders = ref<Order[]>([]);
+const isLoading = ref(false);
 const search = ref('');
 
 onMounted(async () => {
-  if (authStore.user) {
-    await ordersStore.fetchForCurrentUser();
-  }
+  await loadOrders();
 });
+
+async function loadOrders(filters?: OrderFilters) {
+  if (!authStore.user) return;
+  isLoading.value = true;
+  try {
+    const res = await ordersApi.getByCustomer(authStore.user._id, filters);
+    orders.value = res.data;
+  } finally {
+    isLoading.value = false;
+  }
+}
 
 const statusTagType = (status: OrderStatus) => {
   const map: Record<
@@ -43,7 +56,7 @@ const statusTagType = (status: OrderStatus) => {
 };
 
 const filteredOrders = computed(() =>
-  ordersStore.orders.filter((o) => o._id.includes(search.value.trim())),
+  orders.value.filter((o) => o._id.includes(search.value.trim())),
 );
 
 const columns: DataTableColumns<Order> = [
@@ -77,6 +90,8 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
+      <order-filters-panel @change="loadOrders" />
+
       <n-input
         v-model:value="search"
         placeholder="Поиск"
@@ -85,7 +100,7 @@ function handleRowProps(row: Order) {
         class="search"
       />
 
-      <n-spin :show="ordersStore.isLoading">
+      <n-spin :show="isLoading">
         <n-data-table
           :columns="columns"
           :data="filteredOrders"

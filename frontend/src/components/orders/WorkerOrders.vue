@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
-import type { Order, OrderStatus } from '@/types';
+import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
   NDataTable,
@@ -15,6 +15,8 @@ import {
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import OrderFiltersPanel from './OrderFiltersPanel.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -31,21 +33,21 @@ onMounted(async () => {
   await Promise.all([loadAllOrders(), loadMyOrders()]);
 });
 
-async function loadAllOrders() {
+async function loadAllOrders(filters?: OrderFilters) {
   isLoadingAll.value = true;
   try {
-    const res = await ordersApi.getAll();
+    const res = await ordersApi.getAll(filters);
     allOrders.value = res.data;
   } finally {
     isLoadingAll.value = false;
   }
 }
 
-async function loadMyOrders() {
+async function loadMyOrders(filters?: OrderFilters) {
   if (!authStore.user) return;
   isLoadingMy.value = true;
   try {
-    const res = await ordersApi.getByTailor(authStore.user._id);
+    const res = await ordersApi.getByTailor(authStore.user._id, filters);
     myOrders.value = res.data;
   } finally {
     isLoadingMy.value = false;
@@ -111,6 +113,7 @@ function handleRowProps(row: Order) {
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
         <n-flex vertical :size="16">
+          <order-filters-panel @change="loadAllOrders" />
           <n-input
             v-model:value="searchAll"
             placeholder="Поиск"
@@ -132,7 +135,8 @@ function handleRowProps(row: Order) {
       </n-tab-pane>
 
       <n-tab-pane name="my" tab="Мои заказы">
-        <n-flex vertical>
+        <n-flex vertical :size="16">
+          <order-filters-panel @change="loadMyOrders" />
           <n-input
             v-model:value="searchMy"
             placeholder="Поиск"

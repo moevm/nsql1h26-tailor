@@ -59,3 +59,11 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   done: 'Готов',
   cancelled: 'Отменен',
 };
+
+export interface OrderFilters {
+  startDate?: string;
+  endDate?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  status?: OrderStatus;
+}
