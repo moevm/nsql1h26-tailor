@@ -145,7 +145,7 @@ async function handleManagerUpdate() {
   isSaving.value = true;
   try {
     await ordersApi.update(orderId.value, {
-      tailorId: selectedWorkerId.value ?? undefined,
+      tailorId: selectedWorkerId.value,
       status: selectedStatus.value ?? undefined,
     });
     message.success('Заказ обновлён');
