@@ -4,6 +4,7 @@ import { type RouteRecordRaw } from 'vue-router';
 type RouteMeta = {
   requiresAuth: true;
   roles?: Role[];
+  canNavigateBack?: boolean;
 };
 
 export const baseRoutes: RouteRecordRaw[] = [
@@ -17,13 +18,13 @@ export const baseRoutes: RouteRecordRaw[] = [
     path: '/orders/new',
     name: 'Новый заказ',
     component: () => import('@/pages/NewOrderPage.vue'),
-    meta: { requiresAuth: true } satisfies RouteMeta,
+    meta: { requiresAuth: true, canNavigateBack: true } satisfies RouteMeta,
   },
   {
     path: '/orders/:id',
     name: 'Детали заказа',
     component: () => import('@/pages/OrderDetailPage.vue'),
-    meta: { requiresAuth: true } satisfies RouteMeta,
+    meta: { requiresAuth: true, canNavigateBack: true } satisfies RouteMeta,
   },
   {
     path: '/analytics',
