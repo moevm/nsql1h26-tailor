@@ -25,7 +25,10 @@ function navigateUp() {
   <n-layout-header bordered>
     <n-flex justify="space-between" align="center" class="layout-header">
       <n-flex align="center">
-        <BackButton :can-navigate-back="canNavigateBack" :on-navigate-up="navigateUp" />
+        <BackButton
+          :can-navigate-back="canNavigateBack"
+          :on-navigate-up="navigateUp"
+        />
         <h1>{{ title }}</h1>
       </n-flex>
       <n-flex justify="space-between" align="center">

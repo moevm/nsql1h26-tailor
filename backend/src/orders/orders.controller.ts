@@ -8,12 +8,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'mongoose';
 
 import { Order } from '../database/schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { FindOrderDto } from './dto/find-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
 
@@ -24,8 +26,8 @@ export class OrdersController {
   @UseGuards(RolesGuard)
   @Roles(['customer', 'tailor', 'manager'])
   @Get()
-  findAll(): Promise<Order[]> {
-    return this.ordersService.getAllOrders();
+  findAll(@Query() findOrderDto: FindOrderDto): Promise<Order[]> {
+    return this.ordersService.getAllOrdersFiltered(findOrderDto);
   }
 
   @UseGuards(RolesGuard)

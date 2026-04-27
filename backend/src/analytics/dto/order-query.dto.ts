@@ -1,6 +1,6 @@
 import { IsDateString, IsMongoId, IsOptional, IsString } from 'class-validator';
 
-export class orderQueryDto {
+export class OrderQueryDto {
   @IsOptional()
   @IsDateString()
   startDate?: string;
