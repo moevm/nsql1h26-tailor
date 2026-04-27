@@ -162,7 +162,6 @@ function exportCsv() {}
 <template>
   <div class="analytics">
     <div class="header-row">
-      <h1 class="title"><em>Аналитика</em></h1>
       <n-button type="primary" round @click="exportCsv">Экспорт</n-button>
     </div>
 
@@ -251,15 +250,9 @@ function exportCsv() {}
 
 .header-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
 }
 
 .content {

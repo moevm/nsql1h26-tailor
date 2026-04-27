@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { NFlex } from 'naive-ui';
+import ManagerAnalytics from '@/components/analytics/ManagerAnalytics.vue';
 </script>
 
 <template>
-  <n-flex justify="center" align="center"> Аналитика </n-flex>
+  <ManagerAnalytics />
 </template>
-
-<style scoped lang="scss"></style>
