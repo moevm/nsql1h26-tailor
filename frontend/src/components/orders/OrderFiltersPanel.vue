@@ -64,6 +64,7 @@ function reset() {
         v-model:value="minPrice"
         placeholder="0"
         :min="0"
+        :max="maxPrice ?? undefined"
         clearable
         size="small"
         style="width: 120px"
@@ -75,7 +76,7 @@ function reset() {
       <n-input-number
         v-model:value="maxPrice"
         placeholder="∞"
-        :min="0"
+        :min="minPrice ?? 0"
         clearable
         size="small"
         style="width: 120px"
