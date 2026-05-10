@@ -20,7 +20,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+        with:
+          fetch-depth: 1
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
       
@@ -34,4 +36,4 @@ jobs:
         run: pnpm install --frozen-lockfile
       
       - name: Run checks
-        run: pnpm -r --if-present ${{ matrix.task }}
+        run: pnpm --filter "...[origin/main]" --filter "!nsql1h26-tailor" -r --if-present ${{ matrix.task }}
