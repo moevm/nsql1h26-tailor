@@ -32,3 +32,13 @@ export interface AuthResponse {
   accessToken: string;
   user: User;
 }
+
+export interface UpdateProfilePayload {
+  name?: {
+    firstName: string;
+    lastName: string;
+    patronymic?: string;
+  };
+  phone?: string;
+  email?: string;
+}
