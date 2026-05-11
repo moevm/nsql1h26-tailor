@@ -11,6 +11,7 @@ import { ExportModule } from './export/export.module';
 import { HealthModule } from './health/health.module';
 import { ImportModule } from './import/import.module';
 import { OrdersModule } from './orders/orders.module';
+import { UsersModule } from './users/users.module';
 import { WorkersModule } from './workers/workers.module';
 
 @Module({
@@ -47,6 +48,7 @@ import { WorkersModule } from './workers/workers.module';
     ImportModule,
     ExportModule,
     DatabaseModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
