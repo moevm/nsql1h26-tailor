@@ -24,8 +24,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async getCurrentUser(email: string): Promise<PublicUser> {
-    const user = await this.userModel.findOne({ email }).exec();
+  async getCurrentUser(userId: string): Promise<PublicUser> {
+    const user = await this.userModel.findById(userId).exec();
 
     if (!user) {
       throw new UnauthorizedException('User not found.');
