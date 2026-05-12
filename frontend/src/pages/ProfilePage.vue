@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores';
-import { NButton, NInput, useDialog, useMessage } from 'naive-ui';
+import {
+  type FormInst,
+  type FormRules,
+  NButton,
+  NForm,
+  NFormItem,
+  NGrid,
+  NGridItem,
+  NInput,
+  useDialog,
+  useMessage,
+} from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -9,36 +20,40 @@ const authStore = useAuthStore();
 const message = useMessage();
 const dialog = useDialog();
 
-const firstName = ref(authStore.user?.name.firstName ?? '');
-const lastName = ref(authStore.user?.name.lastName ?? '');
-const patronymic = ref(authStore.user?.name.patronymic ?? '');
-const email = ref(authStore.user?.email ?? '');
-const phone = ref(authStore.user?.phone ?? '');
+const formRef = ref<FormInst | null>(null);
+
+const formValues = ref({
+  firstName: authStore.user?.name.firstName ?? '',
+  lastName: authStore.user?.name.lastName ?? '',
+  patronymic: authStore.user?.name.patronymic ?? '',
+  email: authStore.user?.email ?? '',
+  phone: authStore.user?.phone ?? '',
+});
+
+const rules: FormRules = {
+  lastName: [{ required: true, message: 'Введите фамилию', trigger: 'blur' }],
+  firstName: [{ required: true, message: 'Введите имя', trigger: 'blur' }],
+  email: [{ required: true, message: 'Введите email', trigger: 'blur' }],
+};
 
 async function handleSave() {
-  if (
-    !firstName.value.trim() ||
-    !lastName.value.trim() ||
-    !email.value.trim()
-  ) {
-    message.warning('Заполните обязательные поля');
-    return;
-  }
-
-  try {
-    await authStore.updateProfile({
-      name: {
-        firstName: firstName.value.trim(),
-        lastName: lastName.value.trim(),
-        patronymic: patronymic.value.trim() || undefined,
-      },
-      email: email.value.trim(),
-      phone: phone.value.trim() || undefined,
-    });
-    message.success('Профиль обновлён');
-  } catch {
-    message.error('Ошибка при обновлении профиля');
-  }
+  formRef.value?.validate(async (errors) => {
+    if (errors) return;
+    try {
+      await authStore.updateProfile({
+        name: {
+          firstName: formValues.value.firstName.trim(),
+          lastName: formValues.value.lastName.trim(),
+          patronymic: formValues.value.patronymic.trim() || undefined,
+        },
+        email: formValues.value.email.trim(),
+        phone: formValues.value.phone.trim() || undefined,
+      });
+      message.success('Профиль обновлён');
+    } catch {
+      message.error('Ошибка при обновлении профиля');
+    }
+  });
 }
 
 function handleLogout() {
@@ -57,54 +72,46 @@ function handleLogout() {
 
 <template>
   <div class="page">
-    <h1 class="page-title"><em>Профиль</em></h1>
+    <n-form ref="formRef" :model="formValues" :rules="rules">
+      <n-grid :cols="24" :x-gap="32">
+        <n-grid-item :span="17">
+          <n-form-item label="Фамилия" path="lastName">
+            <n-input v-model:value="formValues.lastName" placeholder="Фамилия" />
+          </n-form-item>
+          <n-form-item label="Имя" path="firstName">
+            <n-input v-model:value="formValues.firstName" placeholder="Имя" />
+          </n-form-item>
+          <n-form-item label="Отчество" path="patronymic">
+            <n-input v-model:value="formValues.patronymic" placeholder="Отчество" />
+          </n-form-item>
+          <n-form-item label="Email" path="email">
+            <n-input v-model:value="formValues.email" placeholder="Email" />
+          </n-form-item>
+          <n-form-item label="Телефон" path="phone">
+            <n-input v-model:value="formValues.phone" placeholder="+7 (999) 999-99-99" />
+          </n-form-item>
+        </n-grid-item>
 
-    <div class="profile-grid">
-      <div class="profile-fields">
-        <div class="field-group">
-          <span class="field-label"
-            >Фамилия <span class="required">*</span></span
-          >
-          <n-input v-model:value="lastName" placeholder="Фамилия" />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">Имя <span class="required">*</span></span>
-          <n-input v-model:value="firstName" placeholder="Имя" />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">Отчество</span>
-          <n-input v-model:value="patronymic" placeholder="Отчество" />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">Email <span class="required">*</span></span>
-          <n-input v-model:value="email" placeholder="Email" />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">Телефон</span>
-          <n-input v-model:value="phone" placeholder="+7 (999) 999-99-99" />
-        </div>
-      </div>
-
-      <div class="profile-actions">
-        <n-button
-          type="primary"
-          round
-          :loading="authStore.isLoading"
-          class="action-btn"
-          @click="handleSave"
-        >
-          Сохранить
-        </n-button>
-
-        <n-button round class="action-btn logout-btn" @click="handleLogout">
-          Выйти
-        </n-button>
-      </div>
-    </div>
+        <n-grid-item :span="7" class="actions">
+          <n-form-item>
+            <n-button
+              type="primary"
+              round
+              block
+              :loading="authStore.isLoading"
+              @click="handleSave"
+            >
+              Сохранить
+            </n-button>
+          </n-form-item>
+          <n-form-item>
+            <n-button type="error" round block @click="handleLogout">
+              Выйти
+            </n-button>
+          </n-form-item>
+        </n-grid-item>
+      </n-grid>
+    </n-form>
   </div>
 </template>
 
@@ -115,62 +122,7 @@ function handleLogout() {
   padding: 0 24px;
 }
 
-.page-title {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0 0 24px;
-}
-
-.profile-grid {
-  display: grid;
-  grid-template-columns: 1fr 200px;
-  gap: 32px;
-  align-items: start;
-}
-
-.profile-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.field-label {
-  font-size: 13px;
-  color: #555;
-}
-
-.field-value {
-  font-size: 14px;
-  color: #333;
-}
-
-.required {
-  color: #FF0000;
-}
-
-.profile-actions {
-  padding-top: 52px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-end;
-}
-
-.action-btn {
-  width: 160px;
-  height: 48px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.logout-btn {
-  color: #FF0000;
-  border-color: #FF0000;
+.actions {
+  padding-top: 28px;
 }
 </style>
