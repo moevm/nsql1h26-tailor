@@ -38,4 +38,10 @@ export const baseRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/ImportExportPage.vue'),
     meta: { requiresAuth: true } satisfies RouteMeta,
   },
+  {
+    path: '/profile',
+    name: 'Профиль',
+    component: () => import('@/pages/ProfilePage.vue'),
+    meta: { requiresAuth: true } satisfies RouteMeta,
+  },
 ];
