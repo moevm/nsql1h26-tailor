@@ -76,19 +76,28 @@ function handleLogout() {
       <n-grid :cols="24" :x-gap="32">
         <n-grid-item :span="17">
           <n-form-item label="Фамилия" path="lastName">
-            <n-input v-model:value="formValues.lastName" placeholder="Фамилия" />
+            <n-input
+              v-model:value="formValues.lastName"
+              placeholder="Фамилия"
+            />
           </n-form-item>
           <n-form-item label="Имя" path="firstName">
             <n-input v-model:value="formValues.firstName" placeholder="Имя" />
           </n-form-item>
           <n-form-item label="Отчество" path="patronymic">
-            <n-input v-model:value="formValues.patronymic" placeholder="Отчество" />
+            <n-input
+              v-model:value="formValues.patronymic"
+              placeholder="Отчество"
+            />
           </n-form-item>
           <n-form-item label="Email" path="email">
             <n-input v-model:value="formValues.email" placeholder="Email" />
           </n-form-item>
           <n-form-item label="Телефон" path="phone">
-            <n-input v-model:value="formValues.phone" placeholder="+7 (999) 999-99-99" />
+            <n-input
+              v-model:value="formValues.phone"
+              placeholder="+7 (999) 999-99-99"
+            />
           </n-form-item>
         </n-grid-item>
 

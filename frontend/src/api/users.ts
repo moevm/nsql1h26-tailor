@@ -1,4 +1,5 @@
 import { type UpdateProfilePayload } from '@/types';
+
 import { api } from './index';
 
 export const usersApi = {

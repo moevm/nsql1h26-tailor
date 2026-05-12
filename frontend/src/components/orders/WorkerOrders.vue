@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
+import { SearchBar } from '@/components/inputs';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
-import {
-  NDataTable,
-  NFlex,
-  NSpin,
-  NTabPane,
-  NTabs,
-  NTag,
-} from 'naive-ui';
+import { NDataTable, NFlex, NSpin, NTabPane, NTabs, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { computed, h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -110,8 +103,14 @@ function handleRowProps(row: Order) {
           <order-filters-panel @change="loadAllOrders" />
           <SearchBar v-model:filtered="filteredAll" :items="allOrders" />
           <n-spin :show="isLoadingAll">
-            <n-data-table :columns="baseColumns" :data="filteredAll" :pagination="false" :bordered="true" size="small"
-              :row-props="handleRowProps" />
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredAll"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
           </n-spin>
         </n-flex>
       </n-tab-pane>
@@ -121,8 +120,14 @@ function handleRowProps(row: Order) {
           <order-filters-panel @change="loadMyOrders" />
           <SearchBar v-model:filtered="filteredMy" :items="myOrdersVisible" />
           <n-spin :show="isLoadingMy">
-            <n-data-table :columns="baseColumns" :data="filteredMy" :pagination="false" :bordered="true" size="small"
-              :row-props="handleRowProps" />
+            <n-data-table
+              :columns="baseColumns"
+              :data="filteredMy"
+              :pagination="false"
+              :bordered="true"
+              size="small"
+              :row-props="handleRowProps"
+            />
           </n-spin>
         </n-flex>
       </n-tab-pane>
