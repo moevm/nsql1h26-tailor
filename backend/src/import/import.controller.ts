@@ -1,18 +1,35 @@
 import { Roles } from '@/common/decorator/roles.decorator';
 import { RolesGuard } from '@/common/guards/roles.guard';
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { ImportDatabaseDto } from './dto/import-database.dto';
 import { ImportService } from './import.service';
 
-@Controller('export')
+@Controller('import')
 export class ImportController {
   constructor(private readonly importService: ImportService) {}
 
   @UseGuards(RolesGuard)
   @Roles(['manager'])
-  @Get()
-  exportDatabase(@Query() importDatabaseDto: ImportDatabaseDto) {
-    return this.importService.importDatabase(importDatabaseDto);
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('file')
+  uploadFile(
+    @UploadedFile() file: any,
+    @Body() importDatabaseDto: ImportDatabaseDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('CSV file is required.');
+    }
+
+    return this.importService.importDatabase(file, importDatabaseDto);
   }
 }
