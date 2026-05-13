@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 import { Order } from '@/database/schemas/order.schema';
 import { User } from '@/database/schemas/user.schema';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import csv from 'csv-parser';
 import { Model } from 'mongoose';
@@ -13,6 +13,7 @@ import { ImportDatabaseDto } from './dto/import-database.dto';
 
 @Injectable()
 export class ImportService {
+  private readonly logger = new Logger(ImportService.name);
   constructor(
     @InjectModel('User')
     private readonly userModel: Model<User>,
@@ -31,7 +32,7 @@ export class ImportService {
     try {
       await model.insertMany(normalizedRows);
     } catch (error) {
-      console.error('Error importing data:', error);
+      this.logger.error('Error importing data:', error);
       throw new BadRequestException('Failed to import data.');
     }
   }

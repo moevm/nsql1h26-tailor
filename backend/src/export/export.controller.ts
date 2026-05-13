@@ -6,7 +6,6 @@ import { RolesGuard } from '@/common/guards/roles.guard';
 import {
   Controller,
   Get,
-  Header,
   Query,
   StreamableFile,
   UseGuards,
@@ -21,8 +20,6 @@ export class ExportController {
 
   @UseGuards(RolesGuard)
   @Roles(['manager'])
-  @Header('Content-Type', 'application/json')
-  @Header('Content-Disposition', 'attachment; filename="users.csv"')
   @Get('file')
   async exportDatabase(
     @Query() exportDatabaseDto: ExportDatabaseDto,

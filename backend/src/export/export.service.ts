@@ -25,7 +25,7 @@ export class ExportService {
   ) {
     const parser = new Parser({ fields, withBOM: true });
     const csv = parser.parse(data);
-    fs.writeFileSync(filename, csv, 'utf-8');
+    await fs.promises.writeFile(filename, csv, 'utf-8');
     return filename;
   }
 
