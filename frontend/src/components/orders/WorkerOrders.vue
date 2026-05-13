@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
-import { SearchBar } from '@/components/inputs';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
@@ -100,8 +99,7 @@ function handleRowProps(row: Order) {
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
         <n-flex vertical :size="16">
-          <order-filters-panel @change="loadAllOrders" />
-          <SearchBar v-model:filtered="filteredAll" :items="allOrders" />
+          <order-filters-panel :items="allOrders" v-model:filtered="filteredAll" @change="loadAllOrders" />
           <n-spin :show="isLoadingAll">
             <n-data-table
               :columns="baseColumns"
@@ -117,8 +115,7 @@ function handleRowProps(row: Order) {
 
       <n-tab-pane name="my" tab="Мои заказы">
         <n-flex vertical :size="16">
-          <order-filters-panel @change="loadMyOrders" />
-          <SearchBar v-model:filtered="filteredMy" :items="myOrdersVisible" />
+          <order-filters-panel :items="myOrdersVisible" v-model:filtered="filteredMy" @change="loadMyOrders" />
           <n-spin :show="isLoadingMy">
             <n-data-table
               :columns="baseColumns"

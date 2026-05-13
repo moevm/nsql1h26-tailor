@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
-import { SearchBar } from '@/components/inputs';
 import type { Order, OrderFilters, OrderStatus, OrderTailor } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import { NDataTable, NFlex, NSpin, NTag } from 'naive-ui';
@@ -93,8 +92,7 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
-      <order-filters-panel @change="loadOrders" />
-      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
+      <order-filters-panel :items="orders" v-model:filtered="filteredOrders" @change="loadOrders" />
       <n-spin :show="isLoading">
         <n-data-table
           :columns="columns"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { OrderFilters, OrderStatus } from '@/types';
+import { SearchBar } from '@/components/inputs';
+import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import {
   NButton,
@@ -12,8 +13,17 @@ import {
 import type { SelectOption } from 'naive-ui';
 import { ref } from 'vue';
 
+interface Props {
+  items?: Order[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  items: () => [],
+});
+
 const emit = defineEmits<{
   change: [filters: OrderFilters];
+  'update:filtered': [value: Order[]];
 }>();
 
 const dateRange = ref<[number, number] | null>(null);
@@ -47,6 +57,8 @@ function reset() {
 </script>
 
 <template>
+  <n-flex vertical :size="12">
+  <SearchBar :items="props.items" @update:filtered="emit('update:filtered', $event)" />
   <n-flex :wrap="true" align="flex-end" :size="12">
     <n-flex vertical :size="4">
       <n-text depth="3" style="font-size: 12px">Период</n-text>
@@ -99,5 +111,6 @@ function reset() {
       <n-button size="small" type="primary" @click="apply">Применить</n-button>
       <n-button size="small" @click="reset">Сбросить</n-button>
     </n-flex>
+  </n-flex>
   </n-flex>
 </template>
