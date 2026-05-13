@@ -68,12 +68,12 @@ export class ImportService {
       return undefined;
     }
 
-    const looksLikeJsonArray =
+    const isArray =
       normalizedValue.startsWith('[') && normalizedValue.endsWith(']');
-    const looksLikeJsonObject =
+    const isDict =
       normalizedValue.startsWith('{') && normalizedValue.endsWith('}');
 
-    if (looksLikeJsonArray || looksLikeJsonObject) {
+    if (isArray || isDict) {
       return JSON.parse(normalizedValue);
     }
 
