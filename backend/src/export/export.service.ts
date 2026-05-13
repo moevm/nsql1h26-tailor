@@ -18,45 +18,32 @@ export class ExportService {
     private readonly orderModel: Model<Order>,
   ) {}
 
-  async exportToCsv(
-    data: (User | Order)[],
-    fields: string[],
-    filename: string,
-  ) {
+  async exportToCsv<T>(data: T[], fields: string[], filename: string) {
     const parser = new Parser({ fields, withBOM: true });
     const csv = parser.parse(data);
     await fs.promises.writeFile(filename, csv, 'utf-8');
     return filename;
   }
 
+  private getExportFields<T>(model: Model<T>): string[] {
+    return Object.keys(model.schema.paths).filter(
+      (key) => !key.includes('.') && !['_id', '__v'].includes(key),
+    );
+  }
+
   async saveDatabase(exportDatabaseDto: ExportDatabaseDto) {
     if (exportDatabaseDto.users) {
       const users = await this.userModel.find().exec();
-      const fields = [
-        'name',
-        'phone',
-        'email',
-        'password',
-        'role',
-        'createdAt',
-        'updatedAt',
-      ];
+      const fields = this.getExportFields(this.userModel);
       return this.exportToCsv(users, fields, 'users.csv');
     }
+
     if (exportDatabaseDto.orders) {
       const orders = await this.orderModel.find().exec();
-      const fields = [
-        'customerId',
-        'tailorId',
-        'items',
-        'status',
-        'comments',
-        'totalPrice',
-        'createdAt',
-        'updatedAt',
-      ];
+      const fields = this.getExportFields(this.orderModel);
       return this.exportToCsv(orders, fields, 'orders.csv');
     }
+
     throw new Error('No data type specified for export.');
   }
 }

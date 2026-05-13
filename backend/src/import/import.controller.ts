@@ -23,7 +23,7 @@ export class ImportController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('file')
   uploadFile(
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
     @Body() importDatabaseDto: ImportDatabaseDto,
   ) {
     if (!file) {

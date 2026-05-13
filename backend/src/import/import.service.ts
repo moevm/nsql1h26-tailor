@@ -89,7 +89,10 @@ export class ImportService {
       .replace(/\\"/g, '"');
   }
 
-  async importDatabase(file: any, importDatabaseDto: ImportDatabaseDto) {
+  async importDatabase(
+    file: Express.Multer.File,
+    importDatabaseDto: ImportDatabaseDto,
+  ) {
     const filePath = join(process.cwd(), file.originalname);
     await writeFile(filePath, file.buffer);
 
