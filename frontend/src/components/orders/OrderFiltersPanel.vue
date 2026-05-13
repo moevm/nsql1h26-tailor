@@ -58,59 +58,64 @@ function reset() {
 
 <template>
   <n-flex vertical :size="12">
-  <SearchBar :items="props.items" @update:filtered="emit('update:filtered', $event)" />
-  <n-flex :wrap="true" align="flex-end" :size="12">
-    <n-flex vertical :size="4">
-      <n-text depth="3" style="font-size: 12px">Период</n-text>
-      <n-date-picker
-        v-model:value="dateRange"
-        type="daterange"
-        clearable
-        size="small"
-      />
-    </n-flex>
+    <SearchBar
+      :items="props.items"
+      @update:filtered="emit('update:filtered', $event)"
+    />
+    <n-flex :wrap="true" align="flex-end" :size="12">
+      <n-flex vertical :size="4">
+        <n-text depth="3" style="font-size: 12px">Период</n-text>
+        <n-date-picker
+          v-model:value="dateRange"
+          type="daterange"
+          clearable
+          size="small"
+        />
+      </n-flex>
 
-    <n-flex vertical :size="4">
-      <n-text depth="3" style="font-size: 12px">Цена от</n-text>
-      <n-input-number
-        v-model:value="minPrice"
-        placeholder="0"
-        :min="0"
-        :max="maxPrice ?? undefined"
-        clearable
-        size="small"
-        style="width: 120px"
-      />
-    </n-flex>
+      <n-flex vertical :size="4">
+        <n-text depth="3" style="font-size: 12px">Цена от</n-text>
+        <n-input-number
+          v-model:value="minPrice"
+          placeholder="0"
+          :min="0"
+          :max="maxPrice ?? undefined"
+          clearable
+          size="small"
+          style="width: 120px"
+        />
+      </n-flex>
 
-    <n-flex vertical :size="4">
-      <n-text depth="3" style="font-size: 12px">Цена до</n-text>
-      <n-input-number
-        v-model:value="maxPrice"
-        placeholder="∞"
-        :min="minPrice ?? 0"
-        clearable
-        size="small"
-        style="width: 120px"
-      />
-    </n-flex>
+      <n-flex vertical :size="4">
+        <n-text depth="3" style="font-size: 12px">Цена до</n-text>
+        <n-input-number
+          v-model:value="maxPrice"
+          placeholder="∞"
+          :min="minPrice ?? 0"
+          clearable
+          size="small"
+          style="width: 120px"
+        />
+      </n-flex>
 
-    <n-flex vertical :size="4">
-      <n-text depth="3" style="font-size: 12px">Статус</n-text>
-      <n-select
-        v-model:value="status"
-        :options="statusOptions"
-        placeholder="Все"
-        clearable
-        size="small"
-        style="width: 160px"
-      />
-    </n-flex>
+      <n-flex vertical :size="4">
+        <n-text depth="3" style="font-size: 12px">Статус</n-text>
+        <n-select
+          v-model:value="status"
+          :options="statusOptions"
+          placeholder="Все"
+          clearable
+          size="small"
+          style="width: 160px"
+        />
+      </n-flex>
 
-    <n-flex :size="8">
-      <n-button size="small" type="primary" @click="apply">Применить</n-button>
-      <n-button size="small" @click="reset">Сбросить</n-button>
+      <n-flex :size="8">
+        <n-button size="small" type="primary" @click="apply"
+          >Применить</n-button
+        >
+        <n-button size="small" @click="reset">Сбросить</n-button>
+      </n-flex>
     </n-flex>
-  </n-flex>
   </n-flex>
 </template>

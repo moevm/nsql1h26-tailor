@@ -92,7 +92,11 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
-      <order-filters-panel :items="orders" v-model:filtered="filteredOrders" @change="loadOrders" />
+      <order-filters-panel
+        :items="orders"
+        v-model:filtered="filteredOrders"
+        @change="loadOrders"
+      />
       <n-spin :show="isLoading">
         <n-data-table
           :columns="columns"
