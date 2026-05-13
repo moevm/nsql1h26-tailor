@@ -1,4 +1,4 @@
-import { Roles } from '@/common/decorator/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator';
 import { RolesGuard } from '@/common/guards/roles.guard';
 import {
   BadRequestException,

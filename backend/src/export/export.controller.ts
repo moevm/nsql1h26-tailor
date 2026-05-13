@@ -1,7 +1,7 @@
 import { createReadStream } from 'node:fs';
 import { join } from 'node:path';
 
-import { Roles } from '@/common/decorator/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator';
 import { RolesGuard } from '@/common/guards/roles.guard';
 import {
   Controller,

@@ -1,4 +1,5 @@
 import { SkipAuth } from '@/common/guards/auth.guard';
+import { UserPayload } from '@/common/interfaces/user.interface';
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -10,11 +11,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('user')
-  getCurrentUser(
-    @Req()
-    req: Request & { user: { sub: string; email: string; role: string } },
-  ) {
-    return this.authService.getCurrentUser(req.user.email);
+  getCurrentUser(@Req() req: Request & UserPayload) {
+    return this.authService.getCurrentUser(req.user.sub);
   }
 
   @SkipAuth()

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { PersonRound } from '@vicons/material';
 import { NButton, NEl, NIcon } from 'naive-ui';
+import { useRoute, useRouter } from 'vue-router';
 
-// import { useRoute, useRouter } from 'vue-router';
-
-// const router = useRouter();
-// const route = useRoute();
+const router = useRouter();
+const route = useRoute();
 
 interface Props {
   firstName: string;
@@ -15,9 +14,9 @@ interface Props {
 const props = defineProps<Props>();
 
 function handleProfile() {
-  // if (route.path !== '/profile') {
-  //   router.push('/profile');
-  // }
+  if (route.path !== '/profile') {
+    router.push('/profile');
+  }
 }
 </script>
 
