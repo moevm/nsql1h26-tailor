@@ -8,8 +8,4 @@ export class ExportDatabaseDto {
   @IsOptional()
   @IsString()
   orders?: string;
-
-  @IsOptional()
-  @IsString()
-  format?: string;
 }
