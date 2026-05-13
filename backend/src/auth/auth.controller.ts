@@ -12,7 +12,7 @@ export class AuthController {
 
   @Get('user')
   getCurrentUser(@Req() req: Request & UserPayload) {
-    return this.authService.getCurrentUser(req.user.email);
+    return this.authService.getCurrentUser(req.user.sub);
   }
 
   @SkipAuth()

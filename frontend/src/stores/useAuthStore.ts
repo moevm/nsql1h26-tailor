@@ -5,7 +5,8 @@
  * @author @KorzikAlex
  */
 import { authApi } from '@/api/auth';
-import type { RegisterCredentials, User } from '@/types';
+import { usersApi } from '@/api/users';
+import type { RegisterCredentials, UpdateProfilePayload, User } from '@/types';
 import { useLocalStorage } from '@vueuse/core';
 import axios from 'axios';
 import { defineStore } from 'pinia';
@@ -59,6 +60,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateProfile(payload: UpdateProfilePayload) {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      await usersApi.updateMe(payload);
+      const { data } = await authApi.getCurrentUser();
+      user.value = data;
+    } catch (err) {
+      error.value = extractMessage(err, 'Ошибка обновления профиля');
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   async function logout() {
     clearAuth();
   }
@@ -80,6 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     clearAuth,
     initAuth,
+    updateProfile,
   };
 });
 

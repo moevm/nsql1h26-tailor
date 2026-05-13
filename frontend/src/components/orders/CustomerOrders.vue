@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import { SearchBar } from '@/components/inputs';
 import { ordersApi } from '@/api/orders';
+import { SearchBar } from '@/components/inputs';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderFilters, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS } from '@/types/order';
 import { PlusRound } from '@vicons/material';
-import {
-  NDataTable,
-  NFlex,
-  NFloatButton,
-  NIcon,
-  NSpin,
-  NTag,
-} from 'naive-ui';
+import { NDataTable, NFlex, NFloatButton, NIcon, NSpin, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -100,7 +93,12 @@ function handleRowProps(row: Order) {
         />
       </n-spin>
 
-      <n-float-button type="primary" :right="24" :bottom="24" @click="router.push('/orders/new')">
+      <n-float-button
+        type="primary"
+        :right="24"
+        :bottom="24"
+        @click="router.push('/orders/new')"
+      >
         <n-icon>
           <PlusRound />
         </n-icon>
