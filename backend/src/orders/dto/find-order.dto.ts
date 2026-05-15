@@ -23,4 +23,8 @@ export class FindOrderDto {
   @IsOptional()
   @IsString()
   status?: string;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
 }

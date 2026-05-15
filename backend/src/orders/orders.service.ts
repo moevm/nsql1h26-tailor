@@ -18,12 +18,18 @@ export class OrdersService {
     private readonly orderModel: Model<Order>,
   ) {}
 
-  getAllOrders(): Promise<Order[]> {
+  getAllOrders(sortBy?: string): Promise<Order[]> {
+    if (
+      sortBy &&
+      ['_id', 'status', 'totalPrice', 'createdAt'].includes(sortBy)
+    ) {
+      return this.orderModel.find().sort(sortBy).exec();
+    }
     return this.orderModel.find().exec();
   }
 
   async getAllOrdersFiltered(findOrderDto: FindOrderDto): Promise<Order[]> {
-    let orders = await this.getAllOrders();
+    let orders = await this.getAllOrders(findOrderDto.sortBy);
     if (findOrderDto.startDate) {
       const startDate = new Date(findOrderDto.startDate);
       orders = orders.filter((order) => new Date(order.createdAt) >= startDate);
