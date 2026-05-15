@@ -99,9 +99,9 @@ function handleRowProps(row: Order) {
     <n-tabs v-model:value="activeTab" type="line" animated>
       <n-tab-pane name="all" tab="Все заказы">
         <n-flex vertical :size="16">
-          <order-filters-panel
+          <OrderFiltersPanel
             :items="allOrders"
-            v-model:filtered="filteredAll"
+            @update:filtered="filteredAll = $event"
             @change="loadAllOrders"
           />
           <n-spin :show="isLoadingAll">
@@ -119,9 +119,9 @@ function handleRowProps(row: Order) {
 
       <n-tab-pane name="my" tab="Мои заказы">
         <n-flex vertical :size="16">
-          <order-filters-panel
+          <OrderFiltersPanel
             :items="myOrdersVisible"
-            v-model:filtered="filteredMy"
+            @update:filtered="filteredMy = $event"
             @change="loadMyOrders"
           />
           <n-spin :show="isLoadingMy">

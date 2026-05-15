@@ -78,9 +78,9 @@ function handleRowProps(row: Order) {
 <template>
   <div class="orders-page">
     <n-flex vertical :size="16">
-      <order-filters-panel
+      <OrderFiltersPanel
         :items="orders"
-        v-model:filtered="filteredOrders"
+        @update:filtered="filteredOrders = $event"
         @change="loadOrders"
       />
 

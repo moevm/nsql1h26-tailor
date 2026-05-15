@@ -10,11 +10,11 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   items: () => [],
-  placeholder: 'Поиск по названию заказа',
+  placeholder: 'Поиск',
 });
 
 const emit = defineEmits<{
-  (event: 'update:filtered', value: Order[]): void;
+  'update:filtered': [value: Order[]];
 }>();
 
 const query = ref('');
