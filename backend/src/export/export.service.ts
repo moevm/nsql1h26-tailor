@@ -1,9 +1,49 @@
+import fs from 'node:fs';
+
+import { Order } from '@/database/schemas/order.schema';
+import { User } from '@/database/schemas/user.schema';
+import { Parser } from '@json2csv/plainjs/index.js';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { ExportDatabaseDto } from './dto/export-database.dto';
 
 @Injectable()
 export class ExportService {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async exportDatabase(exportDatabaseDto: ExportDatabaseDto) {}
+  constructor(
+    @InjectModel('User')
+    private readonly userModel: Model<User>,
+    @InjectModel('Order')
+    private readonly orderModel: Model<Order>,
+  ) {}
+
+  async exportToCsv<T>(data: T[], fields: string[], filename: string) {
+    const parser = new Parser({ fields, withBOM: true });
+    const csv = parser.parse(data);
+    await fs.promises.writeFile(filename, csv, 'utf-8');
+    return filename;
+  }
+
+  private getExportFields<T>(model: Model<T>): string[] {
+    return Object.keys(model.schema.paths).filter(
+      (key) => !key.includes('.') && !['_id', '__v'].includes(key),
+    );
+  }
+
+  async saveDatabase(exportDatabaseDto: ExportDatabaseDto) {
+    if (exportDatabaseDto.users) {
+      const users = await this.userModel.find().exec();
+      const fields = this.getExportFields(this.userModel);
+      return this.exportToCsv(users, fields, 'users.csv');
+    }
+
+    if (exportDatabaseDto.orders) {
+      const orders = await this.orderModel.find().exec();
+      const fields = this.getExportFields(this.orderModel);
+      return this.exportToCsv(orders, fields, 'orders.csv');
+    }
+
+    throw new Error('No data type specified for export.');
+  }
 }
