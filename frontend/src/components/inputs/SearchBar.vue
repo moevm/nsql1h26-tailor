@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   'update:filtered': [value: Order[]];
+  'update:query': [value: string];
 }>();
 
 const query = ref('');
@@ -45,9 +46,16 @@ watch(
   [() => props.items, query],
   () => {
     emit('update:filtered', filterOrders(props.items, query.value));
+    emit('update:query', query.value);
   },
   { immediate: true, deep: true },
 );
+
+defineExpose({
+  reset: () => {
+    query.value = '';
+  },
+});
 </script>
 
 <template>

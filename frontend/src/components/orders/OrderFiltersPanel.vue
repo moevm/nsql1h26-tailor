@@ -26,6 +26,8 @@ const emit = defineEmits<{
   'update:filtered': [value: Order[]];
 }>();
 
+const searchBarRef = ref<{ reset: () => void } | null>(null);
+const searchQuery = ref('');
 const dateRange = ref<[number, number] | null>(null);
 const minPrice = ref<number | null>(null);
 const maxPrice = ref<number | null>(null);
@@ -37,6 +39,7 @@ const statusOptions: SelectOption[] = (
 
 const hasActiveFilters = computed(
   () =>
+    !!searchQuery.value ||
     dateRange.value !== null ||
     minPrice.value !== null ||
     maxPrice.value !== null ||
@@ -56,6 +59,7 @@ watch([dateRange, minPrice, maxPrice, status], () => {
 });
 
 function reset() {
+  searchBarRef.value?.reset();
   dateRange.value = null;
   minPrice.value = null;
   maxPrice.value = null;
@@ -66,9 +70,11 @@ function reset() {
 <template>
   <n-flex :wrap="true" align="flex-end" :size="12">
     <SearchBar
+      ref="searchBarRef"
       :items="props.items"
       class="search-bar"
       @update:filtered="emit('update:filtered', $event)"
+      @update:query="searchQuery = $event"
     />
     <n-flex vertical :size="4" class="period-filter">
       <n-text depth="3" style="font-size: 12px">Период</n-text>
