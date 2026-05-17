@@ -19,7 +19,11 @@ export class OrdersService {
   ) {}
 
   getAllOrders(): Promise<Order[]> {
-    return this.orderModel.find().exec();
+    return this.orderModel
+      .find()
+      .populate('customerId', 'name email')
+      .populate('tailorId', 'name email')
+      .exec();
   }
 
   async getAllOrdersFiltered(findOrderDto: FindOrderDto): Promise<Order[]> {
@@ -58,7 +62,11 @@ export class OrdersService {
       throw new BadRequestException('Invalid order ID format.');
     }
 
-    const order = await this.orderModel.findById(id).exec();
+    const order = await this.orderModel
+      .findById(id)
+      .populate('customerId', 'name email')
+      .populate('tailorId', 'name email')
+      .exec();
     if (!order) {
       throw new NotFoundException('Order not found.');
     }
