@@ -21,6 +21,16 @@ export interface OrderTailor {
   email: string;
 }
 
+export interface OrderCustomer {
+  _id: string;
+  name: {
+    firstName: string;
+    lastName: string;
+    patronymic?: string;
+  };
+  email: string;
+}
+
 export type OrderStatus =
   | 'created'
   | 'accepted'
@@ -40,7 +50,7 @@ export interface Worker {
 
 export interface Order {
   _id: string;
-  customerId: string;
+  customerId: string | OrderCustomer;
   tailorId: string | OrderTailor | null;
   items: OrderItem[];
   status: OrderStatus;
