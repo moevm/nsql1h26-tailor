@@ -1,55 +1,16 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
-import { SearchBar } from '@/components/inputs';
-import type { Order, OrderFilters, OrderStatus, OrderTailor } from '@/types';
-import { ORDER_STATUS_LABELS } from '@/types/order';
-import { NDataTable, NFlex, NSpin, NTag } from 'naive-ui';
+import type { Order, OrderFilters, OrderTailor } from '@/types';
+import { ORDER_STATUS_LABELS, statusTag } from '@/types/order';
+import { NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
-import { h, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-import OrderFiltersPanel from './OrderFiltersPanel.vue';
-
-const router = useRouter();
-
-const orders = ref<Order[]>([]);
-const isLoading = ref(false);
-const filteredOrders = ref<Order[]>([]);
-
-onMounted(async () => {
-  await loadOrders();
-});
-
-async function loadOrders(filters?: OrderFilters) {
-  isLoading.value = true;
-  try {
-    const res = await ordersApi.getAll(filters);
-    orders.value = res.data;
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-const statusTagType = (
-  status: OrderStatus,
-): 'default' | 'info' | 'warning' | 'success' | 'error' => {
-  const map: Record<
-    OrderStatus,
-    'default' | 'info' | 'warning' | 'success' | 'error'
-  > = {
-    created: 'default',
-    accepted: 'info',
-    in_progress: 'warning',
-    done: 'success',
-    cancelled: 'error',
-  };
-  return map[status];
-};
+import { h } from 'vue';
+import OrdersTable from './OrdersTable.vue';
 
 function getTailorName(tailorId: string | OrderTailor | null): string {
   if (!tailorId) return '-';
   if (typeof tailorId === 'string') return tailorId.slice(-6).toUpperCase();
-  return `${tailorId.name.lastName}`;
+  return tailorId.name.lastName;
 }
 
 const columns: DataTableColumns<Order> = [
@@ -62,13 +23,7 @@ const columns: DataTableColumns<Order> = [
     title: 'Статус',
     key: 'status',
     render: (row) =>
-      h(
-        NTag,
-        { type: statusTagType(row.status), size: 'small', round: true },
-        {
-          default: () => ORDER_STATUS_LABELS[row.status],
-        },
-      ),
+      h(NTag, { type: statusTag(row.status), size: 'small', round: true }, { default: () => ORDER_STATUS_LABELS[row.status] }),
   },
   {
     title: 'Работник',
@@ -82,31 +37,12 @@ const columns: DataTableColumns<Order> = [
   },
 ];
 
-function handleRowProps(row: Order) {
-  return {
-    style: 'cursor: pointer',
-    onClick: () => router.push(`/orders/${row._id}`),
-  };
+async function load(filters?: OrderFilters): Promise<Order[]> {
+  const res = await ordersApi.getAll(filters);
+  return res.data;
 }
 </script>
 
 <template>
-  <div class="orders-page">
-    <n-flex vertical :size="16">
-      <order-filters-panel @change="loadOrders" />
-      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
-      <n-spin :show="isLoading">
-        <n-data-table
-          :columns="columns"
-          :data="filteredOrders"
-          :pagination="false"
-          :bordered="true"
-          size="small"
-          :row-props="handleRowProps"
-        />
-      </n-spin>
-    </n-flex>
-  </div>
+  <OrdersTable :columns="columns" :load="load" />
 </template>
-
-<style scoped lang="scss"></style>

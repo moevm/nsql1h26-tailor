@@ -1,52 +1,17 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
-import { SearchBar } from '@/components/inputs';
 import { useAuthStore } from '@/stores';
-import type { Order, OrderFilters, OrderStatus } from '@/types';
-import { ORDER_STATUS_LABELS } from '@/types/order';
+import type { Order, OrderFilters } from '@/types';
+import { ORDER_STATUS_LABELS, statusTag } from '@/types/order';
 import { PlusRound } from '@vicons/material';
-import { NDataTable, NFlex, NFloatButton, NIcon, NSpin, NTag } from 'naive-ui';
+import { NFloatButton, NIcon, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
-import { h, onMounted, ref } from 'vue';
+import { h } from 'vue';
 import { useRouter } from 'vue-router';
-
-import OrderFiltersPanel from './OrderFiltersPanel.vue';
+import OrdersTable from './OrdersTable.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
-
-const orders = ref<Order[]>([]);
-const isLoading = ref(false);
-const filteredOrders = ref<Order[]>([]);
-
-onMounted(async () => {
-  await loadOrders();
-});
-
-async function loadOrders(filters?: OrderFilters) {
-  if (!authStore.user) return;
-  isLoading.value = true;
-  try {
-    const res = await ordersApi.getByCustomer(authStore.user._id, filters);
-    orders.value = res.data;
-  } finally {
-    isLoading.value = false;
-  }
-}
-
-const statusTagType = (status: OrderStatus) => {
-  const map: Record<
-    OrderStatus,
-    'default' | 'info' | 'warning' | 'success' | 'error'
-  > = {
-    created: 'default',
-    accepted: 'info',
-    in_progress: 'warning',
-    done: 'success',
-    cancelled: 'error',
-  };
-  return map[status];
-};
 
 const columns: DataTableColumns<Order> = [
   {
@@ -58,53 +23,21 @@ const columns: DataTableColumns<Order> = [
     title: 'Статус',
     key: 'status',
     render: (row) =>
-      h(
-        NTag,
-        { type: statusTagType(row.status), size: 'small', round: true },
-        {
-          default: () => ORDER_STATUS_LABELS[row.status],
-        },
-      ),
+      h(NTag, { type: statusTag(row.status), size: 'small', round: true }, { default: () => ORDER_STATUS_LABELS[row.status] }),
   },
 ];
 
-function handleRowProps(row: Order) {
-  return {
-    style: 'cursor: pointer',
-    onClick: () => router.push(`/orders/${row._id}`),
-  };
+async function load(filters?: OrderFilters): Promise<Order[]> {
+  if (!authStore.user) return [];
+  const res = await ordersApi.getByCustomer(authStore.user._id, filters);
+  return res.data;
 }
 </script>
 
 <template>
-  <div class="orders-page">
-    <n-flex vertical :size="16">
-      <order-filters-panel @change="loadOrders" />
-      <SearchBar v-model:filtered="filteredOrders" :items="orders" />
-
-      <n-spin :show="isLoading">
-        <n-data-table
-          :columns="columns"
-          :data="filteredOrders"
-          :pagination="false"
-          :bordered="true"
-          size="small"
-          :row-props="handleRowProps"
-        />
-      </n-spin>
-
-      <n-float-button
-        type="primary"
-        :right="24"
-        :bottom="24"
-        @click="router.push('/orders/new')"
-      >
-        <n-icon>
-          <PlusRound />
-        </n-icon>
-      </n-float-button>
-    </n-flex>
-  </div>
+  <OrdersTable :columns="columns" :load="load">
+    <n-float-button type="primary" :right="24" :bottom="24" @click="router.push('/orders/new')">
+      <n-icon><PlusRound /></n-icon>
+    </n-float-button>
+  </OrdersTable>
 </template>
-
-<style scoped lang="scss"></style>

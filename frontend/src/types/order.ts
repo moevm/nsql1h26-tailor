@@ -52,6 +52,19 @@ export interface Order {
   updatedAt: string;
 }
 
+export function statusTag(
+  status: OrderStatus,
+): 'default' | 'info' | 'warning' | 'success' | 'error' {
+  const map: Record<OrderStatus, 'default' | 'info' | 'warning' | 'success' | 'error'> = {
+    created: 'default',
+    accepted: 'info',
+    in_progress: 'warning',
+    done: 'success',
+    cancelled: 'error',
+  };
+  return map[status];
+}
+
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   created: 'Новый',
   accepted: 'Подтвержден',
