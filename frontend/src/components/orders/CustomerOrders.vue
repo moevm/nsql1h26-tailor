@@ -8,12 +8,16 @@ import { NFloatButton, NIcon, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 import { useRouter } from 'vue-router';
+
 import OrdersTable from './OrdersTable.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
 
-function getTailorFullName(tailorId: string | OrderTailor | null, status: string): string {
+function getTailorFullName(
+  tailorId: string | OrderTailor | null,
+  status: string,
+): string {
   if (status === 'created') return '-';
   if (!tailorId || typeof tailorId === 'string') return '-';
   return `${tailorId.name.firstName} ${tailorId.name.lastName}`;
@@ -28,7 +32,7 @@ const STATUS_ORDER = {
   accepted: 1,
   in_progress: 2,
   done: 3,
-  cancelled: 4
+  cancelled: 4,
 } as const;
 
 const columns: DataTableColumns<Order> = [
@@ -41,7 +45,8 @@ const columns: DataTableColumns<Order> = [
   {
     title: 'Тип заказа',
     key: 'orderType',
-    sorter: (a, b) => (a.items[0]?.name ?? '').localeCompare(b.items[0]?.name ?? ''),
+    sorter: (a, b) =>
+      (a.items[0]?.name ?? '').localeCompare(b.items[0]?.name ?? ''),
     render: (row) => row.items[0]?.name ?? '-',
   },
   {
@@ -49,18 +54,26 @@ const columns: DataTableColumns<Order> = [
     key: 'status',
     sorter: (a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status],
     render: (row) =>
-      h(NTag, { type: statusTag(row.status), size: 'small', round: true }, { default: () => ORDER_STATUS_LABELS[row.status] }),
+      h(
+        NTag,
+        { type: statusTag(row.status), size: 'small', round: true },
+        { default: () => ORDER_STATUS_LABELS[row.status] },
+      ),
   },
   {
     title: 'Работник',
     key: 'tailorId',
-    sorter: (a, b) => getTailorFullName(a.tailorId, a.status).localeCompare(getTailorFullName(b.tailorId, b.status)),
+    sorter: (a, b) =>
+      getTailorFullName(a.tailorId, a.status).localeCompare(
+        getTailorFullName(b.tailorId, b.status),
+      ),
     render: (row) => getTailorFullName(row.tailorId, row.status),
   },
   {
     title: 'Дата создания',
     key: 'createdAt',
-    sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    sorter: (a, b) =>
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     render: (row) => formatDate(row.createdAt),
   },
   {
@@ -80,7 +93,12 @@ async function load(filters?: OrderFilters): Promise<Order[]> {
 
 <template>
   <OrdersTable :columns="columns" :load="load">
-    <n-float-button type="primary" :right="24" :bottom="24" @click="router.push('/orders/new')">
+    <n-float-button
+      type="primary"
+      :right="24"
+      :bottom="24"
+      @click="router.push('/orders/new')"
+    >
       <n-icon><PlusRound /></n-icon>
     </n-float-button>
   </OrdersTable>

@@ -65,7 +65,10 @@ export interface Order {
 export function statusTag(
   status: OrderStatus,
 ): 'default' | 'info' | 'warning' | 'success' | 'error' {
-  const map: Record<OrderStatus, 'default' | 'info' | 'warning' | 'success' | 'error'> = {
+  const map: Record<
+    OrderStatus,
+    'default' | 'info' | 'warning' | 'success' | 'error'
+  > = {
     created: 'default',
     accepted: 'info',
     in_progress: 'warning',

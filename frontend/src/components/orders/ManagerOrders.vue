@@ -5,6 +5,7 @@ import { ORDER_STATUS_LABELS, statusTag } from '@/types/order';
 import { NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
+
 import OrdersTable from './OrdersTable.vue';
 
 function getTailorFullName(tailorId: string | OrderTailor | null): string {
@@ -26,7 +27,7 @@ const STATUS_ORDER = {
   accepted: 1,
   in_progress: 2,
   done: 3,
-  cancelled: 4
+  cancelled: 4,
 } as const;
 
 const columns: DataTableColumns<Order> = [
@@ -39,7 +40,8 @@ const columns: DataTableColumns<Order> = [
   {
     title: 'Тип заказа',
     key: 'orderType',
-    sorter: (a, b) => (a.items[0]?.name ?? '').localeCompare(b.items[0]?.name ?? ''),
+    sorter: (a, b) =>
+      (a.items[0]?.name ?? '').localeCompare(b.items[0]?.name ?? ''),
     render: (row) => row.items[0]?.name ?? '-',
   },
   {
@@ -47,24 +49,35 @@ const columns: DataTableColumns<Order> = [
     key: 'status',
     sorter: (a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status],
     render: (row) =>
-      h(NTag, { type: statusTag(row.status), size: 'small', round: true }, { default: () => ORDER_STATUS_LABELS[row.status] }),
+      h(
+        NTag,
+        { type: statusTag(row.status), size: 'small', round: true },
+        { default: () => ORDER_STATUS_LABELS[row.status] },
+      ),
   },
   {
     title: 'Покупатель',
     key: 'customerId',
-    sorter: (a, b) => getCustomerFullName(a.customerId).localeCompare(getCustomerFullName(b.customerId)),
+    sorter: (a, b) =>
+      getCustomerFullName(a.customerId).localeCompare(
+        getCustomerFullName(b.customerId),
+      ),
     render: (row) => getCustomerFullName(row.customerId),
   },
   {
     title: 'Работник',
     key: 'tailorId',
-    sorter: (a, b) => getTailorFullName(a.tailorId).localeCompare(getTailorFullName(b.tailorId)),
+    sorter: (a, b) =>
+      getTailorFullName(a.tailorId).localeCompare(
+        getTailorFullName(b.tailorId),
+      ),
     render: (row) => getTailorFullName(row.tailorId),
   },
   {
     title: 'Дата создания',
     key: 'createdAt',
-    sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    sorter: (a, b) =>
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     render: (row) => formatDate(row.createdAt),
   },
   {

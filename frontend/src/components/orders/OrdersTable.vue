@@ -5,6 +5,7 @@ import { NDataTable, NFlex, NSpin } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import OrderFiltersPanel from './OrderFiltersPanel.vue';
 
 const props = defineProps<{
@@ -17,9 +18,9 @@ const orders = ref<Order[]>([]);
 const filteredOrders = ref<Order[]>([]);
 const isLoading = ref(false);
 
-onMounted(() => load());
+onMounted(() => fetchOrders());
 
-async function load(filters?: OrderFilters) {
+async function fetchOrders(filters?: OrderFilters) {
   isLoading.value = true;
   try {
     orders.value = await props.load(filters);
@@ -38,7 +39,7 @@ function handleRowProps(row: Order) {
 
 <template>
   <n-flex vertical :size="16">
-    <order-filters-panel @change="load" />
+    <order-filters-panel @change="fetchOrders" />
     <SearchBar v-model:filtered="filteredOrders" :items="orders" />
     <n-spin :show="isLoading">
       <n-data-table
