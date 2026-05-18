@@ -180,11 +180,15 @@ const rules: FormRules = {
         }
 
         const digits = normalizePhoneNumber(value);
-        return (
-          digits.length === 10 ||
-          (digits.length === 11 &&
-            (digits.startsWith('7') || digits.startsWith('8')))
-        );
+        if (digits.length === 11) {
+          return digits.startsWith('7') || digits.startsWith('8');
+        }
+
+        if (digits.length === 10) {
+          return !digits.startsWith('7') && !digits.startsWith('8');
+        }
+
+        return false;
       },
       message: 'Пожалуйста, введите корректный номер телефона',
       trigger: 'blur',

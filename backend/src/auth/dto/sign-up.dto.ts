@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Matches,
 } from 'class-validator';
@@ -48,6 +49,7 @@ export class SignUpDto {
   @IsOptional()
   @Transform(({ value }) => normalizePhoneNumber(value))
   @Matches(/^\+7\d{10}$/)
+  @IsPhoneNumber('RU')
   @IsString()
   phone?: string;
 
