@@ -21,9 +21,17 @@ export class OrdersService {
 
   getAllOrders(user?: UserPayload['user']): Promise<Order[]> {
     if (!user || user.role !== 'customer') {
-      return this.orderModel.find().exec();
+      return this.orderModel
+        .find()
+        .populate('customerId', 'name email')
+        .populate('tailorId', 'name email')
+        .exec();
     }
-    return this.orderModel.find({ customerId: user.sub }).exec();
+    return this.orderModel
+      .find({ customerId: user.sub })
+      .populate('customerId', 'name email')
+      .populate('tailorId', 'name email')
+      .exec();
   }
 
   async getAllOrdersFiltered(
@@ -65,7 +73,11 @@ export class OrdersService {
       throw new BadRequestException('Invalid order ID format.');
     }
 
-    const order = await this.orderModel.findById(id).exec();
+    const order = await this.orderModel
+      .findById(id)
+      .populate('customerId', 'name email')
+      .populate('tailorId', 'name email')
+      .exec();
     if (!order) {
       throw new NotFoundException('Order not found.');
     }

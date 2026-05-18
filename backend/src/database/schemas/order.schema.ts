@@ -34,12 +34,12 @@ class OrderComment {
 export class Order {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer',
+    ref: 'User',
     required: true,
   })
   customerId!: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, default: null })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null })
   tailorId?: mongoose.Types.ObjectId;
 
   @Prop({ type: [OrderItem], required: true })

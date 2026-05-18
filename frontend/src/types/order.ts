@@ -21,6 +21,16 @@ export interface OrderTailor {
   email: string;
 }
 
+export interface OrderCustomer {
+  _id: string;
+  name: {
+    firstName: string;
+    lastName: string;
+    patronymic?: string;
+  };
+  email: string;
+}
+
 export type OrderStatus =
   | 'created'
   | 'accepted'
@@ -40,7 +50,7 @@ export interface Worker {
 
 export interface Order {
   _id: string;
-  customerId: string;
+  customerId: string | OrderCustomer;
   tailorId: string | OrderTailor | null;
   items: OrderItem[];
   status: OrderStatus;
@@ -52,12 +62,36 @@ export interface Order {
   updatedAt: string;
 }
 
+export function statusTag(
+  status: OrderStatus,
+): 'default' | 'info' | 'warning' | 'success' | 'error' {
+  const map: Record<
+    OrderStatus,
+    'default' | 'info' | 'warning' | 'success' | 'error'
+  > = {
+    created: 'default',
+    accepted: 'info',
+    in_progress: 'warning',
+    done: 'success',
+    cancelled: 'error',
+  };
+  return map[status];
+}
+
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   created: 'Новый',
   accepted: 'Подтвержден',
   in_progress: 'В процессе',
   done: 'Готов',
   cancelled: 'Отменен',
+};
+
+export const STATUS_ORDER: Record<OrderStatus, number> = {
+  created: 0,
+  accepted: 1,
+  in_progress: 2,
+  done: 3,
+  cancelled: 4,
 };
 
 export interface OrderFilters {
