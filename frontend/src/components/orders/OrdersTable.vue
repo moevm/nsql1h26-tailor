@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { SearchBar } from '@/components/inputs';
 import type { Order, OrderFilters } from '@/types';
 import { NDataTable, NFlex, NSpin } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
@@ -39,8 +38,11 @@ function handleRowProps(row: Order) {
 
 <template>
   <n-flex vertical :size="16">
-    <OrderFiltersPanel @change="fetchOrders" />
-    <SearchBar v-model:filtered="filteredOrders" :items="orders" />
+    <OrderFiltersPanel
+      :items="orders"
+      @change="fetchOrders"
+      @update:filtered="filteredOrders = $event"
+    />
     <n-spin :show="isLoading">
       <n-data-table
         :columns="columns"

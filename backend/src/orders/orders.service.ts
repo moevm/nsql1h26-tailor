@@ -31,7 +31,7 @@ export class OrdersService {
     findOrderDto: FindOrderDto,
     user: UserPayload['user'],
   ): Promise<Order[]> {
-    let orders = await this.getAllOrders(user);
+    let orders = await this.getAllOrders();
     if (findOrderDto.startDate) {
       const startDate = new Date(findOrderDto.startDate);
       orders = orders.filter((order) => new Date(order.createdAt) >= startDate);
