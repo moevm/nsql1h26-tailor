@@ -1,3 +1,4 @@
+import { UserPayload } from '@/common/interfaces/user.interface';
 import {
   BadRequestException,
   Injectable,
@@ -18,12 +19,18 @@ export class OrdersService {
     private readonly orderModel: Model<Order>,
   ) {}
 
-  getAllOrders(): Promise<Order[]> {
-    return this.orderModel.find().exec();
+  getAllOrders(user?: UserPayload['user']): Promise<Order[]> {
+    if (!user || user.role !== 'customer') {
+      return this.orderModel.find().exec();
+    }
+    return this.orderModel.find({ customerId: user.sub }).exec();
   }
 
-  async getAllOrdersFiltered(findOrderDto: FindOrderDto): Promise<Order[]> {
-    let orders = await this.getAllOrders();
+  async getAllOrdersFiltered(
+    findOrderDto: FindOrderDto,
+    user: UserPayload['user'],
+  ): Promise<Order[]> {
+    let orders = await this.getAllOrders(user);
     if (findOrderDto.startDate) {
       const startDate = new Date(findOrderDto.startDate);
       orders = orders.filter((order) => new Date(order.createdAt) >= startDate);
