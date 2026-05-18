@@ -21,6 +21,7 @@ const isExporting = ref(false);
 const importType = ref<'users' | 'orders'>('users');
 const importFileList = ref<UploadFileInfo[]>([]);
 const isImporting = ref(false);
+const uploadKey = ref(0);
 
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -66,10 +67,11 @@ async function handleImport() {
       orders: !isUsers || undefined,
     });
     message.success('Данные успешно импортированы');
-    importFileList.value = [];
   } catch {
     message.error('Ошибка при импорте');
   } finally {
+    importFileList.value = [];
+    uploadKey.value++;
     isImporting.value = false;
   }
 }
@@ -83,6 +85,7 @@ async function handleImport() {
           <n-radio value="users">Пользователи</n-radio>
           <n-radio value="orders">Заказы</n-radio>
           <n-upload
+            :key="uploadKey"
             v-model:file-list="importFileList"
             :max="1"
             accept=".csv"
