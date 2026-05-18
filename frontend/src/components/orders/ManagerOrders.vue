@@ -22,7 +22,6 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('ru-RU');
 }
 
-
 const columns: DataTableColumns<Order> = [
   {
     title: 'Заказ',
