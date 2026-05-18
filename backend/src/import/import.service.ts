@@ -26,7 +26,9 @@ export class ImportService {
     model: Model<T>,
   ): Promise<void> {
     const rows = await this.readCsvFile(filePath);
+    this.assertCsvMatchesModel(rows, model);
     const normalizedRows = rows.map((row) => this.normalizeRow(row));
+    this.validateRows(normalizedRows, model);
 
     await model.deleteMany({});
     try {
@@ -49,8 +51,59 @@ export class ImportService {
     });
   }
 
+  getCsvFields<T>(model: Model<T>): string[] {
+    return Object.keys(model.schema.paths).filter(
+      (key) => !key.includes('.') && !['_id', '__v'].includes(key),
+    );
+  }
+
+  assertCsvMatchesModel<T>(
+    rows: Array<Record<string, string>>,
+    model: Model<T>,
+  ): void {
+    if (rows.length === 0) {
+      throw new BadRequestException('CSV file is empty.');
+    }
+
+    const expectedFields = this.getCsvFields(model);
+    const actualFields = Object.keys(rows[0]).map((key) =>
+      this.normalizeKey(key),
+    );
+
+    const missingFields = expectedFields.filter(
+      (field) => !actualFields.includes(field),
+    );
+    const unexpectedFields = actualFields.filter(
+      (field) => !expectedFields.includes(field),
+    );
+
+    if (missingFields.length > 0 || unexpectedFields.length > 0) {
+      throw new BadRequestException(
+        'CSV file does not match selected dataset.',
+      );
+    }
+  }
+
+  validateRows<T>(
+    rows: Array<Record<string, unknown>>,
+    model: Model<T>,
+  ) {
+    for (const row of rows) {
+      const validationError = new model(row).validateSync();
+
+      if (validationError) {
+        throw new BadRequestException(
+          'CSV file does not match selected dataset.',
+        );
+      }
+    }
+  }
+
   normalizeKey(key: string): string {
-    return key.replace(/^[\s"\\]+|[\s"\\]+$/g, '').trim();
+    return key
+      .replace(/^\uFEFF/, '')
+      .replace(/^[\s"\\]+|[\s"\\]+$/g, '')
+      .trim();
   }
 
   normalizeRow(row: Record<string, string>): Record<string, unknown> {
