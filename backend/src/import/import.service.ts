@@ -84,10 +84,7 @@ export class ImportService {
     }
   }
 
-  validateRows<T>(
-    rows: Array<Record<string, unknown>>,
-    model: Model<T>,
-  ) {
+  validateRows<T>(rows: Array<Record<string, unknown>>, model: Model<T>) {
     for (const row of rows) {
       const validationError = new model(row).validateSync();
 
