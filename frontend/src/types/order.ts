@@ -86,6 +86,14 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   cancelled: 'Отменен',
 };
 
+export const STATUS_ORDER: Record<OrderStatus, number> = {
+  created: 0,
+  accepted: 1,
+  in_progress: 2,
+  done: 3,
+  cancelled: 4,
+};
+
 export interface OrderFilters {
   startDate?: string;
   endDate?: string;

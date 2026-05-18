@@ -2,7 +2,7 @@
 import { ordersApi } from '@/api/orders';
 import { useAuthStore } from '@/stores';
 import type { Order, OrderFilters, OrderTailor } from '@/types';
-import { ORDER_STATUS_LABELS, statusTag } from '@/types/order';
+import { ORDER_STATUS_LABELS, STATUS_ORDER, statusTag } from '@/types/order';
 import { PlusRound } from '@vicons/material';
 import { NFloatButton, NIcon, NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
@@ -27,13 +27,6 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('ru-RU');
 }
 
-const STATUS_ORDER = {
-  created: 0,
-  accepted: 1,
-  in_progress: 2,
-  done: 3,
-  cancelled: 4,
-} as const;
 
 const columns: DataTableColumns<Order> = [
   {

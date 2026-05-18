@@ -39,7 +39,7 @@ function handleRowProps(row: Order) {
 
 <template>
   <n-flex vertical :size="16">
-    <order-filters-panel @change="fetchOrders" />
+    <OrderFiltersPanel @change="fetchOrders" />
     <SearchBar v-model:filtered="filteredOrders" :items="orders" />
     <n-spin :show="isLoading">
       <n-data-table

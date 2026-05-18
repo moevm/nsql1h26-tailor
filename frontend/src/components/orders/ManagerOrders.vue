@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ordersApi } from '@/api/orders';
 import type { Order, OrderCustomer, OrderFilters, OrderTailor } from '@/types';
-import { ORDER_STATUS_LABELS, statusTag } from '@/types/order';
+import { ORDER_STATUS_LABELS, STATUS_ORDER, statusTag } from '@/types/order';
 import { NTag } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
@@ -22,13 +22,6 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('ru-RU');
 }
 
-const STATUS_ORDER = {
-  created: 0,
-  accepted: 1,
-  in_progress: 2,
-  done: 3,
-  cancelled: 4,
-} as const;
 
 const columns: DataTableColumns<Order> = [
   {
