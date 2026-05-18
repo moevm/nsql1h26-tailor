@@ -1,5 +1,6 @@
 import { Roles } from '@/common/decorators/roles.decorator';
 import { RolesGuard } from '@/common/guards/roles.guard';
+import { UserPayload } from '@/common/interfaces/user.interface';
 import {
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'mongoose';
@@ -26,8 +28,11 @@ export class OrdersController {
   @UseGuards(RolesGuard)
   @Roles(['customer', 'tailor', 'manager'])
   @Get()
-  findAll(@Query() findOrderDto: FindOrderDto): Promise<Order[]> {
-    return this.ordersService.getAllOrdersFiltered(findOrderDto);
+  findAll(
+    @Query() findOrderDto: FindOrderDto,
+    @Req() req: Request & UserPayload,
+  ): Promise<Order[]> {
+    return this.ordersService.getAllOrdersFiltered(findOrderDto, req.user);
   }
 
   @UseGuards(RolesGuard)

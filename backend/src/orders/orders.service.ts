@@ -1,3 +1,4 @@
+import { UserPayload } from '@/common/interfaces/user.interface';
 import {
   BadRequestException,
   Injectable,
@@ -26,8 +27,11 @@ export class OrdersService {
       .exec();
   }
 
-  async getAllOrdersFiltered(findOrderDto: FindOrderDto): Promise<Order[]> {
-    let orders = await this.getAllOrders();
+  async getAllOrdersFiltered(
+    findOrderDto: FindOrderDto,
+    user: UserPayload['user'],
+  ): Promise<Order[]> {
+    let orders = await this.getAllOrders(user);
     if (findOrderDto.startDate) {
       const startDate = new Date(findOrderDto.startDate);
       orders = orders.filter((order) => new Date(order.createdAt) >= startDate);

@@ -19,7 +19,7 @@ import {
   NInput,
   useMessage,
 } from 'naive-ui';
-import { type Component, onMounted, ref } from 'vue';
+import { type Component, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter(); // Роутер для навигации
@@ -27,12 +27,6 @@ const router = useRouter(); // Роутер для навигации
 const authStore = useAuthStore(); // Ссылка на хранилище аутентификации
 
 const message = useMessage(); // Сервис для отображения сообщений
-
-onMounted(() =>
-  message.info(
-    'Регистрация нового пользователя будет реализована в прототипе "Анализ"',
-  ),
-);
 
 /**
  * Тип модели формы
@@ -65,6 +59,10 @@ interface FormFieldConfig {
  * Ссылка на форму
  */
 const formRef = ref<FormInst | null>(null);
+
+function normalizePhoneNumber(value: string): string {
+  return value.replace(/\D/g, '');
+}
 
 /**
  * Конфигурация полей формы
@@ -173,6 +171,26 @@ const rules: FormRules = {
   phone: [
     {
       required: false,
+      trigger: 'blur',
+    },
+    {
+      validator: (_rule: FormItemRule, value: string) => {
+        if (!value) {
+          return true;
+        }
+
+        const digits = normalizePhoneNumber(value);
+        if (digits.length === 11) {
+          return digits.startsWith('7') || digits.startsWith('8');
+        }
+
+        if (digits.length === 10) {
+          return !digits.startsWith('7') && !digits.startsWith('8');
+        }
+
+        return false;
+      },
+      message: 'Пожалуйста, введите корректный номер телефона',
       trigger: 'blur',
     },
   ],
